@@ -1,0 +1,8 @@
+type Storage = {}
+var M = Contract<Storage>()
+function M:init()
+end
+function M:GetAccess()
+    return true
+end
+return M

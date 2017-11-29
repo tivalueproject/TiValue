@@ -1,0 +1,422 @@
+type PieceInfo=
+{
+    piece_id    :   string,
+    size        :   number,
+    price       :   number
+}
+type NodeIdAndKey=
+{
+    storer_key:string,
+    node_id:string
+}
+type FileSaveRecord =
+{
+    file_id:string,
+    owner:string,
+    copy_to_save:number,
+    authorizating_contract:string,
+    payterm:number,
+    filename:string,
+    description:string,
+    upload_node:string
+}
+
+type Payment=
+{
+    file_id:string,
+    piece_id:string,
+    account_key:string,
+    node_id:string,
+    term:number,
+    amount:number,
+    last_pay_block:number
+}
+type PieceSavedRecord =
+{
+    piece_id:string,
+    file_id:string,
+    copy_to_save:number,
+    price:number,
+    payterm:number,
+    nodes:Array<string>    
+}
+
+type Storage = {
+    users_balance: Map<number>,
+    users_spending_balance: Map<number>,
+    upload_requests:Map<string>,
+    piece_saved_table:Map<string>,
+    unconfirmed_store_requests:Map<string>,
+    unPaied:Array<string>
+}
+
+
+var M = Contract<Storage>()
+
+function M:init()
+    self.storage.users_balance={}
+    self.storage.users_spending_balance={}
+    self.storage.upload_requests={}
+    self.storage.piece_saved_table={}
+    self.storage.unconfirmed_store_requests={}
+    self.storage.unPaied=[]
+end
+function M:pay()
+    pprint("==============call pay========================")
+    pprint(self.storage.unPaied)
+    local height:number=get_header_block_num()
+    local unPaied:Array<string> = self.storage.unPaied
+    local to_remove:Array<number> =[]
+    for i=1,#unPaied do
+        local rec:Payment=totable(json.loads(unPaied[i]))
+        pprint("inpay")
+        if (rec.last_pay_block < (height-10)) and (rec.term > 0)  then
+            local pay_amount=rec.amount/rec.term
+            pprint(pay_amount)
+            local transfer_state:int=0
+            if pay_amount > 0 then
+                pprint("start_py")
+                transfer_state= transfer_from_contract_to_address(get_publickey_address(rec.account_key),"TV",tointeger(pay_amount*100000))
+            end
+            if transfer_state==0 then
+                pprint("pay_success")
+                rec.term=rec.term-1
+                rec.amount=rec.amount-pay_amount
+                rec.last_pay_block=height
+                if rec.term== 0 then
+                    table.append(to_remove,i)
+                else
+                    self.storage.unPaied[i]=json.dumps(rec);
+                end
+            end
+        end
+    end
+    if  #to_remove>1 then
+        pprint(to_remove)
+        local remove_count=#to_remove
+        for i=1,remove_count do
+            pprint(self.storage.unPaied) 
+            table.remove(self.storage.unPaied,to_remove[remove_count+1-i])
+        end
+        pprint(self.storage.unPaied) 
+        pprint("remove end")
+    end
+end
+
+function M:Store(args:string)
+    self:pay()
+    local params:Array<string> =string.split(args, ";")
+    if #params ~= 3 then 
+        pprint("13")
+        return 
+    end
+    local file_id:string =params[1]
+    local piece_id:string =params[2]
+    local node_id:string =params[3]
+    if self.storage.piece_saved_table[file_id..piece_id]== nil then
+        pprint("piece_saved_table[file_id..piece_id]== nil")
+    end
+    pprint(self.storage.piece_saved_table[file_id..piece_id])
+    let a = json.loads(self.storage.piece_saved_table[file_id..piece_id])
+    pprint(a)
+    let b = totable(a)
+    pprint("=====================================")
+    pprint(b)
+    local piece_saved_rec:PieceSavedRecord =b
+    local saved_nodes:Array<string> =piece_saved_rec.nodes
+    if piece_saved_rec.copy_to_save==(#saved_nodes) then
+        pprint("14")
+        return 
+    end
+    pprint("141")
+    local nodes:Array<string> = piece_saved_rec.nodes
+    for i=1,#nodes do
+        if node_id == nodes[i] then
+            pprint("15") 
+            return 
+        end
+        pprint("151")
+    end
+    pprint("1511")
+    if true==allow_store_request(file_id,piece_id,caller,node_id) then
+        pprint("15111")
+        local node_and_key_pairs:string =""
+        if self.storage.unconfirmed_store_requests[file_id..piece_id] ~= nil then
+            node_and_key_pairs=self.storage.unconfirmed_store_requests[file_id..piece_id]
+            pprint("15112")
+        end
+        local pair =NodeIdAndKey()
+        pair.storer_key=caller
+        pair.node_id=node_id
+
+        node_and_key_pairs=node_and_key_pairs.."^"..json.dumps(pair)
+        
+        pprint(json.dumps(pair))
+        pprint(node_and_key_pairs)
+        self.storage.unconfirmed_store_requests[file_id..piece_id]=node_and_key_pairs
+    end
+end
+
+function M:Confirm(args:string)
+    self:pay()
+    local params:Array<string> =string.split(args, ";")
+    if #params ~= 3 then 
+         pprint("16") 
+        return 
+    end
+    local file_id:string =params[1]
+    local piece_id:string =params[2]
+    local pubkey:string =params[3]
+    pprint("161") 
+    pprint("162")
+    pprint("163")
+    pprint("162")
+    local pairs:string =self.storage.unconfirmed_store_requests[file_id..piece_id]
+    local strpairs:Array<string> =string.split(pairs,"^")
+    local node_id:string =""
+    local remove_index:number=0
+    for i=1,#strpairs do
+        local node_info:NodeIdAndKey =totable(json.loads(strpairs[i]))
+        if node_info.storer_key==pubkey then
+            node_id=node_info.node_id
+            remove_index=i
+            break
+        end
+    end
+    if node_id=="" then
+         pprint("17")  
+        return
+    end
+    
+    pairs=""
+    for i=8,#strpairs do
+        if i~=remove_index then
+            pairs=pairs.."^"..strpairs[i]
+        end
+    end
+
+    self.storage.unconfirmed_store_requests[file_id..piece_id]=pairs
+
+    local piece_saved_rec:PieceSavedRecord =totable(json.loads(self.storage.piece_saved_table[file_id..piece_id]))
+    local saved_nodes=piece_saved_rec.nodes
+    local price:number=piece_saved_rec.price
+    local term:number=piece_saved_rec.payterm
+    if piece_saved_rec.copy_to_save==#saved_nodes then
+        pprint("18") 
+        return 
+    end
+    table.append(piece_saved_rec.nodes,node_id)
+    self.storage.piece_saved_table[file_id..piece_id]=json.dumps(piece_saved_rec);
+    local unPaied=self.storage.unPaied
+    for i=1,#unPaied do
+        local info: Payment = totable(json.loads(unPaied[i]))
+        if info.file_id==file_id and info.piece_id==piece_id and info.account_key == pubkey then
+             pprint("19") 
+            error("")
+        end
+    end
+    local new_pay_ment:Payment=Payment()
+    new_pay_ment.amount=price
+    new_pay_ment.file_id=file_id
+    new_pay_ment.piece_id=piece_id
+    new_pay_ment.term=term
+    new_pay_ment.last_pay_block=get_header_block_num()
+    new_pay_ment.node_id=node_id
+    new_pay_ment.account_key=pubkey
+    table.append(self.storage.unPaied,json.dumps(new_pay_ment))
+    if allow_piece_saved(file_id,piece_id,node_id) == false then
+         pprint("20") 
+        error("");
+    end
+end
+
+function M:Reject(args:string)
+    self:pay()
+    local params:Array<string> =string.split(args, ";")
+    local num_of_arg:number = #params
+    if num_of_arg ~= 3 then
+         pprint("21")  
+        return 
+    end
+    local file_id:string =params[1]
+    local piece_id:string =params[2]
+    local node_id:string =params[3]
+    if self.storage.piece_saved_table[file_id..piece_id]== nil then
+         pprint("22") 
+        return
+    end
+    local piece_saved_rec:PieceSavedRecord =totable(json.loads(self.storage.piece_saved_table[file_id..piece_id]))
+    local nodes:Array<string> =piece_saved_rec.nodes
+    local pos:number=0
+    for i=1,#nodes do
+        if nodes[i]==node_id then
+            pos=i
+            break
+        end
+    end
+    if pos == 0 then
+        pprint("23") 
+        return
+    end
+    table.remove(piece_saved_rec.nodes,pos)
+    pos=0
+    pprint("file_id:"..file_id.." piece_id:"..piece_id.." node_id:"..node_id)
+    self.storage.piece_saved_table[file_id..piece_id]=json.dumps(piece_saved_rec)
+    local amount:number =0
+    local unPaied=self.storage.unPaied
+    for i=1,#unPaied do
+        pprint("unPaied=======")
+        pprint(unPaied[i])
+        local info: Payment =totable(json.loads(unPaied[i]))
+        if info.file_id ==file_id and info.piece_id == piece_id and info.node_id ==node_id then
+            amount =info.amount
+            pos= i
+        end
+    end
+    if pos ~= 0 then
+        pprint("===remove=upay======")
+        table.remove(self.storage.unPaied,pos)
+    end
+    local file_save_rec:FileSaveRecord=totable(json.loads(self.storage.upload_requests[file_id]))
+    if file_save_rec== nil then
+        pprint("24") 
+        error("")
+    end
+    local uploader:string = file_save_rec.owner
+    if self.storage.users_balance[uploader] == nil then
+        pprint("25") 
+        error("")
+    end
+    self.storage.users_balance[uploader] = self.storage.users_balance[uploader]+amount
+    if allow_store_reject(file_id,piece_id,node_id)==false then
+        pprint("26") 
+        error("")
+    end
+end
+
+function M:Access(file_id:string)
+    self:pay()
+    local file_save_rec:FileSaveRecord=totable(json.loads(self.storage.upload_requests[file_id]))
+    if file_save_rec== nil then
+        pprint("27") 
+        return
+    end
+    let t: object=import_contract_from_address(file_save_rec.authorizating_contract)
+    if t==nil then 
+        pprint("28") 
+        return
+    end
+    if t:GetAccess(caller) ==true then
+        allow_enable_access(file_id,caller)
+    end
+end
+
+function M:Upload(args:string)
+    self:pay()
+    local params:Array<string> =string.split(args, ";")
+    local num_of_arg:number = #params
+    if num_of_arg < 9 then 
+        pprint("1")
+        return 
+    end
+    local piece_num:number=num_of_arg-8
+    local file_id:string =params[1]
+    local num_of_piece:number = tonumber(params[2])
+    if piece_num ~= num_of_piece then 
+        pprint("2")
+        return 
+    end
+    local price:number=0
+    local pieces:Array<PieceInfo> =[]
+    for i=1,num_of_piece do
+        local piece_info = PieceInfo()
+        local arr:Array<string> =string.split(tostring(params[2+i]),",")
+        if #arr ~= 3 then
+            pprint("3")
+            return 
+        end
+        pprint("piece_id")
+        
+        piece_info.piece_id=tostring(arr[1])
+        pprint(arr[1])
+        pprint(piece_info.piece_id)
+        piece_info.size=tonumber(arr[2])
+        piece_info.price=todouble(arr[3])
+        price=price+ piece_info.price
+        table.append(pieces,piece_info)
+    end
+    local authorizating_contract:string=tostring(params[3+num_of_piece])
+    if contract_api_check(authorizating_contract,"GetAccess") ~= true then
+        pprint("4")
+        return 
+    end
+    local num_of_copy:number=tonumber(params[4+num_of_piece])
+    
+    local payterm:number=tonumber(params[5+num_of_piece])
+    if self.storage.users_balance[caller] == nil then
+        return
+    end
+    if self.storage.users_balance[caller]<100000*price*num_of_copy then 
+        pprint("5")
+        return
+    end
+    local file_save_rec:FileSaveRecord =FileSaveRecord()
+    file_save_rec.file_id=file_id
+    file_save_rec.copy_to_save=num_of_copy
+    file_save_rec.authorizating_contract=authorizating_contract
+    file_save_rec.owner =caller
+    file_save_rec.filename=tostring(params[6+num_of_piece])
+    file_save_rec.description=tostring(params[7+num_of_piece])
+    file_save_rec.upload_node=tostring(params[8+num_of_piece])
+    if self.storage.upload_requests[file_id] ~= nil then 
+        pprint("6")
+        error("")
+    end
+    self.storage.upload_requests[file_id]=json.dumps(file_save_rec)
+    for i = 1,#pieces do
+        if self.storage.piece_saved_table[file_id..pieces[i].piece_id] ~= nil then
+            pprint("7")
+            error("")
+        end
+        local piece_saved_rec= PieceSavedRecord()
+        piece_saved_rec.piece_id=pieces[i].piece_id
+        piece_saved_rec.file_id=file_id
+        piece_saved_rec.price=pieces[i].price
+        piece_saved_rec.copy_to_save=num_of_copy
+        piece_saved_rec.payterm=payterm  
+        piece_saved_rec.nodes=[]
+        self.storage.piece_saved_table[file_id..pieces[i].piece_id]=json.dumps(piece_saved_rec)
+    end
+    pprint("50")
+    pprint(pieces)
+    if false==allow_upload_request(file_id,caller,pieces,authorizating_contract,num_of_copy,payterm,file_save_rec.filename,file_save_rec.description,file_save_rec.upload_node) then
+        pprint("8")
+        error("")
+    end
+end
+
+
+
+function M:on_deposit(numstr: int)
+    self:pay()
+    local amount:number = tonumber(numstr)
+    if amount == nil then
+        pprint("9")
+        return
+    end
+    if self.storage.users_balance[caller] == nil then
+        self.storage.users_balance[caller] = amount
+    else 
+        amount=self.storage.users_balance[caller]+amount
+        if amount < self.storage.users_balance[caller] then
+            pprint("10")
+            return 
+        end
+        self.storage.users_balance[caller] =self.storage.users_balance[caller]+amount
+    end
+    pprint("11")
+end
+
+
+
+return M

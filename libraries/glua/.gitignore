@@ -1,0 +1,13 @@
+/x64
+/Debug
+/Release
+*~
+*.out
+*.ldf
+/tmp_to_run
+/*.vcxproj
+/*.vcxproj.filters
+/*.vcxproj.user
+/*.sln
+/.vs
+/.vscode

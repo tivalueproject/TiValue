@@ -1,0 +1,1053 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="api">
+      <UniqueIdentifier>{d4447336-683e-429a-acdd-de3b37757e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blockchain">
+      <UniqueIdentifier>{846d3069-5666-4735-8526-365149ad8a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cli">
+      <UniqueIdentifier>{9af76b07-3cbd-4671-9eda-8ccb040e7766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="client">
+      <UniqueIdentifier>{597414c5-bb62-4351-bf54-114b3c80305b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="contract_engine">
+      <UniqueIdentifier>{10a0ec83-0f97-4b96-93be-b0d50d1853cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="db">
+      <UniqueIdentifier>{1b77c2c9-6da2-46ee-b8ff-ec00656d8681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="glua">
+      <UniqueIdentifier>{023822f3-9d59-4b35-8fe0-95130dcdde96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="net">
+      <UniqueIdentifier>{22d61eef-28f7-4324-8629-69d79eeadd12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc">
+      <UniqueIdentifier>{2e86531e-d177-4d51-9802-5d0bd324a47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc_stub">
+      <UniqueIdentifier>{9fb448de-31aa-4018-86e1-40eb61a8e5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wallet">
+      <UniqueIdentifier>{7a207059-4d5d-4c84-8509-53bf3c45659e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utilities">
+      <UniqueIdentifier>{ff6c4459-0fe2-4f65-a52c-789ae1127f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{4f44b011-47a8-4435-a415-e426a0b07dc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\api">
+      <UniqueIdentifier>{96017273-7b01-4cbf-bf88-4d12b374689a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\blockchain">
+      <UniqueIdentifier>{ee9c143e-0460-4112-91de-f96a546f14f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\cli">
+      <UniqueIdentifier>{48bd17bf-a398-4e88-8e5d-942a7fbeb83e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\client">
+      <UniqueIdentifier>{69ccb8f1-f985-4f7f-b1c6-6131d9ffb052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\contract_engine">
+      <UniqueIdentifier>{80c667da-840c-4b2e-ad2e-9feb7f1a5788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\db">
+      <UniqueIdentifier>{ef8c5ca4-7d06-4015-a3e0-94af98f8a0b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\glua">
+      <UniqueIdentifier>{402f10f5-d1bd-46f2-9e2f-b575896df620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\net">
+      <UniqueIdentifier>{b251c09f-7ea4-48dc-8f71-526d0c539ee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\rpc">
+      <UniqueIdentifier>{1702e3cf-55ac-43fe-a1da-29af4bcbbbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\rpc_stub">
+      <UniqueIdentifier>{849606c4-e039-4433-8654-18ccc3598369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\utilities">
+      <UniqueIdentifier>{10d6ea2b-3778-4923-89f7-e45c86c7b48c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\wallet">
+      <UniqueIdentifier>{84a9d123-ab5b-4273-9fc6-991d2c44c1bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\libraries\api\ConversionFunctions.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\api\GlobalApiLogger.cpp">
+      <Filter>api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\AccountEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\AccountOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Address.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\applink.c">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Asset.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\AssetEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\AssetOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\BalanceEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\BalanceOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Block.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ChainDatabase.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ChainInterface.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ContractEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ContractOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\EventOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ExtendedAddress.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\FileStoreEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\FileStoreOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ForkBlocks.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\GenesisJson.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\GenesisJson_test.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\ImessageOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Operations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\PendingChainState.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\PropertyEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\PtsAddress.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\SlateEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\SlateOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\SlotEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\StorageOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\StorageTypes.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\tichain_lua_api.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Time.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Transaction.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\TransactionCreationState.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\TransactionEntry.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\TransactionEvaluationState.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\TransactionOperations.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\Types.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\blockchain\WithdrawTypes.cpp">
+      <Filter>blockchain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\cli\Cli.cpp">
+      <Filter>cli</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\cli\Pretty.cpp">
+      <Filter>cli</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\cli\PrintResult.cpp">
+      <Filter>cli</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\WalletApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\TichainApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\ScriptApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\SandboxContractApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\Notifier.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\GeneralApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\Messages.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\NetworkApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\DelegateApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\DebugApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\ContractApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\Client.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\BlockchainApi.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\client\ApiLogger.cpp">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\contract_engine\contract_engine.cpp">
+      <Filter>contract_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\contract_engine\contract_engine_builder.cpp">
+      <Filter>contract_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\contract_engine\glua_contract_engine.cpp">
+      <Filter>contract_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\db\UpgradeLeveldb.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_api_types.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_astparser.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_debug_file.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_decompile.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_disassemble.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_loader.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_lutil.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_proto_info.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_state_scope.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_statement.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_structs.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_tokenparser.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\glua_vm.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\language_server.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lapi.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lauxlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lbaselib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lbitlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lcode.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lcompile.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lcorolib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lctype.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ldblib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ldebug.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ldo.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ldump.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lfunc.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lgc.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lhashmap.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lhttplib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\linit.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\liolib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ljsonlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ljsonrpclib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\llex.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lmathlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lmem.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lnetlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\loadlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lobject.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lopcodes.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\loslib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lparser.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lparsercombinator.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lprefix.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lremote_debugger.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lrepl.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lstate.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lstring.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lstrlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ltable.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ltablib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ltimelib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ltm.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ltype_checker_type_info.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\ltypechecker.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lua.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\luac.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lundump.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lutf8lib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lvm.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\lzio.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\tichain_lua_lib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\glua\tichainlib.cpp">
+      <Filter>glua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\ChainDownloader.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\ChainServer.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\CoreMessages.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\MessageOrientedConnection.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\Node.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\PeerConnection.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\PeerDatabase.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\StcpSocket.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\net\Upnp.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\rpc\RpcClient.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\rpc\RpcServer.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\rpc_stubs\CommonApiClient.cpp">
+      <Filter>rpc_stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\rpc_stubs\CommonApiRpcClient.cpp">
+      <Filter>rpc_stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\rpc_stubs\CommonApiRpcServer.cpp">
+      <Filter>rpc_stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\utilities\CommonApi.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\utilities\GitRevision.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\utilities\KeyConversion.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\utilities\StringEscape.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\utilities\Words.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\Login.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\TransactionBuilder.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\TransactionLedger.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\TransactionLedgerExperimental.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\Wallet.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\WalletDb.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libraries\wallet\WalletEntrys.cpp">
+      <Filter>wallet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\libraries\include\api\ApiMetadata.hpp">
+      <Filter>include\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\api\CommonApi.hpp">
+      <Filter>include\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\api\ConversionFunctions.hpp">
+      <Filter>include\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\api\GlobalApiLogger.hpp">
+      <Filter>include\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\AccountEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\AccountOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Address.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\api_extern.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Asset.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\AssetEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\AssetOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\BalanceEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\BalanceOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Block.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\BlockEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ChainDatabase.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ChainDatabaseImpl.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ChainInterface.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Checkpoints.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Condition.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Config.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ContractEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ContractOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\DelegateConfig.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\EventOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Exceptions.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ExtendedAddress.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\FileStoreEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\FileStoreOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ForkBlocks.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\GenesisJson.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\GenesisState.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\GluaChainApi.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\ImessageOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\OperationFactory.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Operations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\PendingChainState.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\PropertyEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\PtsAddress.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\SlateEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\SlateOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\SlotEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\StorageOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\StorageTypes.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Time.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Transaction.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\TransactionCreationState.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\TransactionEntry.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\TransactionEvaluationState.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\TransactionOperations.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\Types.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\blockchain\WithdrawTypes.hpp">
+      <Filter>include\blockchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\cli\Cli.hpp">
+      <Filter>include\cli</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\cli\locale.hpp">
+      <Filter>include\cli</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\cli\Pretty.hpp">
+      <Filter>include\cli</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\cli\PrintResult.hpp">
+      <Filter>include\cli</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\client\ApiLogger.hpp">
+      <Filter>include\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\client\Client.hpp">
+      <Filter>include\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\client\ClientImpl.hpp">
+      <Filter>include\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\client\Messages.hpp">
+      <Filter>include\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\client\Notifier.hpp">
+      <Filter>include\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\client\SeedNodes.hpp">
+      <Filter>include\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\contract_engine\contract_engine.hpp">
+      <Filter>include\contract_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\contract_engine\contract_engine_builder.hpp">
+      <Filter>include\contract_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\contract_engine\glua_contract_engine.hpp">
+      <Filter>include\contract_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\CachedLevelMap.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\Exception.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\FastLevelMap.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\FsHashMap.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\Fwd.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\LevelMap.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\LevelPodMap.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\db\UpgradeLeveldb.hpp">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\exceptions.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_api_types.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_astparser.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_common.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_compat.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_debug_file.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_decompile.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_disassemble.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_loader.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_lutil.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_parser.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_proto_info.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_statement.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_structs.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_tokenparser.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\glua_vm.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lapi.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lauxlib.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lcode.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lcompile.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lctype.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\ldebug.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\ldo.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lfunc.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lgc.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lhashmap.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\llex.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\llimits.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lmem.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lnetlib.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lobject.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lopcodes.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lparser.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lparsercombinator.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lprefix.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lremote_debugger.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lrepl.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lstate.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lstring.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\ltable.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\ltm.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\ltype_checker_type_info.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\ltypechecker.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lua.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lua.hpp">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\luaconf.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lualib.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lundump.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lvm.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\lzio.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\tichain_lua_api.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\tichain_lua_lib.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\glua\tichainlib.h">
+      <Filter>include\glua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\ChainConnection.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\ChainDownloader.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\ChainMessages.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\ChainServer.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\ChainServerCommands.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\Config.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\Connection.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\CoreMessages.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\Exceptions.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\Message.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\MessageOrientedConnection.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\Node.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\PeerConnection.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\PeerDatabase.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\StcpSocket.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\net\Upnp.hpp">
+      <Filter>include\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\Config.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\Exceptions.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\Pretty.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\TransactionBuilder.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\Url.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\Wallet.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\WalletDb.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\WalletEntrys.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\wallet\WalletImpl.hpp">
+      <Filter>include\wallet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\CommonApi.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\GitRevision.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\KeyConversion.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\PaddingOstream.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\StringEscape.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\ThreadPool.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\utilities\Words.hpp">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc_stubs\CommonApiClient.hpp">
+      <Filter>include\rpc_stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc_stubs\CommonApiRpcClient.hpp">
+      <Filter>include\rpc_stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc_stubs\CommonApiRpcServer.hpp">
+      <Filter>include\rpc_stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc\Exceptions.hpp">
+      <Filter>include\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc\RpcClient.hpp">
+      <Filter>include\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc\RpcClientApi.hpp">
+      <Filter>include\rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libraries\include\rpc\RpcServer.hpp">
+      <Filter>include\rpc</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
