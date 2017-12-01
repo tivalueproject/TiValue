@@ -494,7 +494,6 @@ else:unix: LIBS += -L$$PWD/../fc/build/
 INCLUDEPATH += $$PWD/../fc/build
 DEPENDPATH += $$PWD/../fc/build
 
-
  LIBS += ./lib/libfc.a
  LIBS += /usr/lib/x86_64-linux-gnu/libboost_atomic.a
  LIBS += /usr/lib/x86_64-linux-gnu/libboost_chrono.a
@@ -545,14 +544,21 @@ exists( /usr/lib/x86_64-linux-gnu/libboost_python-py35.a ) {
  LIBS += /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.a
  LIBS += /usr/lib/x86_64-linux-gnu/libboost_wave.a
  LIBS += /usr/lib/x86_64-linux-gnu/libboost_wserialization.a
- #LIBS += /usr/lib/x86_64-linux-gnu/libssl.a
+ LIBS += /usr/lib/x86_64-linux-gnu/libssl.a
  #LIBS += /usr/lib/x86_64-linux-gnu/libcrypt.a
- #LIBS += /usr/lib/x86_64-linux-gnu/libcrypto.a
+ LIBS += /usr/lib/x86_64-linux-gnu/libcrypto.a
+ #LIBS += /usr/lib/x86_64-linux-gnu/libminiupnpc.a
+exists( /usr/lib/libminiupnpc.a ) {
+ LIBS += /usr/lib/libminiupnpc.a
+} 
+exists( /usr/lib/x86_64-linux-gnu/libminiupnpc.a ) {
+ LIBS += /usr/lib/x86_64-linux-gnu/libminiupnpc.a
+} 
  LIBS += ./lib/libeasylzma_static.a
  LIBS += ./lib/libleveldb.a
- LIBS += ./lib/libcrypto.a
- LIBS += ./lib/libssl.a
- LIBS += ./lib/libminiupnpc.a
+ #LIBS += ./lib/libcrypto.a
+ #LIBS += ./lib/libssl.a
+ #LIBS += ./lib/libminiupnpc.a
  LIBS += /usr/lib/x86_64-linux-gnu/libdl.so
  CONFIG += dll
  QT -= gui core
