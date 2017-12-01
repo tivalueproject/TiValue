@@ -19,7 +19,7 @@
 
 #### Build
 
-Build instructions and additional documentation are available in the [wiki](https://github.com/tivalueteam/TiValue/wiki).
+[Build instructions](https://github.com/tivalueteam/TiValue/wiki/TiValue-Build-Description) and additional documentation are available in the [Wiki](https://github.com/tivalueteam/TiValue/wiki).
 
 ### Support
 ---------------
