@@ -512,9 +512,9 @@ namespace TiValue {
                     memo_message,
                     strategy,
                     true);
-                _wallet->cache_transaction(entry);
 				if (broadcast)
 				{
+					_wallet->cache_transaction(entry);
 					network_broadcast_transaction(entry.trx);
 				}
                 return entry;
@@ -572,11 +572,12 @@ namespace TiValue {
                     strategy,
                     true,
                     strSubAccount);
+				
 				if (broadcast)
 				{
 					_wallet->cache_transaction(entry);
+					network_broadcast_transaction(entry.trx);
 				}
-                network_broadcast_transaction(entry.trx);
                 return entry;
 
             }
@@ -1784,8 +1785,11 @@ namespace TiValue {
                     memo_message,
                     strategy,
                     true);
-                _wallet->cache_transaction(record);
-                network_broadcast_transaction(record.trx);
+				if (broadcast)
+				{
+					_wallet->cache_transaction(record);
+					network_broadcast_transaction(record.trx);
+				}
                 string result = "{\"result\":\"SUCCESS\",\"message\":\"" + string(record.trx.id()) + "\"}";
                 return result;
             }
