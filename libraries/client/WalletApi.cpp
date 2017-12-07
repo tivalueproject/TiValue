@@ -495,7 +495,9 @@ namespace TiValue {
                 const string& from_account_name,
                 const string& to_account_name,
                 const string& memo_message,
-                const VoteStrategy& strategy)
+                const VoteStrategy& strategy,
+				bool broadcast
+				)
             {
                 // set limit in  sandbox state
                 if (_chain_db->get_is_in_sandbox())
@@ -511,7 +513,10 @@ namespace TiValue {
                     strategy,
                     true);
                 _wallet->cache_transaction(entry);
-                network_broadcast_transaction(entry.trx);
+				if (broadcast)
+				{
+					network_broadcast_transaction(entry.trx);
+				}
                 return entry;
             }
 
@@ -543,7 +548,9 @@ namespace TiValue {
                 const string& from_account_name,
                 const string& to_address,
                 const string& memo_message,
-                const VoteStrategy& strategy)
+                const VoteStrategy& strategy,
+				bool broadcast
+				)
             {
                 // set limit in  sandbox state
                 if (_chain_db->get_is_in_sandbox())
@@ -565,8 +572,10 @@ namespace TiValue {
                     strategy,
                     true,
                     strSubAccount);
-
-                _wallet->cache_transaction(entry);
+				if (broadcast)
+				{
+					_wallet->cache_transaction(entry);
+				}
                 network_broadcast_transaction(entry.trx);
                 return entry;
 
@@ -1730,7 +1739,7 @@ namespace TiValue {
                 return _wallet->regenerate_keys(account, number_to_regenerate);
             }
 
-            std::string ClientImpl::wallet_transfer_to_address_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("").as<std::string>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("vote_recommended").as<TiValue::wallet::vote_strategy>() */)
+			std::string ClientImpl::wallet_transfer_to_address_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("").as<std::string>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("vote_recommended").as<TiValue::wallet::vote_strategy>() */, bool broadcast /* = fc::json::from_string("true").as<bool>()*/)
             {
                 // set limit in  sandbox state
                 if (_chain_db->get_is_in_sandbox())
@@ -1758,7 +1767,9 @@ namespace TiValue {
                 const string& from_account_name,
                 const string& to_account_name,
                 const TiValue::blockchain::Imessage& memo_message,
-                const TiValue::wallet::VoteStrategy& strategy)
+                const TiValue::wallet::VoteStrategy& strategy,
+				bool broadcast
+				)
             {
                 // set limit in  sandbox state
                 if (_chain_db->get_is_in_sandbox())

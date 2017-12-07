@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+#Generated files under windows by building
+win_lib/
+*.sdf
+*.opensdf
+*.tlog
+windows/x64/Release/
+windows/x64/Debug/

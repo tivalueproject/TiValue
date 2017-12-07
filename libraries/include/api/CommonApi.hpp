@@ -793,10 +793,11 @@ namespace TiValue { namespace api {
      * @param memo_message a memo to store with the transaction (information, optional, defaults to "")
      * @param strategy enumeration [vote_none | vote_all | vote_random | vote_recommended] (vote_strategy, optional,
      *                 defaults to "vote_recommended")
+     * @param broadcast whether or not to broadcast the transaction immediately (bool, optional, defaults to true)
      *
      * @return transaction_entry
      */
-    virtual TiValue::wallet::WalletTransactionEntry wallet_transfer_to_address(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) = 0;
+    virtual TiValue::wallet::WalletTransactionEntry wallet_transfer_to_address(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>(), bool broadcast = fc::json::from_string("true").as<bool>()) = 0;
     /**
      * Sends given amount to the given account.
      *
@@ -807,10 +808,11 @@ namespace TiValue { namespace api {
      * @param memo_message a memo to store with the transaction (information, optional, defaults to "")
      * @param strategy enumeration [vote_none | vote_all | vote_random | vote_recommended] (vote_strategy, optional,
      *                 defaults to "vote_recommended")
+     * @param broadcast whether or not to broadcast the transaction immediately (bool, optional, defaults to true)
      *
      * @return transaction_entry
      */
-    virtual TiValue::wallet::WalletTransactionEntry wallet_transfer_to_public_account(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) = 0;
+    virtual TiValue::wallet::WalletTransactionEntry wallet_transfer_to_public_account(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>(), bool broadcast = fc::json::from_string("true").as<bool>()) = 0;
     /**
      *
      * @param amount how much to transfer (string, required)
@@ -1172,7 +1174,7 @@ namespace TiValue { namespace api {
      */
     virtual fc::ecc::compact_signature wallet_sign_hash(const std::string& signer, const fc::sha256& hash) = 0;
     /**
-     * Initiates the login procedure by providing a  Login URL.
+     * Initiates the login procedure by providing a Alp Login URL.
      *
      * @param server_account Name of the account of the server. The user will be shown this name as the site he is
      *                       logging into. (string, required)
@@ -1295,10 +1297,11 @@ namespace TiValue { namespace api {
      * @param memo_message a memo to store with the transaction (information, optional, defaults to "")
      * @param strategy enumeration [vote_none | vote_all | vote_random | vote_recommended] (vote_strategy, optional,
      *                 defaults to "vote_recommended")
+     * @param broadcast whether or not to broadcast the transaction immediately (bool, optional, defaults to true)
      *
      * @return string
      */
-    virtual std::string wallet_transfer_to_address_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) = 0;
+    virtual std::string wallet_transfer_to_address_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>(), bool broadcast = fc::json::from_string("true").as<bool>()) = 0;
     /**
      * Lists the total asset balances for the specified account.
      *
@@ -1318,10 +1321,11 @@ namespace TiValue { namespace api {
      * @param memo_message a memo to store with the transaction (information, optional, defaults to "")
      * @param strategy enumeration [vote_none | vote_all | vote_random | vote_recommended] (vote_strategy, optional,
      *                 defaults to "vote_recommended")
+     * @param broadcast whether or not to broadcast the transaction immediately (bool, optional, defaults to true)
      *
      * @return string
      */
-    virtual std::string wallet_transfer_to_public_account_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) = 0;
+    virtual std::string wallet_transfer_to_public_account_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>(), bool broadcast = fc::json::from_string("true").as<bool>()) = 0;
     /**
      * Get owner publickey of specific account.
      *
@@ -1392,7 +1396,7 @@ namespace TiValue { namespace api {
      */
     virtual std::string help(const std::string& command_name = fc::json::from_string("\"\"").as<std::string>()) const = 0;
     /**
-     * Return information about given  address.
+     * Return information about given Alp address.
      *
      * @param address the address or public key to validate (string, required)
      *

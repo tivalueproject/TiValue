@@ -2858,9 +2858,9 @@ std::string CommonApiClient::wallet_address_create(const std::string& account_na
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_address(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */)
+TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_address(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */, bool broadcast /* = fc::json::from_string("true").as<bool>() */)
 {
-  ilog("received RPC call: wallet_transfer_to_address(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_address}, ${memo_message}, ${strategy})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_address", to_address)("memo_message", memo_message)("strategy", strategy));
+  ilog("received RPC call: wallet_transfer_to_address(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_address}, ${memo_message}, ${strategy}, ${broadcast})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_address", to_address)("memo_message", memo_message)("strategy", strategy)("broadcast", broadcast));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
@@ -2872,6 +2872,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_addr
     args.push_back( fc::variant(to_address) );
     args.push_back( fc::variant(memo_message) );
     args.push_back( fc::variant(strategy) );
+    args.push_back( fc::variant(broadcast) );
     call_id = glog->log_call_started( this, "wallet_transfer_to_address", args );
   }
 
@@ -2883,7 +2884,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_addr
   } execution_time_logger;
   try
   {
-    TiValue::wallet::WalletTransactionEntry result = get_impl()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
+    TiValue::wallet::WalletTransactionEntry result = get_impl()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy, broadcast);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "wallet_transfer_to_address", args, fc::variant(result) );
 
@@ -2892,9 +2893,9 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_addr
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_public_account(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */)
+TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_public_account(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */, bool broadcast /* = fc::json::from_string("true").as<bool>() */)
 {
-  ilog("received RPC call: wallet_transfer_to_public_account(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_account_name}, ${memo_message}, ${strategy})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_account_name", to_account_name)("memo_message", memo_message)("strategy", strategy));
+  ilog("received RPC call: wallet_transfer_to_public_account(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_account_name}, ${memo_message}, ${strategy}, ${broadcast})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_account_name", to_account_name)("memo_message", memo_message)("strategy", strategy)("broadcast", broadcast));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
@@ -2906,6 +2907,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_publ
     args.push_back( fc::variant(to_account_name) );
     args.push_back( fc::variant(memo_message) );
     args.push_back( fc::variant(strategy) );
+    args.push_back( fc::variant(broadcast) );
     call_id = glog->log_call_started( this, "wallet_transfer_to_public_account", args );
   }
 
@@ -2917,7 +2919,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_publ
   } execution_time_logger;
   try
   {
-    TiValue::wallet::WalletTransactionEntry result = get_impl()->wallet_transfer_to_public_account(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy);
+    TiValue::wallet::WalletTransactionEntry result = get_impl()->wallet_transfer_to_public_account(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy, broadcast);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "wallet_transfer_to_public_account", args, fc::variant(result) );
 
@@ -4571,9 +4573,9 @@ bool CommonApiClient::wallet_account_delete(const std::string& account_name)
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-std::string CommonApiClient::wallet_transfer_to_address_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */)
+std::string CommonApiClient::wallet_transfer_to_address_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */, bool broadcast /* = fc::json::from_string("true").as<bool>() */)
 {
-  ilog("received RPC call: wallet_transfer_to_address_rpc(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_address}, ${memo_message}, ${strategy})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_address", to_address)("memo_message", memo_message)("strategy", strategy));
+  ilog("received RPC call: wallet_transfer_to_address_rpc(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_address}, ${memo_message}, ${strategy}, ${broadcast})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_address", to_address)("memo_message", memo_message)("strategy", strategy)("broadcast", broadcast));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
@@ -4585,6 +4587,7 @@ std::string CommonApiClient::wallet_transfer_to_address_rpc(const std::string& a
     args.push_back( fc::variant(to_address) );
     args.push_back( fc::variant(memo_message) );
     args.push_back( fc::variant(strategy) );
+    args.push_back( fc::variant(broadcast) );
     call_id = glog->log_call_started( this, "wallet_transfer_to_address_rpc", args );
   }
 
@@ -4596,7 +4599,7 @@ std::string CommonApiClient::wallet_transfer_to_address_rpc(const std::string& a
   } execution_time_logger;
   try
   {
-    std::string result = get_impl()->wallet_transfer_to_address_rpc(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
+    std::string result = get_impl()->wallet_transfer_to_address_rpc(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy, broadcast);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "wallet_transfer_to_address_rpc", args, fc::variant(result) );
 
@@ -4634,9 +4637,9 @@ std::string CommonApiClient::wallet_account_balance_rpc(const std::string& accou
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-std::string CommonApiClient::wallet_transfer_to_public_account_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */)
+std::string CommonApiClient::wallet_transfer_to_public_account_rpc(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */, bool broadcast /* = fc::json::from_string("true").as<bool>() */)
 {
-  ilog("received RPC call: wallet_transfer_to_public_account_rpc(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_account_name}, ${memo_message}, ${strategy})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_account_name", to_account_name)("memo_message", memo_message)("strategy", strategy));
+  ilog("received RPC call: wallet_transfer_to_public_account_rpc(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_account_name}, ${memo_message}, ${strategy}, ${broadcast})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_account_name", to_account_name)("memo_message", memo_message)("strategy", strategy)("broadcast", broadcast));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
@@ -4648,6 +4651,7 @@ std::string CommonApiClient::wallet_transfer_to_public_account_rpc(const std::st
     args.push_back( fc::variant(to_account_name) );
     args.push_back( fc::variant(memo_message) );
     args.push_back( fc::variant(strategy) );
+    args.push_back( fc::variant(broadcast) );
     call_id = glog->log_call_started( this, "wallet_transfer_to_public_account_rpc", args );
   }
 
@@ -4659,7 +4663,7 @@ std::string CommonApiClient::wallet_transfer_to_public_account_rpc(const std::st
   } execution_time_logger;
   try
   {
-    std::string result = get_impl()->wallet_transfer_to_public_account_rpc(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy);
+    std::string result = get_impl()->wallet_transfer_to_public_account_rpc(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy, broadcast);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "wallet_transfer_to_public_account_rpc", args, fc::variant(result) );
 
@@ -7360,6 +7364,38 @@ bool CommonApiClient::download_validation(const std::string& file_id, const std:
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
+void CommonApiClient::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+{
+  ilog("received RPC call: wallet_allow_store_request(${file_id}, ${piece_id}, ${storer})", ("file_id", file_id)("piece_id", piece_id)("storer", storer));
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    args.push_back( fc::variant(file_id) );
+    args.push_back( fc::variant(piece_id) );
+    args.push_back( fc::variant(storer) );
+    call_id = glog->log_call_started( this, "wallet_allow_store_request", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call wallet_allow_store_request finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    std::nullptr_t result = nullptr;
+    get_impl()->wallet_allow_store_request(file_id, piece_id, storer);
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "wallet_allow_store_request", args, fc::variant(result) );
+
+    return;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
 std::string CommonApiClient::generate_download_validation(const std::string& file_id)
 {
   ilog("received RPC call: generate_download_validation(${file_id})", ("file_id", file_id));
@@ -7418,10 +7454,6 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(con
     return result;
   }
   FC_RETHROW_EXCEPTIONS(warn, "")
-}
-void CommonApiClient::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
-{
-    return;
 }
 
 std::set<TiValue::blockchain::PieceStoreInfo> CommonApiClient::blockchain_list_file_save_declare(const std::string& file_id)

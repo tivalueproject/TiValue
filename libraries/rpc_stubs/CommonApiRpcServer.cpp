@@ -2677,8 +2677,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_address_positional(fc::rpc::j
   TiValue::wallet::VoteStrategy strategy = (parameters.size() <= 5) ?
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters[5].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = (parameters.size() <= 6) ?
+    (fc::json::from_string("true").as<bool>()) :
+    parameters[6].as<bool>();
 
-  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
+  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
 
@@ -2707,8 +2710,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_address_named(fc::rpc::json_c
   TiValue::wallet::VoteStrategy strategy = parameters.contains("strategy") ? 
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters["strategy"].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = parameters.contains("broadcast") ? 
+    (fc::json::from_string("true").as<bool>()) :
+    parameters["broadcast"].as<bool>();
 
-  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
+  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
 
@@ -2738,8 +2744,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_public_account_positional(fc:
   TiValue::wallet::VoteStrategy strategy = (parameters.size() <= 5) ?
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters[5].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = (parameters.size() <= 6) ?
+    (fc::json::from_string("true").as<bool>()) :
+    parameters[6].as<bool>();
 
-  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_public_account(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy);
+  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_public_account(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
 
@@ -2769,8 +2778,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_public_account_named(fc::rpc:
   TiValue::wallet::VoteStrategy strategy = parameters.contains("strategy") ? 
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters["strategy"].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = parameters.contains("broadcast") ? 
+    (fc::json::from_string("true").as<bool>()) :
+    parameters["broadcast"].as<bool>();
 
-  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_public_account(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy);
+  TiValue::wallet::WalletTransactionEntry result = get_client()->wallet_transfer_to_public_account(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
 
@@ -4777,8 +4789,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_address_rpc_named(fc::rpc::js
   TiValue::wallet::VoteStrategy strategy = parameters.contains("strategy") ? 
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters["strategy"].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = parameters.contains("broadcast") ? 
+    (fc::json::from_string("true").as<bool>()) :
+    parameters["broadcast"].as<bool>();
 
-  std::string result = get_client()->wallet_transfer_to_address_rpc(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
+  std::string result = get_client()->wallet_transfer_to_address_rpc(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
             catch (fc::exception e)
@@ -4866,8 +4881,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_public_account_rpc_positional
   TiValue::wallet::VoteStrategy strategy = (parameters.size() <= 5) ?
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters[5].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = (parameters.size() <= 6) ?
+    (fc::json::from_string("true").as<bool>()) :
+    parameters[6].as<bool>();
 
-  std::string result = get_client()->wallet_transfer_to_public_account_rpc(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy);
+  std::string result = get_client()->wallet_transfer_to_public_account_rpc(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
             catch (fc::exception er)
@@ -4905,8 +4923,11 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_public_account_rpc_named(fc::
   TiValue::wallet::VoteStrategy strategy = parameters.contains("strategy") ? 
     (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
     parameters["strategy"].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = parameters.contains("broadcast") ? 
+    (fc::json::from_string("true").as<bool>()) :
+    parameters["broadcast"].as<bool>();
 
-  std::string result = get_client()->wallet_transfer_to_public_account_rpc(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy);
+  std::string result = get_client()->wallet_transfer_to_public_account_rpc(amount_to_transfer, asset_symbol, from_account_name, to_account_name, memo_message, strategy, broadcast);
   return fc::variant(result);
 }
             catch (fc::exception er)
@@ -11878,10 +11899,11 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
         {"from_account_name", "account_name", TiValue::api::required_positional, fc::ovariant()},
         {"to_address", "string", TiValue::api::required_positional, fc::ovariant()},
         {"memo_message", "information", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"\""))},
-        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))}
+        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))},
+        {"broadcast", "bool", TiValue::api::optional_positional, fc::variant(fc::json::from_string("true"))}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 2,
-      /* detailed description */ "Do a simple (non-TITAN) transfer to an address\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (account_name, required): the source account to draw the shares from\n  to_address (string, required): the address or pubkey to transfer to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n\nReturns:\n  transaction_entry\n",
+      /* detailed description */ "Do a simple (non-TITAN) transfer to an address\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (account_name, required): the source account to draw the shares from\n  to_address (string, required): the address or pubkey to transfer to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n  broadcast (bool, optional, defaults to true): whether or not to broadcast the transaction immediately\n\nReturns:\n  transaction_entry\n",
       /* aliases */ {}, false};
     store_method_metadata(wallet_transfer_to_address_method_metadata);
   }
@@ -11897,10 +11919,11 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
         {"from_account_name", "sending_account_name", TiValue::api::required_positional, fc::ovariant()},
         {"to_account_name", "receive_account_name", TiValue::api::required_positional, fc::ovariant()},
         {"memo_message", "information", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"\""))},
-        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))}
+        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))},
+        {"broadcast", "bool", TiValue::api::optional_positional, fc::variant(fc::json::from_string("true"))}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "Sends given amount to the given account\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (sending_account_name, required): the source account to draw the shares from\n  to_account_name (receive_account_name, required): the account to transfer the shares to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n\nReturns:\n  transaction_entry\n",
+      /* detailed description */ "Sends given amount to the given account\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (sending_account_name, required): the source account to draw the shares from\n  to_account_name (receive_account_name, required): the account to transfer the shares to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n  broadcast (bool, optional, defaults to true): whether or not to broadcast the transaction immediately\n\nReturns:\n  transaction_entry\n",
       /* aliases */ {"transfer_public"}, false};
     store_method_metadata(wallet_transfer_to_public_account_method_metadata);
   }
@@ -12717,10 +12740,11 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
         {"from_account_name", "account_name", TiValue::api::required_positional, fc::ovariant()},
         {"to_address", "string", TiValue::api::required_positional, fc::ovariant()},
         {"memo_message", "information", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"\""))},
-        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))}
+        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))},
+        {"broadcast", "bool", TiValue::api::optional_positional, fc::variant(fc::json::from_string("true"))}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 2,
-      /* detailed description */ "Do a simple (non-TITAN) transfer to an address\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (account_name, required): the source account to draw the shares from\n  to_address (string, required): the address or pubkey to transfer to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n\nReturns:\n  string\n",
+      /* detailed description */ "Do a simple (non-TITAN) transfer to an address\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (account_name, required): the source account to draw the shares from\n  to_address (string, required): the address or pubkey to transfer to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n  broadcast (bool, optional, defaults to true): whether or not to broadcast the transaction immediately\n\nReturns:\n  string\n",
       /* aliases */ {}, false};
     store_method_metadata(wallet_transfer_to_address_rpc_method_metadata);
   }
@@ -12750,10 +12774,11 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
         {"from_account_name", "sending_account_name", TiValue::api::required_positional, fc::ovariant()},
         {"to_account_name", "receive_account_name", TiValue::api::required_positional, fc::ovariant()},
         {"memo_message", "information", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"\""))},
-        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))}
+        {"strategy", "vote_strategy", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"vote_recommended\""))},
+        {"broadcast", "bool", TiValue::api::optional_positional, fc::variant(fc::json::from_string("true"))}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "Sends given amount to the given account\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (sending_account_name, required): the source account to draw the shares from\n  to_account_name (receive_account_name, required): the account to transfer the shares to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n\nReturns:\n  string\n",
+      /* detailed description */ "Sends given amount to the given account\n\nParameters:\n  amount_to_transfer (string, required): the amount of shares to transfer\n  asset_symbol (asset_symbol, required): the asset to transfer\n  from_account_name (sending_account_name, required): the source account to draw the shares from\n  to_account_name (receive_account_name, required): the account to transfer the shares to\n  memo_message (information, optional, defaults to \"\"): a memo to store with the transaction\n  strategy (vote_strategy, optional, defaults to \"vote_recommended\"): enumeration [vote_none | vote_all | vote_random | vote_recommended] \n  broadcast (bool, optional, defaults to true): whether or not to broadcast the transaction immediately\n\nReturns:\n  string\n",
       /* aliases */ {}, false};
     store_method_metadata(wallet_transfer_to_public_account_rpc_method_metadata);
   }
