@@ -1152,7 +1152,8 @@ namespace TiValue {
                     fc::optional<std::string> invalid_rpc_request_message;
 
                     try {
-                        auto rpc_call = from_string_v1(str).get_object();
+                        //auto rpc_call = from_string_v1(str).get_object();
+                        auto rpc_call = fc::json::from_string(str).get_object();
                         method_name = rpc_call["method"].as_string();
                         auto params = rpc_call["params"].get_array();
 
