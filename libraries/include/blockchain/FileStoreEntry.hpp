@@ -42,7 +42,7 @@ namespace TiValue {
 			FileIdType id;
 			vector<PieceUploadInfo> pieces;
 			size_t num_of_copys;
-			ContractIdType authenticating_contract;
+			//ContractIdType authenticating_contract;
 			NodeIdType node_id;
 			string filename;
 			string description;
@@ -305,7 +305,7 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
 	(id)
 	(pieces)
 	(num_of_copys)
-	(authenticating_contract)
+	//(authenticating_contract)
 	(node_id)
 	(filename)
 	(description)

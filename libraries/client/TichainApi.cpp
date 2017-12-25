@@ -91,7 +91,8 @@ namespace TiValue {
 				auto entry=_chain_db->get_upload_request(id);
 				if (!entry.valid())
 					FC_CAPTURE_AND_THROW(upload_request_not_exsited,(file_id));
-				return entry->authenticating_contract.AddressToString(AddressType::contract_address);
+				//return entry->authenticating_contract.AddressToString(AddressType::contract_address);
+        return "";
 			}
 			std::vector<std::string> ClientImpl::blockchain_list_file_saved()
 			{
@@ -105,23 +106,22 @@ namespace TiValue {
 			{
 				_wallet->set_node_id(node_id);
 			}
-			TiValue::blockchain::UploadRequestEntry ClientImpl::store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, 
+			TiValue::blockchain::UploadRequestEntry ClientImpl::store_file_to_network(const std::string& owner, 
 				const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description,
 				const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy,
 				uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
 			{
-				ContractIdType cid(AuthorizatingContractId,AddressType::contract_address);
-				auto contract_entry=_chain_db->get_contract_entry(cid);
-				if (!contract_entry.valid())
-					FC_CAPTURE_AND_THROW(authorazing_contract_not_exsited,(cid));
-				if(contract_entry->code.abi.count(TIVALUE_GETACCESS_CONTRACT_INTERFACE)<1)
-					FC_CAPTURE_AND_THROW(invalid_authorazing_contract, (cid));
+				//ContractIdType cid(AuthorizatingContractId,AddressType::contract_address);
+				//auto contract_entry=_chain_db->get_contract_entry(cid);
+				//if (!contract_entry.valid())
+				//	FC_CAPTURE_AND_THROW(authorazing_contract_not_exsited,(cid));
+				//if(contract_entry->code.abi.count(TIVALUE_GETACCESS_CONTRACT_INTERFACE)<1)
+				//	FC_CAPTURE_AND_THROW(invalid_authorazing_contract, (cid));
 				if (asset_symbol != TIV_BLOCKCHAIN_SYMBOL)
 					FC_CAPTURE_AND_THROW(invalid_asset_symbol,(asset_symbol));
 				if (exec_limit <= 0)
 					FC_CAPTURE_AND_THROW(zero_amount, (exec_limit));
-				auto res= _wallet->store_file_to_network(owner, AuthorizatingContractId, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy
-				, numofpiece, payterm, node_id, exec_limit);
+				auto res= _wallet->store_file_to_network(owner, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
 				_wallet->cache_transaction(res.second, false);
 				network_broadcast_transaction(res.second.trx);
 				return res.first;

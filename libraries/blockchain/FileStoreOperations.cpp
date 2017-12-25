@@ -30,7 +30,7 @@ namespace TiValue
 					entry.id = file_id;
 					entry.num_of_copys = num_of_copys;
 					entry.pieces = pieces;
-					entry.authenticating_contract = authentication;
+					//entry.authenticating_contract = authentication;
 					entry.description = description;
 					entry.node_id =		node_id;
 					entry.filename =	filename;

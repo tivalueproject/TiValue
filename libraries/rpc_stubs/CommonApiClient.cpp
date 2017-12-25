@@ -6820,16 +6820,15 @@ void CommonApiClient::delete_event_handler(const std::string& contract_id_str, c
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-TiValue::blockchain::UploadRequestEntry CommonApiClient::store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
+TiValue::blockchain::UploadRequestEntry CommonApiClient::store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
 {
-  ilog("received RPC call: store_file_to_network(${owner}, ${AuthorizatingContractId}, ${filename}, ${filesize}, ${description}, ${piecesinfo}, ${asset_symbol}, ${price}, ${numofcopy}, ${numofpiece}, ${payterm}, ${node_id}, ${exec_limit})", ("owner", owner)("AuthorizatingContractId", AuthorizatingContractId)("filename", filename)("filesize", filesize)("description", description)("piecesinfo", piecesinfo)("asset_symbol", asset_symbol)("price", price)("numofcopy", numofcopy)("numofpiece", numofpiece)("payterm", payterm)("node_id", node_id)("exec_limit", exec_limit));
+  ilog("received RPC call: store_file_to_network(${owner}, ${filename}, ${filesize}, ${description}, ${piecesinfo}, ${asset_symbol}, ${price}, ${numofcopy}, ${numofpiece}, ${payterm}, ${node_id}, ${exec_limit})", ("owner", owner)("filename", filename)("filesize", filesize)("description", description)("piecesinfo", piecesinfo)("asset_symbol", asset_symbol)("price", price)("numofcopy", numofcopy)("numofpiece", numofpiece)("payterm", payterm)("node_id", node_id)("exec_limit", exec_limit));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
   if( glog != NULL )
   {
     args.push_back( fc::variant(owner) );
-    args.push_back( fc::variant(AuthorizatingContractId) );
     args.push_back( fc::variant(filename) );
     args.push_back( fc::variant(filesize) );
     args.push_back( fc::variant(description) );
@@ -6852,7 +6851,7 @@ TiValue::blockchain::UploadRequestEntry CommonApiClient::store_file_to_network(c
   } execution_time_logger;
   try
   {
-    TiValue::blockchain::UploadRequestEntry result = get_impl()->store_file_to_network(owner, AuthorizatingContractId, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
+    TiValue::blockchain::UploadRequestEntry result = get_impl()->store_file_to_network(owner, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "store_file_to_network", args, fc::variant(result) );
 

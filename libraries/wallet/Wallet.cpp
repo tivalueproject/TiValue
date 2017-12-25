@@ -6014,7 +6014,7 @@ namespace TiValue {
 			}
 			FC_CAPTURE_AND_THROW(read_file_info_error, (file));
 		}
-		std::pair<UploadRequestEntry, WalletTransactionEntry> Wallet::store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, 
+		std::pair<UploadRequestEntry, WalletTransactionEntry> Wallet::store_file_to_network(const std::string& owner, 
 			const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, 
 			const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, std::string node_id,
 			double exec_limit)
@@ -6033,7 +6033,7 @@ namespace TiValue {
 			if(id.file_id==FileContentIdType())
 				FC_CAPTURE_AND_THROW(file_not_exsited, (filename));
 			UploadRequestEntry entry;
-			entry.authenticating_contract = ContractIdType(AuthorizatingContractId,AddressType::contract_address);
+			//entry.authenticating_contract = ContractIdType(AuthorizatingContractId,AddressType::contract_address);
 			entry.id = id;
 			entry.num_of_copys = numofcopy;
 			entry.pieces = infos;
@@ -6042,10 +6042,10 @@ namespace TiValue {
 			auto contract_upload = chaindb_ptr->get_contract_entry(TIV_FILE_UPLOAD_CONTRACT_NAME);
 			if (!contract_upload.valid())
 				FC_CAPTURE_AND_THROW(file_upload_contract_not_exsited, (TIV_FILE_UPLOAD_CONTRACT_NAME));
-			ContractIdType contract_id(AuthorizatingContractId, AddressType::contract_address);
-			auto AuthorizatingContract = chaindb_ptr->get_contract_entry(contract_id);
-			if (!AuthorizatingContract.valid())
-				FC_CAPTURE_AND_THROW(contract_not_exist, (AuthorizatingContractId));
+			//ContractIdType contract_id(AuthorizatingContractId, AddressType::contract_address);
+			//auto AuthorizatingContract = chaindb_ptr->get_contract_entry(contract_id);
+			//if (!AuthorizatingContract.valid())
+			//	FC_CAPTURE_AND_THROW(contract_not_exist, (AuthorizatingContractId));
 			std::string params;
 			char buf[32] = { 0 };
 			snprintf(buf,32, "%d", numofpiece);
@@ -6064,8 +6064,8 @@ namespace TiValue {
 				params += buf;
 				params += ";";
 			}
-			params += AuthorizatingContractId;
-			params += ";";
+			//params += AuthorizatingContractId;
+			//params += ";";
 			snprintf(buf, 32, "%d", numofcopy);
 			params += buf;
 			params += ";";
