@@ -24,6 +24,3 @@
 ### Support
 ---------------
 TiValue team
-
-
-
