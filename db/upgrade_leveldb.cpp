@@ -14,8 +14,8 @@ namespace bts { namespace db {
         return mapper;
     }
 
-    int32_t upgrade_db_mapper::add_type( const std::string& type_name, const upgrade_db_function& function) 
-    { 
+    int32_t upgrade_db_mapper::add_type( const std::string& type_name, const upgrade_db_function& function)
+    {
         _upgrade_db_function_registry[type_name] = function;
         return 0;
     }
@@ -30,7 +30,7 @@ namespace bts { namespace db {
       fc::path record_type_filename = dir / "RECORD_TYPE" ;
       //if no RECORD_TYPE file exists
       if ( !boost::filesystem::exists( record_type_filename ) )
-      { 
+      {
         //must be original type for the database
         old_record_type = record_type ;
         int last_char = old_record_type.length() - 1;
