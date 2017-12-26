@@ -2,7 +2,7 @@
 
 * [Getting Started](#getting-started)
 * [Support](#support)
-* [Q&A]
+* [Q&A](#Q&A)
 
 ### Getting Started
 ---------------
@@ -25,3 +25,5 @@
 ### Support
 ---------------
 TiValue team
+
+### Q&A
