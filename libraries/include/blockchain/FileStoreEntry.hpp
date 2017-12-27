@@ -305,7 +305,6 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
 	(id)
 	(pieces)
 	(num_of_copys)
-	//(authenticating_contract)
 	(node_id)
 	(filename)
 	(description)

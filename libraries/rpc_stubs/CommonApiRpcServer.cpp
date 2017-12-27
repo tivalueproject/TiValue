@@ -10370,11 +10370,9 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
   json_connection->add_named_param_method("delete_event_handler", bound_named_method);
 
   // register method store_file_to_network
-  bound_positional_method = boost::bind(&CommonApiRpcServer::store_file_to_network_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::store_file_to_network_positional, this, capture_con, _1);
   json_connection->add_method("store_file_to_network", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::store_file_to_network_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::store_file_to_network_named, this, capture_con, _1);
   json_connection->add_named_param_method("store_file_to_network", bound_named_method);
 
   // register method get_file_access
@@ -10458,75 +10456,57 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
   json_connection->add_named_param_method("wallet_get_my_access", bound_named_method);
 
   // register method wallet_get_my_upload_requests
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_upload_requests", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_upload_requests", bound_named_method);
 
   // register method blockchain_get__upload_requests
-  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_positional, this, capture_con, _1);
   json_connection->add_method("blockchain_get__upload_requests", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_named, this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_get__upload_requests", bound_named_method);
 
   // register method wallet_get_my_store_request
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_store_request", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_store_request", bound_named_method);
 
   // register method wallet_get_my_store_confirmed
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_store_confirmed", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_store_confirmed", bound_named_method);
 
   // register method wallet_get_my_store_rejected
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_store_rejected", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_store_rejected", bound_named_method);
 
   // register method blockchain_get_file_save_node
-  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_positional, this, capture_con, _1);
   json_connection->add_method("blockchain_get_file_save_node", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_named, this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_get_file_save_node", bound_named_method);
 
   // register method download_validation
-  bound_positional_method = boost::bind(&CommonApiRpcServer::download_validation_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::download_validation_positional, this, capture_con, _1);
   json_connection->add_method("download_validation", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::download_validation_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::download_validation_named, this, capture_con, _1);
   json_connection->add_named_param_method("download_validation", bound_named_method);
 
   // register method wallet_allow_store_request
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_positional, this, capture_con, _1);
   json_connection->add_method("wallet_allow_store_request", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_allow_store_request", bound_named_method);
 
   // register method generate_download_validation
-  bound_positional_method = boost::bind(&CommonApiRpcServer::generate_download_validation_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::generate_download_validation_positional, this, capture_con, _1);
   json_connection->add_method("generate_download_validation", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::generate_download_validation_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::generate_download_validation_named, this, capture_con, _1);
   json_connection->add_named_param_method("generate_download_validation", bound_named_method);
 
   // register method declare_piece_saved

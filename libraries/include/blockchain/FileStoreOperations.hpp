@@ -13,16 +13,17 @@ namespace TiValue {
 			PublicKeyType requestor;
 			ShareType num_of_pieces;
 			vector<PieceUploadInfo> pieces;
-			ContractIdType authentication;
+			//ContractIdType authentication;
 			ShareType num_of_copys;
 			ShareType payterm;
 			string filename;
 			string description;
 			string node_id;
 			UploadRequestOperation(){}
-			UploadRequestOperation(const FileIdType& file_id, const PublicKeyType& requestor,
+			UploadRequestOperation(const FileIdType& file_id, 
+        const PublicKeyType& requestor,
 				const vector<PieceUploadInfo>& pieces,
-				const ContractIdType& authentication,
+				//const ContractIdType& authentication,
 				ShareType num_of_copys,
 				ShareType payterm,
 				const string& filename,
@@ -90,7 +91,7 @@ FC_REFLECT(TiValue::blockchain::UploadRequestOperation,
 	(requestor)
 	(num_of_pieces)
 	(pieces)
-	(authentication)
+	//(authentication)
 	(num_of_copys)
 	(payterm)
 	(filename)

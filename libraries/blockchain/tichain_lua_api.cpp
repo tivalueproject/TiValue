@@ -873,9 +873,10 @@ namespace TiValue {
                 }
                 //string get_wait
             }
-			bool GluaChainApi::allow_upload_request(lua_State *L, const blockchain::FileIdType& file_id, const std::string& requestor,
+			bool GluaChainApi::allow_upload_request(lua_State *L, 
+        const blockchain::FileIdType& file_id, 
+        const std::string& requestor,
 				const std::vector<blockchain::PieceUploadInfo>& pieces,
-				const std::string& authentication,
 				int64_t num_of_copys,
 				int64_t payterm,
 				const std::string& filename,
@@ -884,15 +885,13 @@ namespace TiValue {
 			{
 				TiValue::lua::lib::increment_lvm_instructions_executed_count(L, CHAIN_GLUA_API_EACH_INSTRUCTIONS_COUNT - 1);
 				try {
-					TiValue::blockchain::TransactionEvaluationState* eval_state_ptr =
-						(TiValue::blockchain::TransactionEvaluationState*)
-						(TiValue::lua::lib::get_lua_state_value(L, "evaluate_state").pointer_value);
+					TiValue::blockchain::TransactionEvaluationState* eval_state_ptr = (TiValue::blockchain::TransactionEvaluationState*)(TiValue::lua::lib::get_lua_state_value(L, "evaluate_state").pointer_value);
 
 					if (eval_state_ptr == NULL)
 						FC_CAPTURE_AND_THROW(lua_executor_internal_error, (""));
 					try
 					{
-						UploadRequestOperation op(FileIdType(file_id),PublicKeyType(requestor), pieces, ContractIdType(authentication,AddressType::contract_address), num_of_copys, payterm,filename,description,node_id);
+						UploadRequestOperation op(FileIdType(file_id), PublicKeyType(requestor), pieces, num_of_copys, payterm, filename, description, node_id);
 						eval_state_ptr->p_result_trx.operations.emplace_back(Operation(op));
 						return true;
 					}
@@ -908,6 +907,7 @@ namespace TiValue {
 					return false;
 				}
 			}
+
 			int GluaChainApi::allow_upload_request_wrapper_func(lua_State *L)
 			{
 				if (lua_gettop(L) < 6)
@@ -917,14 +917,12 @@ namespace TiValue {
 				}
 				if (!lua_isstring(L, 1))
 				{
-					throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of file id");
+					throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of file id");
 					return 0;
 				}
 				if (!lua_isstring(L, 2))
 				{
-					throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of public key");
+					throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of public key");
 					return 0;
 				}
 
@@ -944,37 +942,34 @@ namespace TiValue {
 					info.price = item_map->at("price").value.number_value;
 					infos.push_back(info);
 				}
-				if (!lua_isstring(L, 4))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of contract id");
-					return 0;
-				}
+				//if (!lua_isstring(L, 4))
+				//{
+				//	TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
+				//		"allow_upload_request need 1 string argument of contract id");
+				//	return 0;
+				//}
+        if (!lua_isstring(L, 6))
+        {
+          TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of filename");
+          return 0;
+        }
 				if (!lua_isstring(L, 7))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of filename");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of description");
 					return 0;
 				}
 				if (!lua_isstring(L, 8))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of description");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of node_id");
 					return 0;
 				}
-				if (!lua_isstring(L, 9))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of node_id");
-					return 0;
-				}
-				const char *contract_id = luaL_checkstring(L, 4);
-				int copy = luaL_checkint(L, 5);
-				int term = luaL_checkint(L, 6);
-				const char * filename = luaL_checkstring(L, 7);
-				const char * description = luaL_checkstring(L, 8);
-				const char * node_id = luaL_checkstring(L, 9);
-				bool res = allow_upload_request(L, string(file_id), publickey, infos, contract_id, copy, term, filename, description, node_id);
+				//const char *contract_id = luaL_checkstring(L, 4);
+				int copy = luaL_checkint(L, 4);
+				int term = luaL_checkint(L, 5);
+				const char * filename = luaL_checkstring(L, 6);
+				const char * description = luaL_checkstring(L, 7);
+				const char * node_id = luaL_checkstring(L, 8);
+				bool res = allow_upload_request(L, string(file_id), publickey, infos, copy, term, filename, description, node_id);
 				lua_pushboolean(L, res);
 				return 1;
 			}
@@ -987,20 +982,17 @@ namespace TiValue {
 				}
 				if (!lua_isstring(L, 1))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_piece_saved need 1 string argument of file id");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_piece_saved need 1 string argument of file id");
 					return 0;
 				}
 				if (!lua_isstring(L, 2))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_piece_saved need 1 string argument of file piece id");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_piece_saved need 1 string argument of file piece id");
 					return 0;
 				}
 				if (!lua_isstring(L, 3))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_piece_saved need 1 string argument of Node id");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_piece_saved need 1 string argument of Node id");
 					return 0;
 				}
 				const char* file_id = luaL_checkstring(L, 1);
@@ -1076,26 +1068,22 @@ namespace TiValue {
 				}
 				if (!lua_isstring(L, 1))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_store_request need 1 string argument of file id");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 1 string argument of file id");
 					return 0;
 				}
 				if (!lua_isstring(L, 2))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_store_request need 1 string argument of file piece id");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 1 string argument of file piece id");
 					return 0;
 				}
 				if (!lua_isstring(L, 3))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_store_request need 1 string argument of public key");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 1 string argument of public key");
 					return 0;
 				}
 				if (!lua_isstring(L, 4))
 				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_upload_request need 1 string argument of node id");
+					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of node id");
 					return 0;
 				}
 				const char* file_id = luaL_checkstring(L, 1);

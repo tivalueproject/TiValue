@@ -167,35 +167,35 @@ namespace TiValue {
 		{
 			return (key==info.key)&&(node==info.node);
 		}
-		FileContentIdType GetFileInfo(std::string fileinfo, vector<PieceUploadInfo>& infos, ShareType num_of_pieces, double Price,uint32_t filesize)
+		FileContentIdType GetFileInfo(std::string fileinfo, vector<PieceUploadInfo>& infos, ShareType num_of_pieces, double Price, uint32_t filesize)
 		{
 			infos.clear();
 			FileContentIdType result;
 			std::string info_parser;
-			auto pos=fileinfo.find_first_of(";");
-			if(pos==string::npos)
+			auto pos = fileinfo.find_first_of(";");
+			if (pos == string::npos)
 				FC_CAPTURE_AND_THROW(read_file_info_error, (fileinfo));
 			info_parser = fileinfo.substr(0, pos);
 			result = info_parser;
 			fileinfo = fileinfo.substr(pos + 1);
 			int piece_count = 0;
 			string buf;
-			uint32_t size_count=0;
-			while (pos=fileinfo.find_first_of(";"),pos != string::npos)
+			uint32_t size_count = 0;
+			while (pos = fileinfo.find_first_of(";"), pos != string::npos)
 			{
 				PieceUploadInfo info;
-				info_parser= fileinfo.substr(0, pos);
+				info_parser = fileinfo.substr(0, pos);
 				int pos2 = fileinfo.find_first_of(",");
-				buf = info_parser.substr(0,pos2);
+				buf = info_parser.substr(0, pos2);
 				info.pieceid = buf;
 				buf = info_parser.substr(pos2 + 1);
-				sscanf(buf.c_str(), "%lld",&(info.piece_size));
+				sscanf(buf.c_str(), "%lld", &(info.piece_size));
 				size_count += info.piece_size;
-				info.price= Price*info.piece_size / filesize;
+				info.price = Price * info.piece_size / filesize;
 				infos.push_back(info);
-				fileinfo = fileinfo.substr(pos+1);
+				fileinfo = fileinfo.substr(pos + 1);
 			}
-			if(size_count!=filesize)
+			if(size_count != filesize)
 				FC_CAPTURE_AND_THROW(read_file_info_error, (fileinfo));
 			return result;
 		}
@@ -204,11 +204,14 @@ namespace TiValue {
 		{
 		}
 
-        LocalStoreRequestInfo::LocalStoreRequestInfo(const FileIdType& fid, const FilePieceIdType& piece_id,
-                                                     const NodeIdType& node, int piece_index, size_t piece_size,
-                                                     const string& filename) :
-            file_id(fid),piece_id(piece_id),node_id(node),c_id(fid.file_id),
-            piece_index(piece_index), piece_size(piece_size),filename(filename)
+    LocalStoreRequestInfo::LocalStoreRequestInfo(const FileIdType& fid, 
+      const FilePieceIdType& piece_id,
+      const NodeIdType& node, 
+      int piece_index, 
+      size_t piece_size,
+      const string& filename) :
+      file_id(fid), piece_id(piece_id), node_id(node), c_id(fid.file_id),
+      piece_index(piece_index), piece_size(piece_size), filename(filename)
 		{
 
 		}

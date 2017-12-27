@@ -6,15 +6,16 @@ namespace TiValue
 {
 	namespace blockchain
 	{
-		UploadRequestOperation::UploadRequestOperation(const FileIdType& file_id, const PublicKeyType& requestor,
+		UploadRequestOperation::UploadRequestOperation(const FileIdType& file_id, 
+      const PublicKeyType& requestor,
 			const vector<PieceUploadInfo>& pieces,
-			const ContractIdType& authentication,
+			//const ContractIdType& authentication,
 			ShareType num_of_copys,
 			ShareType payterm,
 			const string& filename,
 			const string& description,
 			const string& node_id) :
-			file_id(file_id), requestor(requestor), pieces(pieces), authentication(authentication), num_of_copys(num_of_copys), payterm(payterm),filename(filename),description(description),node_id(node_id)
+			file_id(file_id), requestor(requestor), pieces(pieces), /*authentication(authentication),*/ num_of_copys(num_of_copys), payterm(payterm),filename(filename),description(description),node_id(node_id)
 		{
 			num_of_pieces = pieces.size();
 		}
