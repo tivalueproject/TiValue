@@ -236,15 +236,22 @@ namespace TiValue
 			try{
 			if (!eval_state.check_signature(Address(key)))
 				FC_CAPTURE_AND_THROW(missing_signature, (key));
-			auto entry= eval_state._current_state->get_store_request_entry(piece_id);
+			//auto entry= eval_state._current_state->get_store_request_entry(piece_id);
+      auto entry = eval_state._current_state->get_upload_request(file_id);
 			if (!entry.valid())
-				FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id));
-			if(entry->file_id.find(file_id)== entry->file_id.end())
-				FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, (piece_id));
-			auto node_and_key =entry->store_request.find(node_id);
-			if (node_and_key == entry->store_request.end() || node_and_key->second != key)
-				FC_CAPTURE_AND_THROW(store_request_not_exsited, (""));
+        FC_CAPTURE_AND_THROW(store_request_not_exsited, (file_id));
+
+			//if(entry->file_id.find(file_id)== entry->file_id.end())
+			//	FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, (piece_id));
+      if (entry->pieces[0].pieceid != piece_id)
+        FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, (piece_id));
+
+			//auto node_and_key =entry->store_request.find(node_id);
+			//if (node_and_key == entry->store_request.end() || node_and_key->second != key)
+			//	FC_CAPTURE_AND_THROW(store_request_not_exsited, (""));
+
 			auto decl_entry=eval_state._current_state->get_save_decl_entry(piece_id);
+
 			if (decl_entry.valid())
 			{
 				PieceStoreInfo temp;
