@@ -2679,6 +2679,7 @@ int main(int argc, char **argv) {
     run_ecdsa_sign_verify();
     run_ecdsa_end_to_end();
     run_ecdsa_edge_cases();
+
 #ifdef ENABLE_OPENSSL_TESTS
     run_ecdsa_openssl();
 #endif

@@ -19,6 +19,7 @@ int main( int argc, char** argv )
       idump( (fc::time_point::now() ) );
       idump( (ntp_time)(delta)(msec)(seconds)(minutes)(hours) );
    }
+
    else
    {
       elog( "no response" );
