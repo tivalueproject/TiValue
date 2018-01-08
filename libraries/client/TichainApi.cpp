@@ -188,10 +188,10 @@ namespace TiValue {
 				}
 				return false;
 			}
-            void ClientImpl::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
-            {
-                _wallet->allow_store(file_id,piece_id,storer);
-            }
+      void ClientImpl::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+      {
+        _wallet->allow_store(file_id, piece_id, storer);
+      }
 
 			bool ClientImpl::download_validation(const std::string& file_id, const std::string& authentication)
 			{
@@ -215,7 +215,7 @@ namespace TiValue {
 						break;
 				}
 				
-				auto au_info=fc::from_base58(authentication);
+				auto au_info = fc::from_base58(authentication);
 				fc::ecc::compact_signature sig;
 				for (int i = 0; i < au_info.size(); i++)
 				{
@@ -276,12 +276,12 @@ namespace TiValue {
 						{
 							for (auto reqer : req_for_my_file.requestors)
 							{
-                                if (reqer.key == pkey)
-                                {
-                                    if(_wallet->check_store_allowed( fid,file_id, pkey))
-                                        return true;
-                                    return false;
-                                }
+                if (reqer.key == pkey)
+                {
+                  if(_wallet->check_store_allowed( fid,file_id, pkey))
+                      return true;
+                  return false;
+                }
 							}
 						}
 					}
@@ -330,22 +330,32 @@ namespace TiValue {
 			}
 			TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
 			{
-				auto sr_entry=_chain_db->get_store_request_entry(piece_id);
-				auto acc_entry=_wallet->get_account(storer);
-				if (!sr_entry.valid())
-					FC_CAPTURE_AND_THROW(store_request_not_exsited,(piece_id)(storer));
+				//auto sr_entry=_chain_db->get_store_request_entry(piece_id);
+        oUploadRequestEntry sr_entry = _chain_db->get_upload_request(file_id);
+				//auto acc_entry=_wallet->get_account(storer);
+				//if (!sr_entry.valid())
+				//	FC_CAPTURE_AND_THROW(store_request_not_exsited,(piece_id)(storer));
+        if (!sr_entry.valid()) {
+          FC_CAPTURE_AND_THROW(upload_request_not_exsited, (file_id)(storer));
+        }
 				bool found = false;
-				for (auto reqit = sr_entry->store_request.begin(); reqit != sr_entry->store_request.end(); reqit++)
-				{
-					if (acc_entry.owner_key == reqit->second)
-					{
-						found = true;
-						break;
-					}	
-				}
-				if (!found)
-					FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id)(storer));
-				WalletTransactionEntry entry = _wallet->declare_piece_saved(file_id,piece_id,storer);
+				//for (auto reqit = sr_entry->store_request.begin(); reqit != sr_entry->store_request.end(); reqit++)
+				//{
+				//	if (acc_entry.owner_key == reqit->second)
+				//	{
+				//		found = true;
+				//		break;
+				//	}	
+				//}
+				//if (!found)
+				//	FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id)(storer));
+        if (sr_entry->pieces[0].pieceid == piece_id) {
+          found = true;
+        } else {
+          FC_CAPTURE_AND_THROW(upload_request_not_exsited, (piece_id)(storer));
+        }
+
+				WalletTransactionEntry entry = _wallet->declare_piece_saved(file_id, piece_id, storer);
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;
@@ -359,7 +369,7 @@ namespace TiValue {
 					FC_CAPTURE_AND_THROW(upload_request_not_exsited);
 				for (auto& piece_entry : upload_entry->pieces)
 				{
-					auto decl_entry=_chain_db->get_save_decl_entry(piece_entry.pieceid);
+					auto decl_entry = _chain_db->get_save_decl_entry(piece_entry.pieceid);
 					if (!decl_entry.valid())
 						continue;
 					for (auto entry : decl_entry->store_info)

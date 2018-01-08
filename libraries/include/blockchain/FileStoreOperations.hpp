@@ -91,7 +91,6 @@ FC_REFLECT(TiValue::blockchain::UploadRequestOperation,
 	(requestor)
 	(num_of_pieces)
 	(pieces)
-	//(authentication)
 	(num_of_copys)
 	(payterm)
 	(filename)
