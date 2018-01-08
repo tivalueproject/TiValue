@@ -22,12 +22,12 @@ public class NativeSecp256k1 {
         }
         enabled = isEnabled;
     }
-    
+
     private static ThreadLocal<ByteBuffer> nativeECDSABuffer = new ThreadLocal<ByteBuffer>();
     /**
      * Verifies the given secp256k1 signature in native code.
      * Calling when enabled == false is undefined (probably library not loaded)
-     * 
+     *
      * @param data The data which was signed, must be exactly 32 bytes
      * @param signature The signature
      * @param pub The public key which did the signing
