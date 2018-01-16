@@ -328,7 +328,7 @@ namespace TiValue {
 				}
 				FC_CAPTURE_AND_THROW(access_unauthorized,(file_id));
 			}
-			TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+			TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 			{
 				//auto sr_entry=_chain_db->get_store_request_entry(piece_id);
         oUploadRequestEntry sr_entry = _chain_db->get_upload_request(file_id);
@@ -355,7 +355,7 @@ namespace TiValue {
           FC_CAPTURE_AND_THROW(upload_request_not_exsited, (piece_id)(storer));
         }
 
-				WalletTransactionEntry entry = _wallet->declare_piece_saved(file_id, piece_id, storer);
+				WalletTransactionEntry entry = _wallet->declare_piece_saved(file_id, piece_id, storer, node_id);
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;

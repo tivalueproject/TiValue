@@ -274,7 +274,7 @@ namespace TiValue {
     bool download_validation(const std::string& file_id, const std::string& authentication) override;
     void wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer) override;
     std::string generate_download_validation(const std::string& file_id) override;
-    TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer) override;
+    TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id) override;
     std::set<TiValue::blockchain::PieceStoreInfo> blockchain_list_file_save_declare(const std::string& file_id) override;
   };
 

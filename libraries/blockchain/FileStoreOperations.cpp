@@ -96,9 +96,29 @@ namespace TiValue
 			if (!eval_state.evaluate_contract_result)
 				FC_CAPTURE_AND_THROW(in_result_of_execute, ("PieceSavedOperation can only in result transaction"));
 			oStoreRequestEntry store_request_entry= _cur_state->get_store_request_entry(piece_id);
-			if (!store_request_entry.valid() ||
-				store_request_entry->store_request.find(this->Node) == store_request_entry->store_request.end())
-				FC_CAPTURE_AND_THROW(store_request_not_exsited, ((this->piece_id, Node)));
+			//if (!store_request_entry.valid() ||
+			//	store_request_entry->store_request.find(this->Node) == store_request_entry->store_request.end())
+			//	FC_CAPTURE_AND_THROW(store_request_not_exsited, ((this->piece_id, Node)));
+
+      //added on 1/16/2018
+      oPieceSavedDeclEntry decl_entry = _cur_state->get_save_decl_entry(piece_id);
+      if (!decl_entry.valid()) {
+        FC_CAPTURE_AND_THROW(piece_id_not_existed, (piece_id));
+      }
+
+      for (set<PieceStoreInfo>::iterator itr1 = decl_entry->store_info.begin(); itr1 != decl_entry->store_info.end(); itr1++) {
+        if (itr1->file_id == file_id && itr1->piece_id == piece_id) {
+          for (set<StoreNodeInfo>::iterator itr2 = itr1->nodes.begin(); itr2 != itr1->nodes.end(); itr2++) {
+            if (itr2->node == Node) {
+              break;
+            }
+            if (itr2 == itr1->nodes.end()) {
+              FC_CAPTURE_AND_THROW(node_id_not_existed, (Node));
+            }
+          }
+        }
+      }
+    
 			auto piece_saved_entry=_cur_state->get_piece_saved_entry(piece_id);
 
 			if (piece_saved_entry.valid())
@@ -115,24 +135,24 @@ namespace TiValue
 			};
 			auto upload_request = _cur_state->get_upload_request(file_id);
 			auto& pieces = upload_request->pieces;
-			auto reject_entry = _cur_state->get_reject_store_entry(this->piece_id);
-			if (reject_entry.valid())
-			{
-				auto info_range = reject_entry->info.equal_range(Node);
-				auto info_it = info_range.first;
-				while (info_it != info_range.second)
-				{
-					if (info_it->second == file_id)
-					{
-						reject_entry->info.erase(info_it);
-						break;
-					}
-				}
-				if (reject_entry->info.size() == 0)
-					_cur_state->remove_reject_store_entry(reject_entry->piece_id);
-				else
-					_cur_state->store_store_reject(*reject_entry);
-			}
+			//auto reject_entry = _cur_state->get_reject_store_entry(this->piece_id);
+			//if (reject_entry.valid())
+			//{
+			//	auto info_range = reject_entry->info.equal_range(Node);
+			//	auto info_it = info_range.first;
+			//	while (info_it != info_range.second)
+			//	{
+			//		if (info_it->second == file_id)
+			//		{
+			//			reject_entry->info.erase(info_it);
+			//			break;
+			//		}
+			//	}
+			//	if (reject_entry->info.size() == 0)
+			//		_cur_state->remove_reject_store_entry(reject_entry->piece_id);
+			//	else
+			//		_cur_state->store_store_reject(*reject_entry);
+			//}
 			for (auto piece : pieces)
 			{
 				if (piece.pieceid == piece_id)
@@ -251,7 +271,7 @@ namespace TiValue
           FC_CAPTURE_AND_THROW(piece_id_not_existed, (piece_id));
         }
 
-        auto decl_entry = eval_state._current_state->get_save_decl_entry(piece_id);
+        oPieceSavedDeclEntry decl_entry = eval_state._current_state->get_save_decl_entry(piece_id);
         if (decl_entry.valid())
         {
           PieceStoreInfo temp;

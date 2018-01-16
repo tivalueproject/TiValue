@@ -7424,9 +7424,9 @@ std::string CommonApiClient::generate_download_validation(const std::string& fil
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 {
-  ilog("received RPC call: declare_piece_saved(${file_id}, ${piece_id}, ${storer})", ("file_id", file_id)("piece_id", piece_id)("storer", storer));
+  ilog("received RPC call: declare_piece_saved(${file_id}, ${piece_id}, ${storer}, ${node_id})", ("file_id", file_id)("piece_id", piece_id)("storer", storer)("node_id", node_id));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
@@ -7435,6 +7435,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(con
     args.push_back( fc::variant(file_id) );
     args.push_back( fc::variant(piece_id) );
     args.push_back( fc::variant(storer) );
+    args.push_back(fc::variant(node_id));
     call_id = glog->log_call_started( this, "declare_piece_saved", args );
   }
 
@@ -7446,7 +7447,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(con
   } execution_time_logger;
   try
   {
-    TiValue::wallet::WalletTransactionEntry result = get_impl()->declare_piece_saved(file_id, piece_id, storer);
+    TiValue::wallet::WalletTransactionEntry result = get_impl()->declare_piece_saved(file_id, piece_id, storer, node_id);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "declare_piece_saved", args, fc::variant(result) );
 

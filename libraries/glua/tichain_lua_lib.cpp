@@ -74,7 +74,7 @@ namespace TiValue
                 "pairs", "ipairs", "pairsByKeys", "collectgarbage", "error", "getmetatable", "_VERSION",
                 "tostring", "tojsonstring", "tonumber", "tointeger", "todouble", "totable", "toboolean",
                 "next", "rawequal", "rawlen", "rawget", "rawset", "select",
-                "setmetatable"
+                "setmetatable", "allow_declare_piece_saved"
             };
 
             // 这里用ordered_map而不是unordered_map是为了保持顺序，比如Stream type要在Stream构造函数前面
@@ -93,168 +93,168 @@ namespace TiValue
 				{ GLUA_TYPE_NAMESPACE_PREFIX_WRAP(object), "object" },
 
 				// bin operations
-			{ "(+)", "(number, number) => number" }, // bin operations functions are '(' + op + ')'
-			{ "(-)", "(number, number) => number" },
-			{ "(*)", "(number, number) => number" },
+			  { "(+)", "(number, number) => number" }, // bin operations functions are '(' + op + ')'
+			  { "(-)", "(number, number) => number" },
+			  { "(*)", "(number, number) => number" },
 
-			// (函数名/操作符名$参数类型$参数类型...)表示具体的重载函数签名，比如(+$int#int)，找不到特化重载函数签名，用非特化版本函数签名
-			// 如果是非中缀函数/操作符，则重载函数签名的名称是函数名/操作符名$参数类型$参数类型...，比如 func$int$int$int
-			{ "(+$int$int)", "(int, int) => int" },
-			{ "(-$int$int)", "(int, int) => int" },
-			{ "(*$int$int)", "(int, int) => int" },
-			{ "(^$int$int)", "(int, int) => int" },
+			  // (函数名/操作符名$参数类型$参数类型...)表示具体的重载函数签名，比如(+$int#int)，找不到特化重载函数签名，用非特化版本函数签名
+			  // 如果是非中缀函数/操作符，则重载函数签名的名称是函数名/操作符名$参数类型$参数类型...，比如 func$int$int$int
+			  { "(+$int$int)", "(int, int) => int" },
+			  { "(-$int$int)", "(int, int) => int" },
+			  { "(*$int$int)", "(int, int) => int" },
+			  { "(^$int$int)", "(int, int) => int" },
 
-			{ "(/)", "(number, number) => number" },
-			{ "(//)", "(number, number) => int" },
-			{ "(^)", "(number, number) => number" },
-			{ "(%)", "(number, number) => number" },
-			{ "(&)", "(int, int) => int" },
-			{ "(~)", "(int, int) => int" },
-			{ "(|)", "(number, number) => int" },
-			{ "(>>)", "(number, number) => number" },
-			{ "(<<)", "(number, number) => number" },
-			{ "(<)", "(number, number) => bool" },
-			{ "(<=)", "(number, number) => bool" },
-			{ "(>)", "(number, number) => bool" },
-			{ "(>=)", "(number, number) => bool" },
-			{ "(==)", "(object, object) => bool" },
-			{ "(~=)", "(object, object) => bool" },
-			{ "(and)", "(object, object) => object" },
-			{ "(or)", "(object, object) => object" },
-			{ "(..)", "(string, string) => string" },
-			// infix operations
-		{ "-", "(number) => number" },
-		{ "not", "(object) => bool" },
-		{ "#", "(object) => int" },
-		{ "~", "(int) => int" },
-		// global functions
-	{ "print", "(...) => void" },
-	{ "pprint", "(...) => void" },
-	{ "table", R"END(record {
-concat:(table,string, ...)=>string;
-insert:(table, ...)=>void;
-append: (table, object) => void;
-length: (table) => int;
-remove:(table, ...) => object;
-sort:(table, ...) => void
-})END" },
-{ "string", R"END(record {
-split: (string, string) => table;
-byte: (string) => int;
-char: (...) => string;
-find: (string, string, ...) => string;
-format: (string, ...) => string;
-gmatch: (string, string) => function;
-gsub: (string, string, string, ...) => string;
-len: (string) => int;
-match: (string, string, ...) => string;
-rep: (string, int, ...) => string;
-reverse: (string) => string;
-sub: (string, int, ...) => string;
-upper: (string) => string
-})END" },
-{ "Array", "(object) => table" },
-{ "time", R"END(record {
-add: (int, string, int) => int;
-tostr: (int) => string;
-difftime: (int, int) => int
-})END" },
-{ "math", R"END(record {
-abs$int: (int) => int;
-abs: (number) => number;
-ceil: (number) => int;
-floor: (number) => int;
-max: (...) => number;
-maxinteger: int;
-min: (...) => number;
-mininteger: int;
-pi: number;
-tointeger: (number) => int;
-type: (number) => string
-})END" },
-{ "json", R"END(record {
-dumps: (object) => string;
-loads: (string) => object
-})END" },
-{ "utf8", R"END(record {
-char: (...) => string;
-charpattern: string;
-codes: (string) => function;
-codepoint: (string, int, int) => int;
-len: (striing, int, int) => int;
-offset: (string, int, int) => int
-})END" },
-{ "os", R"END(record {
-clock: () => int;
-date: (string, int) => string;
-difftime: (int, int) => int;
-execute: (string) => void;
-exit: (int, bool) => void;
-getenv: (string) => string;
-remove: (string) => void;
-rename: (string, string) => void;
-setlocale: (string, string) => void;
-time: (...) => int;
-tmpname: () => string
-})END" },
-{ "io", R"END(record {
-close: (...) => void;
-flush: () => void;
-input: (...) => void;
-lines: (string) => function;
-open: (string, string) => void;
-read: (string) => string;
-seek: (...) => int;
-write: (string) => void
-})END" },
-{ "net", R"END(record {
-listen: (string, port) => object;
-connect: (string, port) => object;
-accept: (object) => object;
-accept_async: (object, function) => void;
-start_io_loop: (object) => void;
-read: (object, int) => string;
-read_until: (object, string) => string;
-write: (object, object) => void;
-close_socket: (object) => void;
-close_server: (object) => void;
-shutdown: () => void
-})END" },
-{ "http", R"END(record {
-listen: (string, port) => object;
-connect: (string, port) => object;
-request: (string, string, string, table) => object;
-close: (object) => void;
-accept: (object) => object;
-accept_async: (object, function) => void;
-start_io_loop: (object) => void;
-get_req_header: (object, string) => string;
-get_res_header: (object, string) => string;
-get_req_http_method: (object) => string;
-get_req_path: (object) => string;
-get_req_http_protocol: (object) => string;
-get_req_body: (object) => string;
-set_res_header: (object, string, string) => void;
-write_res_body: (object, string) => void;
-set_status: (object, int, string) => void;
-get_status: (object) => int;
-get_status_message: (object) => string;
-get_res_body: (object) => string;
-finish_res: (object) => void
-})END" },
-// FIXME: 下面这个Stream record的成员函数，第一个参数应该是self
-{ GLUA_TYPE_NAMESPACE_PREFIX_WRAP(Stream), R"END(record {
-size: (table) => int;
-pos: (table) => int;
-reset_pos: (table) => void;
-current: (table) => int;
-eof: (table) => bool;
-push: (table, int) => void;
-push_string: (table, string) => void;
-next: (table) => bool
-})END"},
-{"Stream", "() => Stream"},
-				{ "jsonrpc", R"END(record {})END" },
+			  { "(/)", "(number, number) => number" },
+			  { "(//)", "(number, number) => int" },
+			  { "(^)", "(number, number) => number" },
+			  { "(%)", "(number, number) => number" },
+			  { "(&)", "(int, int) => int" },
+			  { "(~)", "(int, int) => int" },
+			  { "(|)", "(number, number) => int" },
+			  { "(>>)", "(number, number) => number" },
+			  { "(<<)", "(number, number) => number" },
+			  { "(<)", "(number, number) => bool" },
+			  { "(<=)", "(number, number) => bool" },
+			  { "(>)", "(number, number) => bool" },
+			  { "(>=)", "(number, number) => bool" },
+			  { "(==)", "(object, object) => bool" },
+			  { "(~=)", "(object, object) => bool" },
+			  { "(and)", "(object, object) => object" },
+			  { "(or)", "(object, object) => object" },
+			  { "(..)", "(string, string) => string" },
+			  // infix operations
+		    { "-", "(number) => number" },
+		    { "not", "(object) => bool" },
+		    { "#", "(object) => int" },
+		    { "~", "(int) => int" },
+		    // global functions
+        { "print", "(...) => void" },
+        { "pprint", "(...) => void" },
+        { "table", R"END(record {
+          concat:(table,string, ...)=>string;
+          insert:(table, ...)=>void;
+          append: (table, object) => void;
+          length: (table) => int;
+          remove:(table, ...) => object;
+          sort:(table, ...) => void
+          })END" },
+        { "string", R"END(record {
+          split: (string, string) => table;
+          byte: (string) => int;
+          char: (...) => string;
+          find: (string, string, ...) => string;
+          format: (string, ...) => string;
+          gmatch: (string, string) => function;
+          gsub: (string, string, string, ...) => string;
+          len: (string) => int;
+          match: (string, string, ...) => string;
+          rep: (string, int, ...) => string;
+          reverse: (string) => string;
+          sub: (string, int, ...) => string;
+          upper: (string) => string
+          })END" },
+        { "Array", "(object) => table" },
+        { "time", R"END(record {
+          add: (int, string, int) => int;
+          tostr: (int) => string;
+          difftime: (int, int) => int
+          })END" },
+        { "math", R"END(record {
+         abs$int: (int) => int;
+         abs: (number) => number;
+         ceil: (number) => int;
+         floor: (number) => int;
+         max: (...) => number;
+         maxinteger: int;
+         min: (...) => number;
+         mininteger: int;
+         pi: number;
+         tointeger: (number) => int;
+         type: (number) => string
+         })END" },
+       { "json", R"END(record {
+        dumps: (object) => string;
+        loads: (string) => object
+        })END" },
+       { "utf8", R"END(record {
+        char: (...) => string;
+        charpattern: string;
+        codes: (string) => function;
+        codepoint: (string, int, int) => int;
+        len: (striing, int, int) => int;
+        offset: (string, int, int) => int
+        })END" },
+       { "os", R"END(record {
+        clock: () => int;
+        date: (string, int) => string;
+        difftime: (int, int) => int;
+        execute: (string) => void;
+        exit: (int, bool) => void;
+        getenv: (string) => string;
+        remove: (string) => void;
+        rename: (string, string) => void;
+        setlocale: (string, string) => void;
+        time: (...) => int;
+        tmpname: () => string
+        })END" },
+      { "io", R"END(record {
+        close: (...) => void;
+        flush: () => void;
+        input: (...) => void;
+        lines: (string) => function;
+        open: (string, string) => void;
+        read: (string) => string;
+        seek: (...) => int;
+        write: (string) => void
+        })END" },
+      { "net", R"END(record {
+        listen: (string, port) => object;
+        connect: (string, port) => object;
+        accept: (object) => object;
+        accept_async: (object, function) => void;
+        start_io_loop: (object) => void;
+        read: (object, int) => string;
+        read_until: (object, string) => string;
+        write: (object, object) => void;
+        close_socket: (object) => void;
+        close_server: (object) => void;
+        shutdown: () => void
+        })END" },
+      { "http", R"END(record {
+        listen: (string, port) => object;
+        connect: (string, port) => object;
+        request: (string, string, string, table) => object;
+        close: (object) => void;
+        accept: (object) => object;
+        accept_async: (object, function) => void;
+        start_io_loop: (object) => void;
+        get_req_header: (object, string) => string;
+        get_res_header: (object, string) => string;
+        get_req_http_method: (object) => string;
+        get_req_path: (object) => string;
+        get_req_http_protocol: (object) => string;
+        get_req_body: (object) => string;
+        set_res_header: (object, string, string) => void;
+        write_res_body: (object, string) => void;
+        set_status: (object, int, string) => void;
+        get_status: (object) => int;
+        get_status_message: (object) => string;
+        get_res_body: (object) => string;
+        finish_res: (object) => void
+        })END" },
+                // FIXME: 下面这个Stream record的成员函数，第一个参数应该是self
+                { GLUA_TYPE_NAMESPACE_PREFIX_WRAP(Stream), R"END(record {
+                  size: (table) => int;
+                  pos: (table) => int;
+                  reset_pos: (table) => void;
+                  current: (table) => int;
+                  eof: (table) => bool;
+                  push: (table, int) => void;
+                  push_string: (table, string) => void;
+                  next: (table) => bool
+                  })END" },
+                { "Stream", "() => Stream"},
+			         	{ "jsonrpc", R"END(record {})END" },
                 { "type", "(object) => string" },
                 { "require", "(string) => object" },
                 { "import_contract_from_address", "(string) => table" },
@@ -264,28 +264,29 @@ next: (table) => bool
                 { "storage", "table" },
                 { "repl", "() => void" },
                 { "exit", "(object) => object" },
-				{ "exit_repl", "object (object)" },
+				        { "exit_repl", "object (object)" },
                 { "debugger", "(...) => void" },
                 { "exit_debugger", "() => void" },
                 { "caller", "string" },
                 { "caller_address", "string" },
-				// 脚本模式下的全局变量
-				{ "param", "string" },
-				{ "truncated", "bool" },
-				{ "contract_id", "string" },
-				{ "event_type", "string" },
+				        // 脚本模式下的全局变量
+				        { "param", "string" },
+				        { "truncated", "bool" },
+				        { "contract_id", "string" },
+				        { "event_type", "string" },
 
                 { "contract_transfer", "(...) => object" },
                 { "contract_transfer_to", "(...) => object" },
                 { "transfer_from_contract_to_address", "(string, string, int) => int" },
-				{"allow_upload_request", "(object,string,object,int,int,string,string,string) => bool"},
-				{"allow_store_request","(object,string,string,string) => bool"},
-				{"allow_piece_saved","(string,string,string) => bool"},
-				{"allow_enable_access","(string,string) => bool "},
-				{"allow_store_reject","(string,string,string) => bool "},
-				{"contract_api_check","(string,string) => bool"},
-				{"get_publickey_address","(string)=> string"},
-				{ "transfer_from_contract_to_public_account", "(string, string, int) => int"},
+				        { "allow_upload_request", "(object,string,object,int,int,string,string,string) => bool"},
+				        { "allow_store_request","(object,string,string,string) => bool"},
+				        { "allow_piece_saved","(string,string,string) => bool"},
+				        { "allow_enable_access","(string,string) => bool "},
+				        { "allow_store_reject","(string,string,string) => bool "},
+				        { "contract_api_check","(string,string) => bool"},
+                { "allow_declare_piece_saved", "(string,string,string,string) => bool"},
+				        { "get_publickey_address","(string)=> string"},
+				        { "transfer_from_contract_to_public_account", "(string, string, int) => int"},
                 { "get_chain_random", "() => number" },
                 { "get_transaction_fee", "() => int" },
                 { "get_transaction_id", "() => string" },
@@ -297,20 +298,20 @@ next: (table) => bool
                 { "get_current_contract_address", "() => string" },
                 { "pairs", "(table) => object" },
                 { "ipairs", "(table) => object" },
-				{ "pairsByKeys", "(table) => object" },
+				        { "pairsByKeys", "(table) => object" },
                 { "collectgarbage", "object (...)" },
                 { "error", "(...) => object" },
                 { "getmetatable", "(table) => table" },
                 { "_VERSION", "string" },
-				{ "_ENV", "table" },
-				{ "_G", "table" },
+				        { "_ENV", "table" },
+				        { "_G", "table" },
                 { "tostring", "(object) => string" },
                 { "tojsonstring", "(object) => string" },
                 { "tonumber", "(object) => number" },
                 { "tointeger", "(object) => int" },
                 { "todouble", "(object) => number" },
                 { "totable", "(object) => table" },
-				{ "toboolean", "(object) => bool" },
+				        { "toboolean", "(object) => bool" },
                 { "next", "(...) => object" },
                 { "rawequal", "(object, object) => bool" },
                 { "rawlen", "(object) => int" },
@@ -360,7 +361,7 @@ next: (table) => bool
 
 			// 从当前合约总转账到
 			static int transfer_from_contract_to_public_account(lua_State *L)
-            {
+      {
 				if (lua_gettop(L) < 3)
 				{
 					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "transfer_from_contract_to_public_account need 3 arguments");
@@ -383,7 +384,7 @@ next: (table) => bool
 				lua_Integer transfer_result = TiValue::lua::api::global_glua_chain_api->transfer_from_contract_to_public_account(L, contract_id, to_account_name, asset_type, amount_str);
 				lua_pushinteger(L, transfer_result);
 				return 1;
-            }
+      }
 
 			static int allow_upload_request(lua_State *L)
 			{
@@ -401,6 +402,11 @@ next: (table) => bool
 			{
 				return TiValue::lua::api::global_glua_chain_api->allow_store_reject_wrapper_func(L);
 			}
+
+      static int allow_declare_piece_saved(lua_State *L) {
+        return TiValue::lua::api::global_glua_chain_api->allow_declare_piece_saved_wrapper_func(L);
+      }
+
 			static  int get_publickey_address(lua_State *L)
 			{
 				if (lua_gettop(L) < 1)
@@ -1120,114 +1126,114 @@ end
                 lua_State *L = luaL_newstate();
                 luaL_openlibs(L);
                 // run init lua code here, eg. init storage api, load some modules
-				add_global_c_function(L, "debugger", &enter_lua_debugger);
-				add_global_c_function(L, "exit_debugger", &exit_lua_debugger);
-				lua_createtable(L, 0, 0);
-				lua_setglobal(L, "last_return"); // 函数的最后返回值记录到这个全局变量
-				add_global_c_function(L, "Array", &glua_core_lib_Array);
-				add_global_c_function(L, "Map", &glua_core_lib_Hashmap);
+				        add_global_c_function(L, "debugger", &enter_lua_debugger);
+				        add_global_c_function(L, "exit_debugger", &exit_lua_debugger);
+				        lua_createtable(L, 0, 0);
+				        lua_setglobal(L, "last_return"); // 函数的最后返回值记录到这个全局变量
+				        add_global_c_function(L, "Array", &glua_core_lib_Array);
+				        add_global_c_function(L, "Map", &glua_core_lib_Hashmap);
 
-				luaL_newmetatable(L, "GluaByteStream_metatable");
-				lua_pushcfunction(L, &glua_core_lib_Stream_size);
-				lua_setfield(L, -2, "size");
-				lua_pushcfunction(L, &glua_core_lib_Stream_eof);
-				lua_setfield(L, -2, "eof");
-				lua_pushcfunction(L, &glua_core_lib_Stream_current);
-				lua_setfield(L, -2, "current");
-				lua_pushcfunction(L, &glua_core_lib_Stream_pos);
-				lua_setfield(L, -2, "pos");
-				lua_pushcfunction(L, &glua_core_lib_Stream_next);
-				lua_setfield(L, -2, "next");
-				lua_pushcfunction(L, &glua_core_lib_Stream_push);
-				lua_setfield(L, -2, "push");
-				lua_pushcfunction(L, &glua_core_lib_Stream_push_string);
-				lua_setfield(L, -2, "push_string");
-				lua_pushcfunction(L, &glua_core_lib_Stream_reset_pos);
-				lua_setfield(L, -2, "reset_pos"); 
+				        luaL_newmetatable(L, "GluaByteStream_metatable");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_size);
+				        lua_setfield(L, -2, "size");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_eof);
+				        lua_setfield(L, -2, "eof");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_current);
+				        lua_setfield(L, -2, "current");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_pos);
+				        lua_setfield(L, -2, "pos");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_next);
+				        lua_setfield(L, -2, "next");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_push);
+				        lua_setfield(L, -2, "push");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_push_string);
+				        lua_setfield(L, -2, "push_string");
+				        lua_pushcfunction(L, &glua_core_lib_Stream_reset_pos);
+				        lua_setfield(L, -2, "reset_pos"); 
 
-				lua_pushvalue(L, -1);
-				lua_setfield(L, -2, "__index");
-				lua_pop(L, 1);
+				        lua_pushvalue(L, -1);
+				        lua_setfield(L, -2, "__index");
+				        lua_pop(L, 1);
 
-				add_global_c_function(L, "Stream", &glua_core_lib_Stream);
+				        add_global_c_function(L, "Stream", &glua_core_lib_Stream);
 
-				/*
-				add_global_c_function(L, "glua_core_lib_contract_metatable_index", &glua_core_lib_contract_metatable_index);
-				add_global_c_function(L, "glua_core_lib_storage_metatable_index", &glua_core_lib_storage_metatable_index);
-				add_global_c_function(L, "glua_core_lib_storage_metatable_new_index", &glua_core_lib_storage_metatable_new_index);
-				add_global_c_function(L, "glua_core_lib_contract_metatable_newindex", &glua_core_lib_contract_metatable_newindex);
-				*/
+				        /*
+				        add_global_c_function(L, "glua_core_lib_contract_metatable_index", &glua_core_lib_contract_metatable_index);
+				        add_global_c_function(L, "glua_core_lib_storage_metatable_index", &glua_core_lib_storage_metatable_index);
+				        add_global_c_function(L, "glua_core_lib_storage_metatable_new_index", &glua_core_lib_storage_metatable_new_index);
+				        add_global_c_function(L, "glua_core_lib_contract_metatable_newindex", &glua_core_lib_contract_metatable_newindex);
+				        */
 
-				add_global_c_function(L, "glua_core_lib_pairs_by_keys_func_loader", &glua_core_lib_pairs_by_keys_func_loader);
+				        add_global_c_function(L, "glua_core_lib_pairs_by_keys_func_loader", &glua_core_lib_pairs_by_keys_func_loader);
 				
-				/*
-				TiValue.storage_mt = {
-						__index = glua_core_lib_storage_metatable_index,
-						__newindex = glua_core_lib_storage_metatable_new_index
-					}
-					contract_mt = {	  
-						__index = glua_core_lib_contract_metatable_index,
-						__newindex = glua_core_lib_contract_metatable_newindex
-					}
-				*/
-				lua_createtable(L, 0, 0);
-				lua_pushcfunction(L, &glua_core_lib_storage_metatable_index);
-				lua_setfield(L, -2, "__index");
-				lua_pushcfunction(L, &glua_core_lib_storage_metatable_new_index);
-				lua_setfield(L, -2, "__newindex");
-				lua_getglobal(L, "TiValue");
-				lua_pushvalue(L, -2);
-				lua_setfield(L, -2, "storage_mt");
-				lua_pop(L, 2);
+				        /*
+				        TiValue.storage_mt = {
+						        __index = glua_core_lib_storage_metatable_index,
+						        __newindex = glua_core_lib_storage_metatable_new_index
+					        }
+					        contract_mt = {	  
+						        __index = glua_core_lib_contract_metatable_index,
+						        __newindex = glua_core_lib_contract_metatable_newindex
+					        }
+				        */
+				        lua_createtable(L, 0, 0);
+				        lua_pushcfunction(L, &glua_core_lib_storage_metatable_index);
+				        lua_setfield(L, -2, "__index");
+				        lua_pushcfunction(L, &glua_core_lib_storage_metatable_new_index);
+				        lua_setfield(L, -2, "__newindex");
+				        lua_getglobal(L, "TiValue");
+				        lua_pushvalue(L, -2);
+				        lua_setfield(L, -2, "storage_mt");
+				        lua_pop(L, 2);
 
-				/*
-				contract_mt = {	  
-						__index = glua_core_lib_contract_metatable_index,
-						__newindex = glua_core_lib_contract_metatable_newindex
-					}
-				*/
-				lua_createtable(L, 0, 0);
-				lua_pushcfunction(L, &glua_core_lib_contract_metatable_index);
-				lua_setfield(L, -2, "__index");
-				lua_pushcfunction(L, &glua_core_lib_contract_metatable_newindex);
-				lua_setfield(L, -2, "__newindex");
-				lua_setglobal(L, "contract_mt");
+				        /*
+				        contract_mt = {	  
+						        __index = glua_core_lib_contract_metatable_index,
+						        __newindex = glua_core_lib_contract_metatable_newindex
+					        }
+				        */
+				        lua_createtable(L, 0, 0);
+				        lua_pushcfunction(L, &glua_core_lib_contract_metatable_index);
+				        lua_setfield(L, -2, "__index");
+				        lua_pushcfunction(L, &glua_core_lib_contract_metatable_newindex);
+				        lua_setfield(L, -2, "__newindex");
+				        lua_setglobal(L, "contract_mt");
 
-				// add_global_c_function(L, "pairsByKeys", &glua_core_lib_pairs_by_keys);
+				        // add_global_c_function(L, "pairsByKeys", &glua_core_lib_pairs_by_keys);
 
-				/*
-				__old_pairs = pairs
-				pairs = pairsByKeys
-				*/
-				lua_getglobal(L, "pairs");
-				lua_setglobal(L, "__old_pairs");
-				lua_pushcfunction(L, &glua_core_lib_pairs_by_keys);
-				lua_setglobal(L, "pairs");
+				        /*
+				        __old_pairs = pairs
+				        pairs = pairsByKeys
+				        */
+				        lua_getglobal(L, "pairs");
+				        lua_setglobal(L, "__old_pairs");
+				        lua_pushcfunction(L, &glua_core_lib_pairs_by_keys);
+				        lua_setglobal(L, "pairs");
 				
-				// TODO: 用lightuserdata重构合约的storage
-				/*
-				const char *init_code = R"END(
+				        // TODO: 用lightuserdata重构合约的storage
+				        /*
+				        const char *init_code = R"END(
 
-				)END";
-                luaL_dostring(L, init_code);
-				*/
+				        )END";
+                        luaL_dostring(L, init_code);
+				        */
 
-				/*
-				lua_pushnil(L);
-				lua_setglobal(L, "glua_core_lib_contract_metatable_index");
-				lua_pushnil(L);
-				lua_setglobal(L, "glua_core_lib_storage_metatable_index");
-				lua_pushnil(L);
-				lua_setglobal(L, "glua_core_lib_storage_metatable_new_index");
-				lua_pushnil(L);
-				lua_setglobal(L, "glua_core_lib_contract_metatable_newindex");
-				*/
-				reset_lvm_instructions_executed_count(L);
+				        /*
+				        lua_pushnil(L);
+				        lua_setglobal(L, "glua_core_lib_contract_metatable_index");
+				        lua_pushnil(L);
+				        lua_setglobal(L, "glua_core_lib_storage_metatable_index");
+				        lua_pushnil(L);
+				        lua_setglobal(L, "glua_core_lib_storage_metatable_new_index");
+				        lua_pushnil(L);
+				        lua_setglobal(L, "glua_core_lib_contract_metatable_newindex");
+				        */
+				        reset_lvm_instructions_executed_count(L);
                 lua_atpanic(L, panic_message);
                 if (use_contract)
                 {
                     add_global_c_function(L, "transfer_from_contract_to_address", transfer_from_contract_to_address);
-					add_global_c_function(L, "transfer_from_contract_to_public_account", transfer_from_contract_to_public_account);
+					          add_global_c_function(L, "transfer_from_contract_to_public_account", transfer_from_contract_to_public_account);
                     add_global_c_function(L, "get_contract_balance_amount", get_contract_balance_amount);
                     add_global_c_function(L, "get_chain_now", get_chain_now);
                     add_global_c_function(L, "get_chain_random", get_chain_random);
@@ -1237,14 +1243,15 @@ end
                     add_global_c_function(L, "wait_for_future_random", wait_for_future_random);
                     add_global_c_function(L, "get_waited", get_waited_block_random);
                     add_global_c_function(L, "get_transaction_fee", get_transaction_fee);
-					add_global_c_function(L, "emit", emit_tichain_event);
-					add_global_c_function(L, "contract_api_check", contract_api_check);
-					add_global_c_function(L, "get_publickey_address", get_publickey_address);
-					add_global_c_function(L, "allow_upload_request", allow_upload_request);
-					add_global_c_function(L, "allow_enable_access", allow_enable_access);
-					add_global_c_function(L, "allow_piece_saved", allow_piece_saved);
-					add_global_c_function(L, "allow_store_reject", allow_store_reject);
-					add_global_c_function(L, "allow_store_request", allow_store_request);
+                    add_global_c_function(L, "emit", emit_tichain_event);
+                    add_global_c_function(L, "contract_api_check", contract_api_check);
+                    add_global_c_function(L, "get_publickey_address", get_publickey_address);
+                    add_global_c_function(L, "allow_upload_request", allow_upload_request);
+                    add_global_c_function(L, "allow_enable_access", allow_enable_access);
+                    add_global_c_function(L, "allow_piece_saved", allow_piece_saved);
+                    add_global_c_function(L, "allow_store_reject", allow_store_reject);
+                    add_global_c_function(L, "allow_store_request", allow_store_request);
+                    add_global_c_function(L, "allow_declare_piece_saved", allow_declare_piece_saved);
                 }
                 return L;
             }

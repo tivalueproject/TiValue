@@ -84,7 +84,7 @@ namespace TiValue {
 
             Code  contract_code;   //代码相关
             Asset initcost;         //初始花费
-			Asset transaction_fee;
+			      Asset transaction_fee;
             std::map<BalanceIdType, ShareType> balances;         //扣除的balance
             PublicKeyType owner;    //合约所有者
             fc::time_point     register_time;

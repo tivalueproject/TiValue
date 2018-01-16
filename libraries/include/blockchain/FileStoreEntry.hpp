@@ -364,15 +364,15 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
 	(piece_id)
 	(node_id)
 	(c_id)
-    (requester)
+  (requester)
 	(piece_index)
 	(piece_size)
 	(filename))
 
-    FC_REFLECT(TiValue::blockchain::PieceStoreInfo,
-		(file_id)
-		(piece_id)
-//		(nodes)
+  FC_REFLECT(TiValue::blockchain::PieceStoreInfo,
+  (file_id)
+  (piece_id)
+  (nodes)
 	)
 
 	FC_REFLECT(TiValue::blockchain::PieceSavedDeclEntry,
@@ -381,7 +381,7 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
 	)
 
 
-    FC_REFLECT(TiValue::blockchain::AllowedStoreRequest,
-    (file_id)
-    (piece_id)
-    (storer))
+  FC_REFLECT(TiValue::blockchain::AllowedStoreRequest,
+  (file_id)
+  (piece_id)
+  (storer))

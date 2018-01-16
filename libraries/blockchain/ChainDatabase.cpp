@@ -1448,13 +1448,13 @@ namespace TiValue {
                             my->_contract_to_trx_iddb.toggle_leveldb(enabled);
 
 
-							//filestore related
-							my->_upload_request_db.toggle_leveldb(enabled);
-							my->_store_request_db.toggle_leveldb(enabled);
-							my->_piece_saved_db.toggle_leveldb(enabled);
-							my->_file_saved_db.toggle_leveldb(enabled);
-							my->_enable_access_db.toggle_leveldb(enabled);
-							my->_save_decl_db.toggle_leveldb(enabled);
+							              //filestore related
+							              my->_upload_request_db.toggle_leveldb(enabled);
+							              my->_store_request_db.toggle_leveldb(enabled);
+							              my->_piece_saved_db.toggle_leveldb(enabled);
+							              my->_file_saved_db.toggle_leveldb(enabled);
+							              my->_enable_access_db.toggle_leveldb(enabled);
+							              my->_save_decl_db.toggle_leveldb(enabled);
 
                         };
 

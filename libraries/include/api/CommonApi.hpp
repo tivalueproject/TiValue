@@ -2105,7 +2105,7 @@ namespace TiValue { namespace api {
      *
      * @return transaction_entry
      */
-    virtual TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer) = 0;
+    virtual TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id) = 0;
     /**
      * list declaration for specific file piece.
      *

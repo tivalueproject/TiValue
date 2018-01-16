@@ -333,7 +333,7 @@ namespace TiValue {
             op.issuer_permissions = issuer_permissions;
             op.issuer_account_id = issuer_account_id;
             op.transaction_fee = issuer_fee,
-                op.market_fee = market_fee;
+            op.market_fee = market_fee;
             op.authority = auth_info;
             operations.emplace_back(std::move(op));
         }

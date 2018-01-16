@@ -8259,8 +8259,12 @@ fc::variant CommonApiRpcServer::declare_piece_saved_positional(fc::rpc::json_con
   if (parameters.size() <= 2)
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 3 (storer)");
   std::string storer = parameters[2].as<std::string>();
+  if (parameters.size() <= 3) {
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 4 (node_id)");
+  }
+  std::string node_id = parameters[3].as<std::string>();
 
-  TiValue::wallet::WalletTransactionEntry result = get_client()->declare_piece_saved(file_id, piece_id, storer);
+  TiValue::wallet::WalletTransactionEntry result = get_client()->declare_piece_saved(file_id, piece_id, storer, node_id);
   return fc::variant(result);
 }
 
@@ -8281,8 +8285,12 @@ fc::variant CommonApiRpcServer::declare_piece_saved_named(fc::rpc::json_connecti
   if (!parameters.contains("storer"))
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'storer'");
   std::string storer = parameters["storer"].as<std::string>();
+  if (!parameters.contains("node_id")) {
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'node_id'");
+  }
+  std::string node_id = parameters["node_id"].as<std::string>();
 
-  TiValue::wallet::WalletTransactionEntry result = get_client()->declare_piece_saved(file_id, piece_id, storer);
+  TiValue::wallet::WalletTransactionEntry result = get_client()->declare_piece_saved(file_id, piece_id, storer, node_id);
   return fc::variant(result);
 }
 
@@ -10510,19 +10518,15 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
   json_connection->add_named_param_method("generate_download_validation", bound_named_method);
 
   // register method declare_piece_saved
-  bound_positional_method = boost::bind(&CommonApiRpcServer::declare_piece_saved_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::declare_piece_saved_positional, this, capture_con, _1);
   json_connection->add_method("declare_piece_saved", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::declare_piece_saved_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::declare_piece_saved_named, this, capture_con, _1);
   json_connection->add_named_param_method("declare_piece_saved", bound_named_method);
 
   // register method blockchain_list_file_save_declare
-  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_list_file_save_declare_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_list_file_save_declare_positional, this, capture_con, _1);
   json_connection->add_method("blockchain_list_file_save_declare", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_list_file_save_declare_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_list_file_save_declare_named, this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_list_file_save_declare", bound_named_method);
 
 }
@@ -14111,10 +14115,11 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
       /* params: */ {
         {"file_id", "string", TiValue::api::required_positional, fc::ovariant()},
         {"piece_id", "string", TiValue::api::required_positional, fc::ovariant()},
-        {"storer", "string", TiValue::api::required_positional, fc::ovariant()}
+        {"storer", "string", TiValue::api::required_positional, fc::ovariant()},
+        {"node_id", "string", TiValue::api::required_positional, fc::ovariant()}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "storer call this to declare his store for specific file piece \n\nParameters:\n  file_id (string, required): id of specific file\n  piece_id (string, required): id of specific file piece\n  storer (string, required): account of storer\n\nReturns:\n  transaction_entry\n",
+      /* detailed description */ "storer call this to declare his store for specific file piece \n\nParameters:\n  file_id (string, required): id of specific file\n  piece_id (string, required): id of specific file piece\n  storer (string, required): account of storer\n node_id (string, required): node_id of storer\nReturns:\n  transaction_entry\n",
       /* aliases */ {}, false};
     store_method_metadata(declare_piece_saved_method_metadata);
   }

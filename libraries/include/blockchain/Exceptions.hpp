@@ -212,5 +212,7 @@ namespace TiValue {
 		FC_DECLARE_DERIVED_EXCEPTION(access_unauthorized, TiValue::blockchain::file_upload_error, 43014, "access_unauthorized");
 		FC_DECLARE_DERIVED_EXCEPTION(save_decl_exsited, TiValue::blockchain::file_upload_error, 43015, "save_decl_exsited");
     FC_DECLARE_DERIVED_EXCEPTION(piece_id_not_existed, TiValue::blockchain::file_upload_error, 43016, "piece_id_not_existed");
+    FC_DECLARE_DERIVED_EXCEPTION(piece_save_declare_not_exist, TiValue::blockchain::file_upload_error, 43017, "piece_save_declare_not_exist");
+    FC_DECLARE_DERIVED_EXCEPTION(node_id_not_existed, TiValue::blockchain::file_upload_error, 43018, "node_id_not_exist");
    }
 } // TiValue::blockchain

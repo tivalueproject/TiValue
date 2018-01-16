@@ -1197,9 +1197,9 @@ std::string CommonApiRpcClient::generate_download_validation(const std::string& 
   fc::variant result = get_json_connection()->async_call("generate_download_validation", std::vector<fc::variant>{fc::variant(file_id)}).wait();
   return result.as<std::string>();
 }
-TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 {
-  fc::variant result = get_json_connection()->async_call("declare_piece_saved", std::vector<fc::variant>{fc::variant(file_id), fc::variant(piece_id), fc::variant(storer)}).wait();
+  fc::variant result = get_json_connection()->async_call("declare_piece_saved", std::vector<fc::variant>{fc::variant(file_id), fc::variant(piece_id), fc::variant(storer), fc::variant(node_id)}).wait();
   return result.as<TiValue::wallet::WalletTransactionEntry>();
 }
 std::set<TiValue::blockchain::PieceStoreInfo> CommonApiRpcClient::blockchain_list_file_save_declare(const std::string& file_id)
