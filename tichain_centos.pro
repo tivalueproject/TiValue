@@ -16,7 +16,6 @@ INCLUDEPATH += . \
                utilities/include \
                leveldb \
                leveldb/include \
-			   root/boost/include \
                db/include
 
 # Input
@@ -497,44 +496,44 @@ INCLUDEPATH += $$PWD/../fc/build
 DEPENDPATH += $$PWD/../fc/build
 
  LIBS += ./lib/libfc.a
- LIBS += /root/boost/lib/libboost_atomic.a
- LIBS += /root/boost/lib/libboost_chrono.a
- LIBS += /root/boost/lib/libboost_context.a
- LIBS += /root/boost/lib/libboost_coroutine.a
- LIBS += /root/boost/lib/libboost_date_time.a
- LIBS += /root/boost/lib/libboost_exception.a
- LIBS += /root/boost/lib/libboost_filesystem.a
- #LIBS += /root/boost/lib/libboost_graph_parallel.a
- LIBS += /root/boost/lib/libboost_iostreams.a
- LIBS += /root/boost/lib/libboost_locale.a
- LIBS += /root/boost/lib/libboost_log.a
- LIBS += /root/boost/lib/libboost_log_setup.a
- LIBS += /root/boost/lib/libboost_math_c99.a
- LIBS += /root/boost/lib/libboost_math_c99f.a
- LIBS += /root/boost/lib/libboost_math_c99l.a
- LIBS += /root/boost/lib/libboost_math_tr1.a
- LIBS += /root/boost/lib/libboost_math_tr1f.a
- LIBS += /root/boost/lib/libboost_locale.a
- LIBS += /root/boost/lib/libboost_math_tr1l.a
- #LIBS += /root/boost/lib/libboost_mpi.a
- #LIBS += /root/boost/lib/libboost_mpi_python.a
- LIBS += /root/boost/lib/libboost_prg_exec_monitor.a
- LIBS += /root/boost/lib/libboost_program_options.a
- LIBS += /root/boost/lib/libboost_python.a
- LIBS += /root/boost/lib/libboost_random.a
- LIBS += /root/boost/lib/libboost_regex.a
- LIBS += /root/boost/lib/libboost_serialization.a
- LIBS += /root/boost/lib/libboost_signals.a
- LIBS += /root/boost/lib/libboost_system.a
- LIBS += /root/boost/lib/libboost_test_exec_monitor.a
- LIBS += /root/boost/lib/libboost_thread.a
- LIBS += /root/boost/lib/libboost_timer.a
- LIBS += /root/boost/lib/libboost_unit_test_framework.a
- LIBS += /root/boost/lib/libboost_wave.a
- LIBS += /root/boost/lib/libboost_wserialization.a
- #LIBS += /root/boost/lib/libssl.a
- #LIBS += /root/boost/lib/libcrypt.a
- #LIBS += /root/boost/lib/libcrypto.a
+ LIBS += /usr/local/lib/libboost_atomic.a
+ LIBS += /usr/local/lib/libboost_chrono.a
+ LIBS += /usr/local/lib/libboost_context.a
+ LIBS += /usr/local/lib/libboost_coroutine.a
+ LIBS += /usr/local/lib/libboost_date_time.a
+ LIBS += /usr/local/lib/libboost_exception.a
+ LIBS += /usr/local/lib/libboost_filesystem.a
+ #LIBS += /usr/local/lib/libboost_graph_parallel.a
+ LIBS += /usr/local/lib/libboost_iostreams.a
+ LIBS += /usr/local/lib/libboost_locale.a
+ LIBS += /usr/local/lib/libboost_log.a
+ LIBS += /usr/local/lib/libboost_log_setup.a
+ LIBS += /usr/local/lib/libboost_math_c99.a
+ LIBS += /usr/local/lib/libboost_math_c99f.a
+ LIBS += /usr/local/lib/libboost_math_c99l.a
+ LIBS += /usr/local/lib/libboost_math_tr1.a
+ LIBS += /usr/local/lib/libboost_math_tr1f.a
+ LIBS += /usr/local/lib/libboost_locale.a
+ LIBS += /usr/local/lib/libboost_math_tr1l.a
+ #LIBS += /usr/local/lib/libboost_mpi.a
+ #LIBS += /usr/local/lib/libboost_mpi_python.a
+ LIBS += /usr/local/lib/libboost_prg_exec_monitor.a
+ LIBS += /usr/local/lib/libboost_program_options.a
+ LIBS += /usr/local/lib/libboost_python.a
+ LIBS += /usr/local/lib/libboost_random.a
+ LIBS += /usr/local/lib/libboost_regex.a
+ LIBS += /usr/local/lib/libboost_serialization.a
+ LIBS += /usr/local/lib/libboost_signals.a
+ LIBS += /usr/local/lib/libboost_system.a
+ LIBS += /usr/local/lib/libboost_test_exec_monitor.a
+ LIBS += /usr/local/lib/libboost_thread.a
+ LIBS += /usr/local/lib/libboost_timer.a
+ LIBS += /usr/local/lib/libboost_unit_test_framework.a
+ LIBS += /usr/local/lib/libboost_wave.a
+ LIBS += /usr/local/lib/libboost_wserialization.a
+ #LIBS += /usr/local/lib/libssl.a
+ #LIBS += /usr/local/lib/libcrypt.a
+ #LIBS += /usr/local/lib/libcrypto.a
 
  LIBS += ./lib/libeasylzma_static.a
  LIBS += ./lib/libleveldb.a
