@@ -1929,6 +1929,7 @@ namespace TiValue { namespace api {
      * Call FileUpload Contract to ask for file storage.
      *
      * @param owner File owner address (string, required)
+     * @param AuthorizatingContractId contract checking and authorizating to caller (string, required)
      * @param filename file to be uploaded (path, required)
      * @param filesize file to be uploaded (uint32_t, required)
      * @param description file to be uploaded (string, required)
@@ -1943,7 +1944,7 @@ namespace TiValue { namespace api {
      *
      * @return UploadRequestEntry
      */
-    virtual TiValue::blockchain::UploadRequestEntry store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit) = 0;
+    virtual TiValue::blockchain::UploadRequestEntry store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit) = 0;
     /**
      * get a permission to access a specific file.
      *

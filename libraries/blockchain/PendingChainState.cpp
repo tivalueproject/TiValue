@@ -60,18 +60,17 @@ namespace TiValue {
             //contract related
             apply_entrys(prev_state, _contract_id_to_entry, _contract_id_remove);
             apply_entrys(prev_state, _contract_id_to_storage, _contract_id_remove);
-			      apply_entrys(prev_state, _request_id_to_result_id, _req_to_res_to_remove);
-			      apply_entrys(prev_state, _result_id_to_request_id, _res_to_req_to_remove);
-			      apply_entrys(prev_state, _trx_to_contract_id, _trx_to_contract_id_remove);
-			      apply_entrys(prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
+			apply_entrys(prev_state, _request_id_to_result_id, _req_to_res_to_remove);
+			apply_entrys(prev_state, _result_id_to_request_id, _res_to_req_to_remove);
+			apply_entrys(prev_state, _trx_to_contract_id, _trx_to_contract_id_remove);
+			apply_entrys(prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
 
-			      //filestorerelated
-			      apply_entrys(prev_state, _upload_request_db, _upload_request_remove);
-			      apply_entrys(prev_state, _store_request_db, _store_request_remove);
-			      apply_entrys(prev_state, _piece_saved_db, _piece_saved_remove);
-			      apply_entrys(prev_state, _file_saved_db, _file_saved_remove);
-			      apply_entrys(prev_state, _enable_access_db, _enable_access_remove);
-            apply_entrys(prev_state, _savedecl_db, _savedecl_remove);
+			//filestorerelated
+			apply_entrys(prev_state, _upload_request_db, _upload_request_remove);
+			apply_entrys(prev_state, _store_request_db, _store_request_remove);
+			apply_entrys(prev_state, _piece_saved_db, _piece_saved_remove);
+			apply_entrys(prev_state, _file_saved_db, _file_saved_remove);
+			apply_entrys(prev_state, _enable_access_db, _enable_access_remove);
             /** do this last because it could have side effects on other entrys while
              * we manage the short index
              */

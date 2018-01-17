@@ -3,7 +3,7 @@
 #include <deque>
 #include <map>
 #include <vector>
-
+#include <set>
 #include <fc/string.hpp>
 #include <fc/optional.hpp>
 
@@ -33,6 +33,13 @@ namespace fc {
   template<> struct get_typename<value>    { static const char* name()   { return "value";   } };
   template<> struct get_typename<fc::exception>   { static const char* name()   { return "fc::exception";   } };
   template<> struct get_typename<std::vector<char>>   { static const char* name()   { return "std::vector<char>";   } };
+  template<typename T> struct get_typename<std::set<T>>
+  {
+     static const char* name()  {
+         static std::string n = std::string("std::set<") + get_typename<T>::name() + ">";
+         return n.c_str();
+     }
+  };
   template<typename T> struct get_typename<std::vector<T>>   
   { 
      static const char* name()  { 
@@ -68,6 +75,13 @@ namespace fc {
          static std::string n = std::string("std::map<") + get_typename<K>::name() + ","+get_typename<V>::name()+">"; 
          return n.c_str();  
      } 
+  };
+  template<typename K,typename V> struct get_typename<std::multimap<K,V>>
+  {
+     static const char* name()  {
+         static std::string n = std::string("std::multimap<") + get_typename<K>::name() + ","+get_typename<V>::name()+">";
+         return n.c_str();
+     }
   };
 
   struct signed_int;

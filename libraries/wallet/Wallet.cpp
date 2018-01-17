@@ -3131,7 +3131,7 @@ namespace TiValue {
 
 			if (arguments.length() > CONTRACT_PARAM_MAX_LEN)
 				FC_CAPTURE_AND_THROW(contract_parameter_length_over_limit, ("the parameter length of contract function is over limit"));
-      if (CallContractOperation::is_function_not_allow_call(method))
+            if (CallContractOperation::is_function_not_allow_call(method))
 			{
 				FC_CAPTURE_AND_THROW(method_can_not_be_called_explicitly, (method)("method can't be called explicitly !"));
 			}
@@ -3168,20 +3168,20 @@ namespace TiValue {
 				else
 					get_enough_balances(caller, asset_limit + fee, balances, required_signatures);
 			}
-      else
-        required_signatures.insert(caller_address);
+            else
+                required_signatures.insert(caller_address);
 
-        trx.call_contract(contract, method, arguments, caller_public_key, asset_limit,fee, balances);//插入合约调用op
-        FC_ASSERT(fee.asset_id == 0, "register fee must be TV");
-        trx.expiration = blockchain::now() + get_transaction_expiration();
-        my->sign_transaction(trx, required_signatures);
+            trx.call_contract(contract, method, arguments, caller_public_key, asset_limit,fee, balances);//插入合约调用op
+            FC_ASSERT(fee.asset_id == 0, "register fee must be TV");
+            trx.expiration = blockchain::now() + get_transaction_expiration();
+            my->sign_transaction(trx, required_signatures);
 
-        auto trans_entry = WalletTransactionEntry();
-        trans_entry.fee = fee;
-        trans_entry.trx = trx;
-			  trans_entry.entry_id = trx.id();
-        return trans_entry;
-    }
+            auto trans_entry = WalletTransactionEntry();
+            trans_entry.fee = fee;
+            trans_entry.trx = trx;
+			trans_entry.entry_id = trx.id();
+            return trans_entry;
+        }
 
         std::vector<TiValue::blockchain::Asset> Wallet::call_contract_testing(const string caller, const ContractIdType contract, const string method, const string& arguments)
         {
@@ -6014,48 +6014,38 @@ namespace TiValue {
 			}
 			FC_CAPTURE_AND_THROW(read_file_info_error, (file));
 		}
-		std::pair<UploadRequestEntry, WalletTransactionEntry> Wallet::store_file_to_network(const std::string& owner, 
-			const TiValue::blockchain::FilePath& filename, 
-      uint32_t filesize, 
-      const std::string& description, 
-      const std::string& piecesinfo, 
-			const std::string& asset_symbol, 
-      double price, 
-      uint32_t numofcopy, 
-      uint32_t numofpiece, 
-      uint32_t payterm, 
-      std::string node_id,
+		std::pair<UploadRequestEntry, WalletTransactionEntry> Wallet::store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, 
+			const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, 
+			const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, std::string node_id,
 			double exec_limit)
 		{
 			if (node_id == "")
 				node_id = my->_wallet_db.get_property(PropertyEnum::node_id).as_string();
-
-			auto account = get_account(owner);
+;
+			auto account=get_account(owner);
 			if (!account.is_my_account)
-				FC_CAPTURE_AND_THROW(not_my_account, (owner));
-
+				FC_CAPTURE_AND_THROW(not_my_account,(owner));
 			//文件处理
 			vector<PieceUploadInfo> infos;
 			FileIdType id;
 			id.uploader = account.owner_key;
-			id.file_id = GetFileInfo(piecesinfo, infos, numofpiece, price, filesize);
-			if (id.file_id == FileContentIdType())
+			id.file_id= GetFileInfo(piecesinfo, infos, numofpiece, price,filesize);
+			if(id.file_id==FileContentIdType())
 				FC_CAPTURE_AND_THROW(file_not_exsited, (filename));
 			UploadRequestEntry entry;
-			//entry.authenticating_contract = ContractIdType(AuthorizatingContractId,AddressType::contract_address);
+			entry.authenticating_contract = ContractIdType(AuthorizatingContractId,AddressType::contract_address);
 			entry.id = id;
 			entry.num_of_copys = numofcopy;
 			entry.pieces = infos;
-
 			//调用合约
 			ChainInterfacePtr chaindb_ptr = get_correct_state_ptr();
 			auto contract_upload = chaindb_ptr->get_contract_entry(TIV_FILE_UPLOAD_CONTRACT_NAME);
 			if (!contract_upload.valid())
 				FC_CAPTURE_AND_THROW(file_upload_contract_not_exsited, (TIV_FILE_UPLOAD_CONTRACT_NAME));
-			//ContractIdType contract_id(AuthorizatingContractId, AddressType::contract_address);
-			//auto AuthorizatingContract = chaindb_ptr->get_contract_entry(contract_id);
-			//if (!AuthorizatingContract.valid())
-			//	FC_CAPTURE_AND_THROW(contract_not_exist, (AuthorizatingContractId));
+			ContractIdType contract_id(AuthorizatingContractId, AddressType::contract_address);
+			auto AuthorizatingContract = chaindb_ptr->get_contract_entry(contract_id);
+			if (!AuthorizatingContract.valid())
+				FC_CAPTURE_AND_THROW(contract_not_exist, (AuthorizatingContractId));
 			std::string params;
 			char buf[32] = { 0 };
 			snprintf(buf,32, "%d", numofpiece);
@@ -6074,8 +6064,8 @@ namespace TiValue {
 				params += buf;
 				params += ";";
 			}
-			//params += AuthorizatingContractId;
-			//params += ";";
+			params += AuthorizatingContractId;
+			params += ";";
 			snprintf(buf, 32, "%d", numofcopy);
 			params += buf;
 			params += ";";
@@ -6090,7 +6080,7 @@ namespace TiValue {
 			params += ";";
 			std::pair<UploadRequestEntry, WalletTransactionEntry> res;
 			res.first = entry;
-			res.second = call_contract(owner, contract_upload->id, TIV_FILE_UPLOAD_INTERFACE, params, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
+			res.second=call_contract(owner, contract_upload->id, TIV_FILE_UPLOAD_INTERFACE, params, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
 			return res;
 		}
 		TiValue::wallet::WalletTransactionEntry Wallet::store_reject(const std::string & file_id, const std::string & file_piece_id, const std::string & node_id,double exec_limit)
@@ -6175,20 +6165,22 @@ namespace TiValue {
 		}
         void Wallet::allow_store(const std::string& file_id, const std::string& piece_id, const std::string& storer)
         {
-          AllowedStoreRequest entry(FileIdType(file_id), piece_id, PublicKeyType(storer));
-          my->_wallet_db.store_allow_store_req(entry);
+            AllowedStoreRequest entry(FileIdType(file_id), piece_id, PublicKeyType(storer));
+            my->_wallet_db.store_allow_store_req(entry);
+
         }
         bool Wallet::check_store_allowed(const std::string & file_id, const std::string & piece_id, const PublicKeyType & storer)
         {
-          for (auto ap : my->_wallet_db.allow_store_requests)
-          {
-            if (ap.file_id == FileIdType(file_id) && ap.piece_id == piece_id && storer == ap.storer)
-              return true;
-          }
-          return false;
+            for (auto ap : my->_wallet_db.allow_store_requests)
+            {
+                if (ap.file_id == FileIdType(file_id) && ap.piece_id == piece_id&&storer == ap.storer)
+                    return true;
+            }
+            return false;
         }
 		TiValue::wallet::WalletTransactionEntry Wallet::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
 		{
+
 				FC_ASSERT(is_open(), "Wallet not open!");
 				FC_ASSERT(is_unlocked(), "Wallet not unlock!");
 				FC_ASSERT(my->is_receive_account(storer), "Invalid account name");
@@ -6197,11 +6189,14 @@ namespace TiValue {
 				unordered_set<Address> required_signatures;
 				const auto required_fees = get_transaction_fee(0);
 
-				my->withdraw_to_transaction(required_fees, storer, trx, required_signatures);
-				auto acc = get_account(storer);
+				my->withdraw_to_transaction(required_fees,
+					storer,
+					trx,
+					required_signatures);
+				auto acc=get_account(storer);
 				if(!acc.is_my_account)
 					FC_CAPTURE_AND_THROW(not_my_account, (storer));
-				PieceSavedDeclareOperation Pop(FileIdType(file_id), piece_id, my->file_store_node, acc.owner_key);
+				PieceSavedDeclareOperation Pop(FileIdType(file_id),piece_id, my->file_store_node,acc.owner_key);
 				trx.operations.push_back(Pop);
 				trx.expiration = blockchain::now() + get_transaction_expiration();
 
@@ -6222,8 +6217,8 @@ namespace TiValue {
 				trans_entry.trx = trx;
 
 				return trans_entry;
-		}
 
+		}
 		TiValue::wallet::WalletTransactionEntry Wallet::confirm_piece_saved(const std::string & confirmer, const std::string & file_id, const std::string & file_piece_id, const std::string & Storage, double exec_limit)
  		{
 			FileIdType fileid(file_id);
@@ -6246,13 +6241,17 @@ namespace TiValue {
 				}
 			}
 			if (!got_request)
-        FC_CAPTURE_AND_THROW(store_request_not_exsited, (file_piece_id));
+                FC_CAPTURE_AND_THROW(store_request_not_exsited, (file_piece_id));
 			string param = fileid;
 			param += ";";
 			param += file_piece_id;
 			param += ";";
 			param += Storage;
 			return 	call_contract(confirmer, contract_upload->id, TIV_FILE_CONFIRM_INTERFACE, param, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
+
+
 		}
-  }
+
+
+    }
 } // TiValue::wallet

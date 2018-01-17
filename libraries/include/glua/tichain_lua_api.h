@@ -557,7 +557,7 @@ namespace TiValue {
 			virtual bool contract_api_check(lua_State *L, const std::string& contract_id, const std::string& api_name)=0;
 			virtual bool allow_upload_request(lua_State *L, const blockchain::FileIdType& file_id, const std::string& requestor,
 				const std::vector<blockchain::PieceUploadInfo>& pieces,
-				//const std::string& authentication,
+				const std::string& authentication,
 				int64_t num_of_copys,
 				int64_t payterm,
 				const std::string& filename,

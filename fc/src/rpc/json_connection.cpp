@@ -36,12 +36,11 @@ namespace fc { namespace rpc {
 
             void send_result( variant id, variant result )
             {
-               ilog( "send: {\"id\": ${i},\"jsonrpc\":\"2.0\",\"result\": ${r}}", ("i",id)("r",result) );
+               ilog( "send: {\"id\": ${i}, \"result\": ${r}}", ("i",id)("r",result) );
                {
                  fc::scoped_lock<fc::mutex> lock(_write_mutex);
                  *_out << "{\"id\":";
                  json::to_stream( *_out, id  );
-                 *_out << ",\"jsonrpc\":\"2.0\"";
                  *_out << ",\"result\":";
                  json::to_stream( *_out, result);
                  *_out << "}\n";
@@ -50,13 +49,12 @@ namespace fc { namespace rpc {
             }
             void send_error( variant id, fc::exception& e )
             {
-               ilog( "send: {\"id\": ${i},\"jsonrpc\":\"2.0\",\"error\":{\"message\": ${what},\"code\":0,\"data\":${data}}}",
+               ilog( "send: {\"id\": ${i}, \"error\":{\"message\": ${what},\"code\":0,\"data\":${data}}}",
                      ("i",id)("what",e.what())("data", e) );
                {
                  fc::scoped_lock<fc::mutex> lock(_write_mutex);
                  *_out << "{\"id\":";
                  json::to_stream( *_out, id  );
-                 *_out << ",\"jsonrpc\":\"2.0\"";
                  *_out << ",\"error\":{\"message\":";
                  json::to_stream( *_out, fc::string(e.what()) );
                  *_out <<",\"code\":0,\"data\":";

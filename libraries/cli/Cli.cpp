@@ -415,7 +415,8 @@ namespace TiValue {
                     }
                 }
 
-                fc::variants parse_recognized_interactive_command(fc::buffered_istream& argument_stream, const TiValue::api::MethodData& MethodData)
+                fc::variants parse_recognized_interactive_command(fc::buffered_istream& argument_stream,
+                    const TiValue::api::MethodData& MethodData)
                 {
                     try {
                         fc::variants arguments;
@@ -497,7 +498,9 @@ namespace TiValue {
                     FC_THROW_EXCEPTION(fc::key_not_found_exception, "Unknown command \"${command}\".", ("command", command));
                 }
 
-                fc::variant parse_argument_of_known_type(fc::buffered_istream& argument_stream, const TiValue::api::MethodData& MethodData, unsigned parameter_index)
+                fc::variant parse_argument_of_known_type(fc::buffered_istream& argument_stream,
+                    const TiValue::api::MethodData& MethodData,
+                    unsigned parameter_index)
                 {
                     try {
                         const TiValue::api::ParameterData& this_parameter = MethodData.parameters[parameter_index];

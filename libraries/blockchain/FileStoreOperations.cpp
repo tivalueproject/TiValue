@@ -6,15 +6,15 @@ namespace TiValue
 {
 	namespace blockchain
 	{
-		UploadRequestOperation::UploadRequestOperation(const FileIdType& file_id, 
-      const PublicKeyType& requestor,
+		UploadRequestOperation::UploadRequestOperation(const FileIdType& file_id, const PublicKeyType& requestor,
 			const vector<PieceUploadInfo>& pieces,
+			const ContractIdType& authentication,
 			ShareType num_of_copys,
 			ShareType payterm,
 			const string& filename,
 			const string& description,
 			const string& node_id) :
-			file_id(file_id), requestor(requestor), pieces(pieces), /*authentication(authentication),*/ num_of_copys(num_of_copys), payterm(payterm),filename(filename),description(description),node_id(node_id)
+			file_id(file_id), requestor(requestor), pieces(pieces), authentication(authentication), num_of_copys(num_of_copys), payterm(payterm),filename(filename),description(description),node_id(node_id)
 		{
 			num_of_pieces = pieces.size();
 		}
@@ -30,7 +30,7 @@ namespace TiValue
 					entry.id = file_id;
 					entry.num_of_copys = num_of_copys;
 					entry.pieces = pieces;
-					//entry.authenticating_contract = authentication;
+					entry.authenticating_contract = authentication;
 					entry.description = description;
 					entry.node_id =		node_id;
 					entry.filename =	filename;
@@ -232,67 +232,60 @@ namespace TiValue
 
 		void PieceSavedDeclareOperation::evaluate(TransactionEvaluationState & eval_state) const
 		{
-			try {
-        if (!eval_state.check_signature(Address(key)))
-          FC_CAPTURE_AND_THROW(missing_signature, (key));
-        //auto entry = eval_state._current_state->get_store_request_entry(piece_id);
-        //if (!entry.valid())
-        //  FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id));
-        //if (entry->file_id.find(file_id) == entry->file_id.end())
-        //  FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, (piece_id));
-        //auto node_and_key = entry->store_request.find(node_id);
-        //if (node_and_key == entry->store_request.end() || node_and_key->second != key)
-        //  FC_CAPTURE_AND_THROW(store_request_not_exsited, (""));
-        oUploadRequestEntry uploadEntry = eval_state._current_state->get_upload_request(file_id);
-        if (!uploadEntry.valid()) {
-          FC_CAPTURE_AND_THROW(upload_request_not_exsited, (file_id));
-        }
-        if (uploadEntry->pieces[0].pieceid != piece_id) {
-          FC_CAPTURE_AND_THROW(piece_id_not_existed, (piece_id));
-        }
+			try{
+			if (!eval_state.check_signature(Address(key)))
+				FC_CAPTURE_AND_THROW(missing_signature, (key));
+			auto entry= eval_state._current_state->get_store_request_entry(piece_id);
+			if (!entry.valid())
+				FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id));
+			if(entry->file_id.find(file_id)== entry->file_id.end())
+				FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, (piece_id));
+			auto node_and_key =entry->store_request.find(node_id);
+			if (node_and_key == entry->store_request.end() || node_and_key->second != key)
+				FC_CAPTURE_AND_THROW(store_request_not_exsited, (""));
+			auto decl_entry=eval_state._current_state->get_save_decl_entry(piece_id);
+			if (decl_entry.valid())
+			{
+				PieceStoreInfo temp;
+				temp.file_id = file_id;
+				temp.piece_id = piece_id;
+				set<PieceStoreInfo>::iterator it = decl_entry->store_info.find(temp);
 
-        auto decl_entry = eval_state._current_state->get_save_decl_entry(piece_id);
-        if (decl_entry.valid())
-        {
-          PieceStoreInfo temp;
-          temp.file_id = file_id;
-          temp.piece_id = piece_id;
-          set<PieceStoreInfo>::iterator it = decl_entry->store_info.find(temp);
-
-          if (it == decl_entry->store_info.end())
-          {
-            PieceStoreInfo info;
-            info.file_id = file_id;
-            info.piece_id = piece_id;
-            info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
-            decl_entry->store_info.insert(info);
-          }
-          else
-          {
-            if (it->nodes.find(StoreNodeInfo(this->node_id, this->key)) != it->nodes.end())
-              FC_CAPTURE_AND_THROW(save_decl_exsited, (this->node_id));
-            StoreNodeInfo node_info = StoreNodeInfo(this->node_id, this->key);
-            PieceStoreInfo info;
-            info.file_id = file_id;
-            info.piece_id = piece_id;
-            info.nodes = it->nodes;
-            info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
-            decl_entry->store_info.insert(info);
-          }
-          eval_state._current_state->store_save_decl_entry(*decl_entry);
-        }
-        else
-        {
-          PieceSavedDeclEntry decl_entry;
-          decl_entry.piece_id = piece_id;
-          PieceStoreInfo info;
-          info.file_id = file_id;
-          info.piece_id = piece_id;
-          info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
-          decl_entry.store_info.insert(info);
-          eval_state._current_state->store_save_decl_entry(decl_entry);
-        }
-		  }FC_CAPTURE_AND_RETHROW((*this))
-		}	
-  }
+				if (it == decl_entry->store_info.end())
+				{
+					PieceStoreInfo info;
+					info.file_id = file_id;
+					info.piece_id = piece_id;
+					info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
+					decl_entry->store_info.insert(info);
+				}
+				else
+				{
+					if (it->nodes.find(StoreNodeInfo(this->node_id, this->key)) != it->nodes.end())
+						FC_CAPTURE_AND_THROW(save_decl_exsited,(this->node_id));
+					StoreNodeInfo node_info= StoreNodeInfo(this->node_id, this->key);
+					PieceStoreInfo info;
+					info.file_id = file_id;
+					info.piece_id = piece_id;
+					info.nodes = it->nodes;
+					info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
+					decl_entry->store_info.insert(info);
+				}
+				eval_state._current_state->store_save_decl_entry(*decl_entry);
+			}
+			else
+			{
+				PieceSavedDeclEntry decl_entry;
+				decl_entry.piece_id = piece_id;
+				PieceStoreInfo info;
+				info.file_id = file_id;
+				info.piece_id = piece_id;
+				info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
+				decl_entry.store_info.insert(info);
+				eval_state._current_state->store_save_decl_entry(decl_entry);
+			}
+		}FC_CAPTURE_AND_RETHROW((*this))
+		}
+		
+}
 }

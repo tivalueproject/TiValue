@@ -47,15 +47,15 @@
 #define TIV_DEFAULT_TRANSACTION_FEE                         1000 // XTS
 #define TIV_DEFAULT_TRANSACTION_EXPIRATION_SEC              (60*60)
 #define TIV_DEFAULT_CONTRACT_MARGIN                         10 * TIV_BLOCKCHAIN_PRECISION 
-#define TIV_FILE_UPLOAD_CONTRACT_NAME						"File_upload"
-#define TIV_FILE_UPLOAD_INTERFACE							  "Upload"
-#define TIV_FILE_REJECT_INTERFACE							  "Reject"
-#define TIV_FILE_ACCESS_INTERFACE						  	"Access"
-#define TIV_FILE_STORE_INTERFACE						  	"Store"
+#define TIV_FILE_UPLOAD_CONTRACT_NAME						"File_upLoad"
+#define TIV_FILE_UPLOAD_INTERFACE							"Upload"
+#define TIV_FILE_REJECT_INTERFACE							"Reject"
+#define TIV_FILE_ACCESS_INTERFACE							"Access"
+#define TIV_FILE_STORE_INTERFACE							"Store"
 #define TIV_FILE_CONFIRM_INTERFACE							"Confirm"
 #define TIV_FILE_EVENT_STOREREQUEST							"StoreRequest"
 #define TIV_FILE_EVENT_UPLOADREQUEST						"UploadRequest"
-#define TIV_FILE_EVENT_FILESAVED						  	"FileSaved"
+#define TIV_FILE_EVENT_FILESAVED							"FileSaved"
 #define TIV_FILE_EVENT_STOREREJECT							"StoreReject"
 /**
  *  The maximum amount that can be issued for user assets.

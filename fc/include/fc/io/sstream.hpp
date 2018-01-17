@@ -27,7 +27,7 @@ namespace fc {
 
     private:
       class impl;
-      fwd<impl,368> my;
+      fwd<impl,392> my;
   };
 
 }

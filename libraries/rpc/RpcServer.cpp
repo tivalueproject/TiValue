@@ -1481,7 +1481,8 @@ namespace TiValue {
             }
             void RpcServerImpl::verify_json_connection_is_authenticated(fc::rpc::json_connection* json_connection) const
             {
-                if (json_connection && _authenticated_connection_set.find(json_connection) == _authenticated_connection_set.end())
+                if (json_connection &&
+                    _authenticated_connection_set.find(json_connection) == _authenticated_connection_set.end())
                     FC_THROW("The RPC connection must be logged in before executing this command");
             }
             void RpcServerImpl::verify_wallet_is_open() const

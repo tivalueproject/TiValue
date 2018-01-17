@@ -320,38 +320,38 @@ namespace TiValue {
                     
                     for (const auto& op : trx.operations)
                     {
-                      if (
-                        (op.type.value >= register_contract_op_type && op.type.value <= transfer_contract_op_type)
-                        || (op.type.value == transaction_op_type && trx.result_trx_type == ResultTransactionType::incomplete_result_transaction)
-                        )
-                      {
-                        ignore_check_required_fee = true;
-                        break;
-                      }
+                        if (
+                            (op.type.value >= register_contract_op_type && op.type.value <= transfer_contract_op_type)
+                           || (op.type.value == transaction_op_type && trx.result_trx_type == ResultTransactionType::incomplete_result_transaction)  
+                           )
+                        {
+                            ignore_check_required_fee = true;
+                            break;
+                        }
                     }
-					          int num_of_signature = trx_arg.signatures.size();
-					          if (num_of_signature > TIV_BLOCKCHAIN_MAX_SIGNAGTURE_NUM)
-					          {
-						          FC_CAPTURE_AND_THROW(too_much_signature, (TIV_BLOCKCHAIN_MAX_SIGNAGTURE_NUM)(num_of_signature));
-					          }
+					int num_of_signature = trx_arg.signatures.size();
+					if (num_of_signature > TIV_BLOCKCHAIN_MAX_SIGNAGTURE_NUM)
+					{
+						FC_CAPTURE_AND_THROW(too_much_signature, (TIV_BLOCKCHAIN_MAX_SIGNAGTURE_NUM)(num_of_signature));
+					}
 
                     if (!_skip_signature_check)
                     {
-                      const auto trx_digest = trx_arg.digest(_current_state->get_chain_id());
-						          set<fc::ecc::compact_signature> sig_set;
-						          for (const auto& sig : trx_arg.signatures)//避免对相同的签名做重复解签，可以算是某种优化，但是大部分情况下都没有意义
-						          {
-							          sig_set.insert(sig);
-						          }
-						          for(const auto& sig:sig_set)
-						          {
-                        const auto key = fc::ecc::public_key(sig, trx_digest, _enforce_canonical_signatures).serialize();
-                        signed_keys.insert(Address(key));
-                        signed_keys.insert(Address(PtsAddress(key, false, 56)));
-                        signed_keys.insert(Address(PtsAddress(key, true, 56)));
-                        signed_keys.insert(Address(PtsAddress(key, false, 0)));
-                        signed_keys.insert(Address(PtsAddress(key, true, 0)));
-                      }
+                        const auto trx_digest = trx_arg.digest(_current_state->get_chain_id());
+						set<fc::ecc::compact_signature> sig_set;
+						for (const auto& sig : trx_arg.signatures)//避免对相同的签名做重复解签，可以算是某种优化，但是大部分情况下都没有意义
+						{
+							sig_set.insert(sig);
+						}
+						for(const auto& sig:sig_set)
+						{
+                            const auto key = fc::ecc::public_key(sig, trx_digest, _enforce_canonical_signatures).serialize();
+                            signed_keys.insert(Address(key));
+                            signed_keys.insert(Address(PtsAddress(key, false, 56)));
+                            signed_keys.insert(Address(PtsAddress(key, true, 56)));
+                            signed_keys.insert(Address(PtsAddress(key, false, 0)));
+                            signed_keys.insert(Address(PtsAddress(key, true, 0)));
+                        }
                     }
 					
                     current_op_index = 0;
@@ -398,11 +398,11 @@ namespace TiValue {
                             ++current_op_index;
                         }
                     }
-                    int signum_to_charge = num_of_signature - TIV_BLOCKCHAIN_FREESIGNATURE_LIMIT;
-                    if (signum_to_charge >= 0)
-                    {
-                      required_fees.amount += signum_to_charge*TIV_BLOCKCHAIN_EXTRA_SIGNATURE_FEE;
-                    }
+					int signum_to_charge = num_of_signature - TIV_BLOCKCHAIN_FREESIGNATURE_LIMIT;
+					if (signum_to_charge>=0)
+					{
+						required_fees.amount += signum_to_charge*TIV_BLOCKCHAIN_EXTRA_SIGNATURE_FEE;
+					}
                     if (!ignore_check_required_fee)
                     {
                         post_evaluate();
