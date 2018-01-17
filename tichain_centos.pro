@@ -16,6 +16,7 @@ INCLUDEPATH += . \
                utilities/include \
                leveldb \
                leveldb/include \
+			   root/boost/include \
                db/include
 
 # Input
