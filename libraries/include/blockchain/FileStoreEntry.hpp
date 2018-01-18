@@ -87,6 +87,7 @@ namespace TiValue {
 		struct FileSavedEntry
 		{
 			FileIdType file_id;
+      FilePieceIdType piece_id;
 			static oFileSavedEntry lookup(const ChainInterface&, const FileIdType&);
 			static void store(ChainInterface&, const FileIdType&, const FileSavedEntry&);
 			static void remove(ChainInterface&, const FileIdType&);
@@ -320,6 +321,7 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
 	)
 	FC_REFLECT(TiValue::blockchain::FileSavedEntry,
 	(file_id)
+  (piece_id)
 	)	
 	FC_REFLECT(TiValue::blockchain::EnableAccessEntry,
 	(file_id)

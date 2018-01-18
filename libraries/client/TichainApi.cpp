@@ -97,9 +97,13 @@ namespace TiValue {
 			std::vector<std::string> ClientImpl::blockchain_list_file_saved()
 			{
 				vector<std::string> res;
-				auto file_ids=_chain_db->get_file_saved();
-				for (auto file_id : file_ids)
-					res.push_back(file_id);
+				//auto file_ids=_chain_db->get_file_saved();
+				//for (auto file_id : file_ids)
+				//	res.push_back(file_id);
+        auto entries = _chain_db->get_file_saved();
+        for (auto entry : entries) {
+          res.push_back(std::string(entry.file_id) + "," + std::string(entry.piece_id));
+        }
 				return res;
 			}
 			void ClientImpl::wallet_set_node_id(const std::string& node_id)
@@ -226,7 +230,12 @@ namespace TiValue {
 
 				PublicKeyType pkey(key);
 				printf("file_id=%s\n,au=%s\n,key=", fid.c_str(), authentication.c_str(), pkey.operator fc::string().c_str());
-					auto files = _chain_db->get_file_saved();
+					//auto files = _chain_db->get_file_saved();
+        auto infos = _chain_db->get_file_saved();
+        std::vector<FileIdType> files;
+        for (auto info : infos) {
+          files.push_back(info.file_id);
+        }
 					for (auto file : files)
 					{
 						if (file == fid)

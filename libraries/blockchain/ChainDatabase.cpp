@@ -3861,13 +3861,17 @@ namespace TiValue {
 			return res;
 		}
 
-		std::vector<FileIdType> TiValue::blockchain::ChainDatabase::get_file_saved() const
-		{
-			std::vector<FileIdType> res;
-			for (auto it = my->_file_saved_db.unordered_begin(); it !=my->_file_saved_db.unordered_end(); it++)
-			{
-				res.push_back(it->first);
-			}
+    std::vector<FileSavedEntry> TiValue::blockchain::ChainDatabase::get_file_saved() const
+    {
+      //std::vector<FileIdType> res;
+      //for (auto it = my->_file_saved_db.unordered_begin(); it !=my->_file_saved_db.unordered_end(); it++)
+      //{
+      //	res.push_back(it->first);
+      //}
+      std::vector<FileSavedEntry> res;
+      for (auto itr = my->_file_saved_db.unordered_begin(); itr != my->_file_saved_db.unordered_end(); itr++) {
+        res.push_back(it->second);
+      }
 			return res;
 		}
 

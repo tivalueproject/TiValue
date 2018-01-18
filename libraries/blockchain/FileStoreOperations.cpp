@@ -162,6 +162,7 @@ namespace TiValue
 			}
 			FileSavedEntry file_store_entry;
 			file_store_entry.file_id = file_id;
+      file_store_entry.piece_id = piece_id;
 			_cur_state->store_file_saved_entry(file_store_entry);
 
 			}
