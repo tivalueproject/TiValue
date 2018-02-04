@@ -18,11 +18,11 @@ namespace TiValue {
 
         enum AddressType
         {
-            tic_address = 0,
-            contract_address = 1,
-			script_id = 2,
-			file_id = 3,
-			file_piece_id = 4
+          tic_address = 0,
+          contract_address = 1,
+          script_id = 2,
+          file_id = 3,
+          file_piece_id = 4
         };
 
         struct WithdrawCondition;

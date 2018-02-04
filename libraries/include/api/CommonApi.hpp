@@ -2026,6 +2026,11 @@ namespace TiValue { namespace api {
      *
      * @return bool
      */
+
+    //added on 02/03/2018
+    virtual std::vector<TiValue::blockchain::UploadRequestEntry> wallet_list_my_upload_requests(const std::string& account) = 0;
+
+
     virtual bool blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key) = 0;
     /**
      * list id of files which can be accessed.

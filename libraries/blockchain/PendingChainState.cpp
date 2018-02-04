@@ -57,6 +57,7 @@ namespace TiValue {
             apply_entrys(prev_state, _balance_id_to_entry, _balance_id_remove);
             apply_entrys(prev_state, _transaction_id_to_entry, _transaction_id_remove);
             apply_entrys(prev_state, _slot_index_to_entry, _slot_index_remove);
+
             //contract related
             apply_entrys(prev_state, _contract_id_to_entry, _contract_id_remove);
             apply_entrys(prev_state, _contract_id_to_storage, _contract_id_remove);

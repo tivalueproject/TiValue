@@ -5991,6 +5991,34 @@ namespace TiValue {
 			}
 			return res;
 		}
+
+    //added on 02/03/2018
+    std::vector<TiValue::blockchain::UploadRequestEntry> Wallet::list_my_upload_requests(const std::string& account) {
+      std::vector<TiValue::blockchain::UploadRequestEntry> res;
+
+      if (!my->_blockchain->is_valid_account_name(account)) {
+        FC_THROW_EXCEPTION(invalid_name, "Invalid account name!", ("account_name", account));
+      }
+      oWalletAccountEntry local_account = my->_wallet_db.lookup_account(account);
+      oAccountEntry chain_account = my->_blockchain->get_account_entry(account);
+      if (!local_account.valid() && !chain_account.valid()) {
+        FC_THROW_EXCEPTION(unknown_account, "Unknown account name!", ("account_name", account));
+      }
+      auto acct = get_account(account);
+      Address addr = acct.owner_address();
+      
+      auto end = my->_upload_request_entrys.end();
+      for (auto itr = my->_upload_request_entrys.begin(); itr != end; itr++) {
+        if (itr->first == addr) {
+          for (auto it = itr->second.begin(); it != itr->second.end(); ++it) {
+            res.push_back(*it);
+          }
+        }
+      }
+      return res;
+    }
+
+
 		void Wallet::set_node_id(const NodeIdType& node)
 		{
 			my->file_store_node = node;

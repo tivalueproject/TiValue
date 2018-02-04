@@ -1612,6 +1612,10 @@ namespace TiValue {
             std::vector<TiValue::blockchain::FileAccessInfo> get_my_access();
             std::vector<TiValue::blockchain::UploadRequestEntry> get_my_upload_requests();
             std::vector<TiValue::blockchain::StoreRequestInfo> list_store_request_for_my_file(const std::string& file_id);
+            //added on 02/03/2018
+            std::vector<TiValue::blockchain::UploadRequestEntry> list_my_upload_requests(const std::string& account);
+
+            std::vector<TiValue::blockchain::UploadRequestEntry> list_my_store_requests(const std::string& account);
 			      void set_node_id(const NodeIdType& node);
 			      std::pair<UploadRequestEntry, WalletTransactionEntry>  store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, std::string node_id, double exec_limit);
 			      TiValue::wallet::WalletTransactionEntry store_reject(const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit);

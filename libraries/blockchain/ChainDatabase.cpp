@@ -3870,7 +3870,7 @@ namespace TiValue {
       //}
       std::vector<FileSavedEntry> res;
       for (auto itr = my->_file_saved_db.unordered_begin(); itr != my->_file_saved_db.unordered_end(); itr++) {
-        res.push_back(it->second);
+        res.push_back(itr->second);
       }
 			return res;
 		}

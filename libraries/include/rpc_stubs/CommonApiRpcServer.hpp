@@ -509,6 +509,11 @@ namespace TiValue {
     fc::variant blockchain_get_file_authorizing_contract_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_list_store_request_for_my_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_list_store_request_for_my_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+
+    //added on 02/03/2018
+    fc::variant wallet_list_my_upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant wallet_list_my_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+
     fc::variant blockchain_check_signature_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_check_signature_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_get_my_access_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);

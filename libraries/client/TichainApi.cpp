@@ -85,6 +85,20 @@ namespace TiValue {
 			{
 				return _wallet->list_store_request_for_my_file(file_id);
 			}
+
+      //added on 02/03/2018
+      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::wallet_list_my_upload_requests(const std::string& account) {
+        std::vector<TiValue::blockchain::UploadRequestEntry> vec = _chain_db->list_upload_requests();
+        std::vector<TiValue::blockchain::UploadRequestEntry> res;
+        PublicKeyType pub_key = _wallet->get_owner_public_key(account);
+        for (auto itr = vec.begin(); itr != vec.end(); itr++) {
+          if (itr->id.uploader == pub_key) {
+            res.push_back(*itr);
+          }
+        }      
+        return res;
+      }
+
 			std::string ClientImpl::blockchain_get_file_authorizing_contract(const std::string& file_id)
 			{
 				FileIdType id(file_id);
