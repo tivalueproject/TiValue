@@ -338,7 +338,7 @@ namespace TiValue {
                     FC_THROW_EXCEPTION(sandbox_command_forbidden, "in sandbox, this command is forbidden, you cannot call it!");
 
                 size_t first = address.find_first_of("TV");
-                if (first != std::string::npos&&first == 0)
+                if (first != std::string::npos && first == 0)
                 {
                     string strToAccount;
                     string strSubAccount;

@@ -826,7 +826,7 @@ namespace TiValue {
 			void	scan_store_reject(const function<void(const StoreRejectEntry&)> callback) const;
 			void	scan_enable_access(const function<void(const EnableAccessEntry&)> callback) const;
 
-			std::vector<FileIdType> get_file_saved() const;
+			std::vector<FileSavedEntry> get_file_saved() const;
 
 private:
             unique_ptr<detail::ChainDatabaseImpl> my;

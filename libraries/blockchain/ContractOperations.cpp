@@ -862,8 +862,8 @@ namespace TiValue
                 if (!eval_state.skipexec)
                 {
                     // lua::lib::GluaStateScope scope;
-					::blockchain::contract_engine::ContractEngineBuilder builder;
-					auto engine = builder.build();
+					          ::blockchain::contract_engine::ContractEngineBuilder builder;
+					          auto engine = builder.build();
                     int exception_code = 0;
                     string exception_msg;
                     try
@@ -884,14 +884,14 @@ namespace TiValue
                         //lua::lib::add_global_string_variable(scope.L(), "caller_address", ((string)(Address(this->caller))).c_str());
                         //lua::lib::set_lua_state_value(scope.L(), "evaluate_state", statevalue, GluaStateValueType::LUA_STATE_VALUE_POINTER);
 
-						engine->set_caller((string)(this->caller), (string)(Address(this->caller)));
-						engine->set_state_pointer_value("evaluate_state", &eval_state);
+						            engine->set_caller((string)(this->caller), (string)(Address(this->caller)));
+						            engine->set_state_pointer_value("evaluate_state", &eval_state);
 
                         if (!eval_state.evaluate_contract_testing)
                             FC_ASSERT(all_amount >= transaction_fee.amount, "call limit amount not enough!");
 
                         // lua::api::global_glua_chain_api->clear_exceptions(scope.L());
-						engine->clear_exceptions();
+						            engine->clear_exceptions();
 
                         int limit = 0;
                         limit = eval_state._current_state->get_limit(0, costlimit.amount);
@@ -900,16 +900,16 @@ namespace TiValue
                             FC_CAPTURE_AND_THROW(TiValue::blockchain::contract_run_out_of_money);
                         }
                         // scope.set_instructions_limit(limit);
-						engine->set_gas_limit(limit);
-						try
-						{
-							engine->execute_contract_api_by_address(this->contract.AddressToString(AddressType::contract_address).c_str(), method.c_str(), this->args.c_str(), nullptr);
-						}
-						catch (glua::core::GluaException &e)
-						{
-							TiValue::blockchain::contract_error con_err(32000, "exception", exception_msg);
-							throw con_err;
-						}
+                        engine->set_gas_limit(limit);
+                        try
+                        {
+                          engine->execute_contract_api_by_address(this->contract.AddressToString(AddressType::contract_address).c_str(), method.c_str(), this->args.c_str(), nullptr);
+                        }
+                        catch (glua::core::GluaException &e)
+                        {
+                          TiValue::blockchain::contract_error con_err(32000, "exception", exception_msg);
+                          throw con_err;
+                        }
                         //scope.execute_contract_api_by_address(this->contract.AddressToString(AddressType::contract_address).c_str(), method.c_str(), this->args.c_str(), nullptr);
                         //if (scope.L()->force_stopping == true && scope.L()->exit_code == LUA_API_INTERNAL_ERROR)
                         //    FC_CAPTURE_AND_THROW(lua_executor_internal_error, (""));

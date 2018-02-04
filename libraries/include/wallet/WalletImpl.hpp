@@ -63,7 +63,7 @@ namespace TiValue {
                 boost::shared_mutex                                        m_mutex_for_wallet;   //???ио12?ик??
                 boost::shared_mutex                                        m_mutex_for_sub;   //???ио12?ик??
                 boost::shared_mutex                                        m_mutex_for_private;   //???ио12?ик??
-				NodeIdType										file_store_node;
+				        NodeIdType										file_store_node;
                 WalletImpl();
                 ~WalletImpl();
 

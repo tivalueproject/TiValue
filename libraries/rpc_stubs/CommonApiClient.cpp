@@ -7083,10 +7083,10 @@ std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiClient::wallet_list_
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
-  if( glog != NULL )
+  if (glog != NULL)
   {
-    args.push_back( fc::variant(file_id) );
-    call_id = glog->log_call_started( this, "wallet_list_store_request_for_my_file", args );
+    args.push_back(fc::variant(file_id));
+    call_id = glog->log_call_started(this, "wallet_list_store_request_for_my_file", args);
   }
 
   struct scope_exit
@@ -7098,8 +7098,38 @@ std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiClient::wallet_list_
   try
   {
     std::vector<TiValue::blockchain::StoreRequestInfo> result = get_impl()->wallet_list_store_request_for_my_file(file_id);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "wallet_list_store_request_for_my_file", args, fc::variant(result) );
+    if (call_id != 0)
+      glog->log_call_finished(call_id, this, "wallet_list_store_request_for_my_file", args, fc::variant(result));
+
+    return result;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
+//added on 02/03/2018
+std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::wallet_list_my_upload_requests(const std::string& account)
+{
+  ilog("received RPC call: wallet_list_my_upload_requests(${account})", ("account", account));
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if (glog != NULL)
+  {
+    args.push_back(fc::variant(account));
+    call_id = glog->log_call_started(this, "wallet_list_my_upload_requests", args);
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call wallet_list_my_upload_requests finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    std::vector<TiValue::blockchain::UploadRequestEntry> result = get_impl()->wallet_list_my_upload_requests(account);
+    if (call_id != 0)
+      glog->log_call_finished(call_id, this, "wallet_list_my_upload_requests", args, fc::variant(result));
 
     return result;
   }
@@ -7425,9 +7455,9 @@ std::string CommonApiClient::generate_download_validation(const std::string& fil
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 {
-  ilog("received RPC call: declare_piece_saved(${file_id}, ${piece_id}, ${storer})", ("file_id", file_id)("piece_id", piece_id)("storer", storer));
+  ilog("received RPC call: declare_piece_saved(${file_id}, ${piece_id}, ${storer}, ${node_id})", ("file_id", file_id)("piece_id", piece_id)("storer", storer)("node_id", node_id));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
@@ -7436,6 +7466,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(con
     args.push_back( fc::variant(file_id) );
     args.push_back( fc::variant(piece_id) );
     args.push_back( fc::variant(storer) );
+    args.push_back(fc::variant(node_id));
     call_id = glog->log_call_started( this, "declare_piece_saved", args );
   }
 
@@ -7447,7 +7478,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(con
   } execution_time_logger;
   try
   {
-    TiValue::wallet::WalletTransactionEntry result = get_impl()->declare_piece_saved(file_id, piece_id, storer);
+    TiValue::wallet::WalletTransactionEntry result = get_impl()->declare_piece_saved(file_id, piece_id, storer, node_id);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "declare_piece_saved", args, fc::variant(result) );
 

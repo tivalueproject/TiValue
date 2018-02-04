@@ -1448,13 +1448,13 @@ namespace TiValue {
                             my->_contract_to_trx_iddb.toggle_leveldb(enabled);
 
 
-							//filestore related
-							my->_upload_request_db.toggle_leveldb(enabled);
-							my->_store_request_db.toggle_leveldb(enabled);
-							my->_piece_saved_db.toggle_leveldb(enabled);
-							my->_file_saved_db.toggle_leveldb(enabled);
-							my->_enable_access_db.toggle_leveldb(enabled);
-							my->_save_decl_db.toggle_leveldb(enabled);
+							              //filestore related
+							              my->_upload_request_db.toggle_leveldb(enabled);
+							              my->_store_request_db.toggle_leveldb(enabled);
+							              my->_piece_saved_db.toggle_leveldb(enabled);
+							              my->_file_saved_db.toggle_leveldb(enabled);
+							              my->_enable_access_db.toggle_leveldb(enabled);
+							              my->_save_decl_db.toggle_leveldb(enabled);
 
                         };
 
@@ -3861,13 +3861,17 @@ namespace TiValue {
 			return res;
 		}
 
-		std::vector<FileIdType> TiValue::blockchain::ChainDatabase::get_file_saved() const
-		{
-			std::vector<FileIdType> res;
-			for (auto it = my->_file_saved_db.unordered_begin(); it !=my->_file_saved_db.unordered_end(); it++)
-			{
-				res.push_back(it->first);
-			}
+    std::vector<FileSavedEntry> TiValue::blockchain::ChainDatabase::get_file_saved() const
+    {
+      //std::vector<FileIdType> res;
+      //for (auto it = my->_file_saved_db.unordered_begin(); it !=my->_file_saved_db.unordered_end(); it++)
+      //{
+      //	res.push_back(it->first);
+      //}
+      std::vector<FileSavedEntry> res;
+      for (auto itr = my->_file_saved_db.unordered_begin(); itr != my->_file_saved_db.unordered_end(); itr++) {
+        res.push_back(itr->second);
+      }
 			return res;
 		}
 

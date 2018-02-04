@@ -347,13 +347,13 @@ typedef struct GluaStorageValue
 
 	// 尝试当成number处理
 	inline void try_parse_to_number_type()
-    {
+  {
 		if (type == TiValue::blockchain::StorageValueTypes::storage_value_int)
 		{
 			value.number_value = (lua_Number)value.int_value;
 			type = TiValue::blockchain::StorageValueTypes::storage_value_number;
 		}
-    }
+  }
 
     inline static bool is_same_base_type_with_type_parse(TiValue::blockchain::StorageValueTypes type1, TiValue::blockchain::StorageValueTypes type2)
     {
@@ -534,14 +534,12 @@ namespace TiValue {
             /************************************************************************/
             /* transfer asset from contract by account address                      */
             /************************************************************************/
-            virtual lua_Integer transfer_from_contract_to_address(lua_State *L, const char *contract_address, const char *to_address,
-              const char *asset_type, int64_t amount) = 0;
+            virtual lua_Integer transfer_from_contract_to_address(lua_State *L, const char *contract_address, const char *to_address, const char *asset_type, int64_t amount) = 0;
 
             /************************************************************************/
             /* transfer asset from contract by account name on chain                */
             /************************************************************************/
-            virtual lua_Integer transfer_from_contract_to_public_account(lua_State *L, const char *contract_address, const char *to_account_name,
-              const char *asset_type, int64_t amount) = 0;
+            virtual lua_Integer transfer_from_contract_to_public_account(lua_State *L, const char *contract_address, const char *to_account_name, const char *asset_type, int64_t amount) = 0;
 
             virtual int64_t get_contract_balance_amount(lua_State *L, const char *contract_address, const char* asset_symbol) = 0;
             virtual int64_t get_transaction_fee(lua_State *L) = 0;
@@ -554,6 +552,7 @@ namespace TiValue {
             virtual int32_t get_waited(lua_State *L, uint32_t num) = 0;
 
             virtual void emit(lua_State *L, const char* contract_id, const char* event_name, const char* event_param) = 0;
+<<<<<<< HEAD
 			virtual bool contract_api_check(lua_State *L, const std::string& contract_id, const std::string& api_name)=0;
 			virtual bool allow_upload_request(lua_State *L, const blockchain::FileIdType& file_id, const std::string& requestor,
 				const std::vector<blockchain::PieceUploadInfo>& pieces,
@@ -575,6 +574,24 @@ namespace TiValue {
 			virtual bool allow_store_reject(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& node_id)=0;
 			virtual const char* get_publickey_address(lua_State *L, const char* pubkey)=0;
 };
+=======
+			      virtual bool contract_api_check(lua_State *L, const std::string& contract_id, const std::string& api_name) = 0;
+			      virtual bool allow_upload_request(lua_State *L, const blockchain::FileIdType& file_id, const std::string& requestor,
+				      const std::vector<blockchain::PieceUploadInfo>& pieces,	int64_t num_of_copys, int64_t payterm, const std::string& filename, const std::string& description, const std::string& node_id) = 0;
+            virtual int allow_upload_request_wrapper_func(lua_State *L) = 0;
+            virtual int allow_piece_saved_wrapper_func(lua_State *L) = 0;
+            virtual int allow_enable_access_wrapper_func(lua_State *L) = 0;
+            virtual int allow_store_reject_wrapper_func(lua_State *L) = 0;
+            virtual int allow_store_request_wrapper_func(lua_State *L) = 0;
+            virtual int allow_declare_piece_saved_wrapper_func(lua_State *L) = 0;
+            virtual bool allow_declare_piece_saved(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& storer, const std::string & node_id) = 0;
+            virtual bool allow_store_request(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& requester, const std::string& node_id) = 0;
+            virtual bool allow_piece_saved(lua_State *L, const blockchain::FileIdType& file_id, const  std::string& piece_id, const std::string& Node) = 0;
+            virtual bool allow_enable_access(lua_State *L, const std::string& file_id, const std::string& requestor) = 0;
+            virtual bool allow_store_reject(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& node_id) = 0;
+            virtual const char* get_publickey_address(lua_State *L, const char* pubkey) = 0;
+          };
+>>>>>>> dev
 
 
           extern IGluaChainApi *global_glua_chain_api;

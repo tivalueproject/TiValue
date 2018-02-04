@@ -169,8 +169,8 @@ namespace TiValue {
         {
             optional<PublicKeyType> from_account;
             optional<PublicKeyType> to_account;
-			optional<BalanceIdType> from_contract_balance;
-			optional<BalanceIdType> to_contract_balance;
+			      optional<BalanceIdType> from_contract_balance;
+			      optional<BalanceIdType> to_contract_balance;
             Asset                     amount;
             string                    memo;
             optional<PublicKeyType> memo_from_account;

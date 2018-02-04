@@ -53,6 +53,7 @@
 #define TIV_FILE_ACCESS_INTERFACE							"Access"
 #define TIV_FILE_STORE_INTERFACE							"Store"
 #define TIV_FILE_CONFIRM_INTERFACE							"Confirm"
+#define TIV_FILE_DECLARE_PIECE_SAVED_INTERFACE  "Declare"
 #define TIV_FILE_EVENT_STOREREQUEST							"StoreRequest"
 #define TIV_FILE_EVENT_UPLOADREQUEST						"UploadRequest"
 #define TIV_FILE_EVENT_FILESAVED							"FileSaved"

@@ -85,6 +85,20 @@ namespace TiValue {
 			{
 				return _wallet->list_store_request_for_my_file(file_id);
 			}
+
+      //added on 02/03/2018
+      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::wallet_list_my_upload_requests(const std::string& account) {
+        std::vector<TiValue::blockchain::UploadRequestEntry> vec = _chain_db->list_upload_requests();
+        std::vector<TiValue::blockchain::UploadRequestEntry> res;
+        PublicKeyType pub_key = _wallet->get_owner_public_key(account);
+        for (auto itr = vec.begin(); itr != vec.end(); itr++) {
+          if (itr->id.uploader == pub_key) {
+            res.push_back(*itr);
+          }
+        }      
+        return res;
+      }
+
 			std::string ClientImpl::blockchain_get_file_authorizing_contract(const std::string& file_id)
 			{
 				FileIdType id(file_id);
@@ -96,9 +110,13 @@ namespace TiValue {
 			std::vector<std::string> ClientImpl::blockchain_list_file_saved()
 			{
 				vector<std::string> res;
-				auto file_ids=_chain_db->get_file_saved();
-				for (auto file_id : file_ids)
-					res.push_back(file_id);
+				//auto file_ids=_chain_db->get_file_saved();
+				//for (auto file_id : file_ids)
+				//	res.push_back(file_id);
+        auto entries = _chain_db->get_file_saved();
+        for (auto entry : entries) {
+          res.push_back(std::string(entry.file_id) + "," + std::string(entry.piece_id));
+        }
 				return res;
 			}
 			void ClientImpl::wallet_set_node_id(const std::string& node_id)
@@ -162,7 +180,7 @@ namespace TiValue {
 			}
 			TiValue::wallet::WalletTransactionEntry ClientImpl::confirm_piece_saved(const std::string& confirmer, const std::string& file_id, const std::string& file_piece_id, const std::string& Storage, double exec_limit)
 			{
-				auto entry = _wallet->confirm_piece_saved(confirmer, file_id,file_piece_id,Storage,  exec_limit);
+				auto entry = _wallet->confirm_piece_saved(confirmer, file_id, file_piece_id, Storage, exec_limit);
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;
@@ -218,7 +236,12 @@ namespace TiValue {
 
 				PublicKeyType pkey(key);
 				printf("file_id=%s\n,au=%s\n,key=", fid.c_str(), authentication.c_str(), pkey.operator fc::string().c_str());
-					auto files = _chain_db->get_file_saved();
+					//auto files = _chain_db->get_file_saved();
+        auto infos = _chain_db->get_file_saved();
+        std::vector<FileIdType> files;
+        for (auto info : infos) {
+          files.push_back(info.file_id);
+        }
 					for (auto file : files)
 					{
 						if (file == fid)
@@ -320,13 +343,14 @@ namespace TiValue {
 				}
 				FC_CAPTURE_AND_THROW(access_unauthorized,(file_id));
 			}
-			TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+			TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 			{
 				auto sr_entry=_chain_db->get_store_request_entry(piece_id);
 				auto acc_entry=_wallet->get_account(storer);
 				if (!sr_entry.valid())
 					FC_CAPTURE_AND_THROW(store_request_not_exsited,(piece_id)(storer));
 				bool found = false;
+<<<<<<< HEAD
 				for (auto reqit = sr_entry->store_request.begin(); reqit != sr_entry->store_request.end(); reqit++)
 				{
 					if (acc_entry.owner_key == reqit->second)
@@ -338,6 +362,25 @@ namespace TiValue {
 				if (!found)
 					FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id)(storer));
 				WalletTransactionEntry entry = _wallet->declare_piece_saved(file_id,piece_id,storer);
+=======
+				//for (auto reqit = sr_entry->store_request.begin(); reqit != sr_entry->store_request.end(); reqit++)
+				//{
+				//	if (acc_entry.owner_key == reqit->second)
+				//	{
+				//		found = true;
+				//		break;
+				//	}	
+				//}
+				//if (!found)
+				//	FC_CAPTURE_AND_THROW(store_request_not_exsited, (piece_id)(storer));
+        if (sr_entry->pieces[0].pieceid == piece_id) {
+          found = true;
+        } else {
+          FC_CAPTURE_AND_THROW(upload_request_not_exsited, (piece_id)(storer));
+        }
+
+				WalletTransactionEntry entry = _wallet->declare_piece_saved(file_id, piece_id, storer, node_id);
+>>>>>>> dev
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;
