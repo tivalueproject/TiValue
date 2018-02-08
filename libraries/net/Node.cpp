@@ -93,6 +93,8 @@
 //log these messages even at warn level when operating on the test network
 #ifdef TIV_TEST_NETWORK
 #define testnetlog wlog
+#elif TIV_TEST_NETWORK2
+#define testnetlog wlog
 #else
 #define testnetlog(...) do {} while (0)
 #endif
@@ -4229,6 +4231,8 @@ namespace TiValue {
 
 #ifdef TIV_TEST_NETWORK
                     //uint32_t port = TIV_NET_TEST_P2P_PORT + TIV_TEST_NETWORK_VERSION;
+                    uint32_t port = TIV_NET_TEST_P2P_PORT;
+#elif TIV_TEST_NETWORK2
                     uint32_t port = TIV_NET_TEST_P2P_PORT;
 #else
                     uint32_t port = TIV_NET_DEFAULT_P2P_PORT;

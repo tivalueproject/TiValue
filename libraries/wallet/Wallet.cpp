@@ -6220,19 +6220,19 @@ namespace TiValue {
 
 		TiValue::wallet::WalletTransactionEntry Wallet::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 		{
-			//FC_ASSERT(is_open(), "Wallet not open!");
-			//FC_ASSERT(is_unlocked(), "Wallet not unlock!");
-			//FC_ASSERT(my->is_receive_account(storer), "Invalid account name");
+      FC_ASSERT(is_open(), "Wallet not open!");
+      FC_ASSERT(is_unlocked(), "Wallet not unlock!");
+      FC_ASSERT(my->is_receive_account(storer), "Invalid account name");
 
 			//SignedTransaction     trx;
 			//unordered_set<Address> required_signatures;
 			//const auto required_fees = get_transaction_fee(0);
 
 			//my->withdraw_to_transaction(required_fees, storer, trx, required_signatures);
-   //   auto acc = get_account(storer);
-   //   if (!acc.is_my_account)
-   //     FC_CAPTURE_AND_THROW(not_my_account, (storer));
-   //   PieceSavedDeclareOperation Pop(FileIdType(file_id), piece_id, node_id, acc.owner_key);
+      //auto acc = get_account(storer);
+      //if (!acc.is_my_account)
+      //  FC_CAPTURE_AND_THROW(not_my_account, (storer));
+      //PieceSavedDeclareOperation Pop(FileIdType(file_id), piece_id, node_id, acc.owner_key);
 			//trx.operations.push_back(Pop);
 			//trx.expiration = blockchain::now() + get_transaction_expiration();
 

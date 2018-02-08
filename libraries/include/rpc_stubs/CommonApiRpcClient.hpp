@@ -265,7 +265,7 @@ namespace TiValue {
     std::vector<TiValue::blockchain::StoreRequestInfo> wallet_list_store_request_for_my_file(const std::string& file_id = fc::json::from_string("\"\"").as<std::string>()) override;
     
     //added on 02/03/2018
-    std::vector<TiValue::blockchain::UploadRequestEntry>wallet_list_my_upload_requests(const std::string& account) override;
+    std::vector<TiValue::blockchain::UploadRequestEntryPlus>wallet_list_my_upload_requests(const std::string& account) override;
 
     bool blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key) override;
     std::vector<TiValue::blockchain::FileAccessInfo> wallet_get_my_access() override;

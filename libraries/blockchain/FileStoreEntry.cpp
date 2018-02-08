@@ -256,9 +256,9 @@ namespace TiValue {
 			return false;
 		}
 
-        AllowedStoreRequest::AllowedStoreRequest(const FileIdType & fid, const FilePieceIdType & piece_id, const PublicKeyType storer):file_id(file_id), piece_id(piece_id),storer(storer)
-        {
-        }
+    AllowedStoreRequest::AllowedStoreRequest(const FileIdType & fid, const FilePieceIdType & piece_id, const PublicKeyType storer) :file_id(file_id), piece_id(piece_id), storer(storer)
+    {
+    }
 
-}
+  }
 }

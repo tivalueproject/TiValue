@@ -312,9 +312,12 @@ namespace TiValue {
             fc::logger_config dlc;
 #ifdef TIV_TEST_NETWORK
             dlc.level = fc::log_level::debug;
+#elif TIV_TEST_NETWORK2
+            dlc.level = fc::log_level::debug;
 #else
             dlc.level = fc::log_level::warn;
 #endif
+
             dlc.name = "default";
             dlc.appenders.push_back("default");
             dlc.appenders.push_back("p2p");
@@ -322,6 +325,8 @@ namespace TiValue {
 
             fc::logger_config dlc_client;
 #ifdef TIV_TEST_NETWORK
+            dlc_client.level = fc::log_level::debug;
+#elif TIV_TEST_NETWORK2
             dlc_client.level = fc::log_level::debug;
 #else
             dlc_client.level = fc::log_level::warn;
@@ -334,6 +339,8 @@ namespace TiValue {
             fc::logger_config dlc_rpc;
 #ifdef TIV_TEST_NETWORK
             dlc_rpc.level = fc::log_level::debug;
+#elif TIV_TEST_NETWORK2
+            dlc_client.level = fc::log_level::debug;
 #else
             dlc_rpc.level = fc::log_level::warn;
 #endif
@@ -343,6 +350,8 @@ namespace TiValue {
             fc::logger_config dlc_blockchain;
 #ifdef TIV_TEST_NETWORK
             dlc_blockchain.level = fc::log_level::debug;
+#elif TIV_TEST_NETWORK2
+            dlc_blockchain.level = fc::log_level::debug;
 #else
             dlc_blockchain.level = fc::log_level::warn;
 #endif
@@ -351,6 +360,8 @@ namespace TiValue {
 
             fc::logger_config dlc_p2p;
 #ifdef TIV_TEST_NETWORK
+            dlc_p2p.level = fc::log_level::debug;
+#elif TIV_TEST_NETWORK2
             dlc_p2p.level = fc::log_level::debug;
 #else
             dlc_p2p.level = fc::log_level::warn;
@@ -401,7 +412,10 @@ namespace TiValue {
 #ifdef TIV_TEST_NETWORK
                         //dir_name += "-Test" + std::to_string(TIV_TEST_NETWORK_VERSION);
                         dir_name += "-Test";
+#elif TIV_TEST_NETWORK2
+                        dir_name += "-Test2";
 #endif
+
                         return dir_name;
                     };
 
@@ -1643,6 +1657,8 @@ namespace TiValue {
 #ifdef TIV_TEST_NETWORK
             //client_version += "-testnet-" + std::to_string(TIV_TEST_NETWORK_VERSION);
             client_version += "-testnet";
+#elif TIV_TEST_NETWORK2
+            client_version += "-testnet2";
 #endif
 
             fc::mutable_variant_object info;

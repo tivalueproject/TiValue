@@ -20,6 +20,14 @@ namespace TiValue {
 			"116.62.224.190:64696",
 		};
 #endif
+#elif TIV_TEST_NETWORK2
+      static const std::vector<std::string> SeedNodes
+      {
+        "47.94.109.209:64696",
+        "101.200.53.4:64696",
+        "39.108.8.87:64696",
+        "106.14.172.170:64696"
+    };
 #else
         static const std::vector<std::string> SeedNodes
         {

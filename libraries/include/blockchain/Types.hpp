@@ -44,13 +44,13 @@ namespace TiValue {
         //type define for contract
         typedef std::string						  ContractName;
         typedef Address							  ContractIdType;
-		typedef unsigned char                      ContractChar;
-		typedef std::string								FileContentIdType;
-		typedef std::string								FilePieceIdType;
+		    typedef unsigned char                      ContractChar;
+		    typedef std::string								FileContentIdType;
+		    typedef std::string								FilePieceIdType;
 
-		typedef  std::string NodeIdType;
+		    typedef  std::string NodeIdType;
         
-		using std::string;
+		    using std::string;
         using std::function;
         using fc::variant;
         using fc::variant_object;

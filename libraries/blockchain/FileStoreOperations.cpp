@@ -273,31 +273,33 @@ namespace TiValue
         }
 
         oPieceSavedDeclEntry decl_entry = eval_state._current_state->get_save_decl_entry(piece_id);
-        if (decl_entry.valid())
+        if (decl_entry.valid()) 
         {
           PieceStoreInfo temp;
           temp.file_id = file_id;
           temp.piece_id = piece_id;
-          set<PieceStoreInfo>::iterator it = decl_entry->store_info.find(temp);
 
+          set<PieceStoreInfo>::iterator it = decl_entry->store_info.find(temp);
           if (it == decl_entry->store_info.end())
           {
             PieceStoreInfo info;
             info.file_id = file_id;
             info.piece_id = piece_id;
-            info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
+            info.nodes.insert(StoreNodeInfo(node_id, key));
             decl_entry->store_info.insert(info);
           }
           else
           {
-            if (it->nodes.find(StoreNodeInfo(this->node_id, this->key)) != it->nodes.end())
-              FC_CAPTURE_AND_THROW(save_decl_exsited, (this->node_id));
-            StoreNodeInfo node_info = StoreNodeInfo(this->node_id, this->key);
+            if (it->nodes.find(StoreNodeInfo(node_id, key)) != it->nodes.end()) {
+              FC_CAPTURE_AND_THROW(save_decl_exsited, (node_id));
+            }         
+            StoreNodeInfo node_info = StoreNodeInfo(node_id, key);
             PieceStoreInfo info;
             info.file_id = file_id;
             info.piece_id = piece_id;
             info.nodes = it->nodes;
-            info.nodes.insert(StoreNodeInfo(this->node_id, this->key));
+            info.nodes.insert(StoreNodeInfo(node_id, key));
+            decl_entry->store_info.erase(info);
             decl_entry->store_info.insert(info);
           }
           eval_state._current_state->store_save_decl_entry(*decl_entry);

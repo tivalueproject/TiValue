@@ -86,16 +86,52 @@ namespace TiValue {
 				return _wallet->list_store_request_for_my_file(file_id);
 			}
 
-      //added on 02/03/2018
-      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::wallet_list_my_upload_requests(const std::string& account) {
-        std::vector<TiValue::blockchain::UploadRequestEntry> vec = _chain_db->list_upload_requests();
-        std::vector<TiValue::blockchain::UploadRequestEntry> res;
-        PublicKeyType pub_key = _wallet->get_owner_public_key(account);
-        for (auto itr = vec.begin(); itr != vec.end(); itr++) {
-          if (itr->id.uploader == pub_key) {
-            res.push_back(*itr);
+      //added on 02/07/2018
+      std::vector<TiValue::blockchain::UploadRequestEntryPlus> ClientImpl::wallet_list_my_upload_requests(const std::string& account) {
+        std::vector<TiValue::blockchain::UploadRequestEntryPlus> res;
+        std::vector<TiValue::blockchain::UploadRequestEntry> upload_reqeusts = _chain_db->list_upload_requests();
+        PublicKeyType public_key = _wallet->get_owner_public_key(account);
+        for (auto itr = upload_reqeusts.begin(); itr != upload_reqeusts.end(); itr++) {
+          if (public_key == itr->id.uploader)  {
+            UploadRequestEntryPlus upload_plus;
+            upload_plus.file_id          = itr->id;
+            upload_plus.piece            = itr->pieces[0];   
+            upload_plus.node_id          = itr->node_id;
+            upload_plus.file_name        = itr->filename;
+            upload_plus.description      = itr->description;
+            upload_plus.num_of_copy      = itr->num_of_copys;
+            upload_plus.num_of_declared  = 0;
+            upload_plus.num_of_confirmed = 0;
+
+            oPieceSavedDeclEntry o_save_decl_entry = _chain_db->get_save_decl_entry(itr->pieces[0].pieceid);      
+            oPieceSavedEntry o_piece_saved_entry = _chain_db->get_piece_saved_entry(itr->pieces[0].pieceid);
+            PieceSavedEntry piece_saved_entry;
+            if (o_piece_saved_entry.valid()) {
+              piece_saved_entry = *o_piece_saved_entry;
+            }
+            
+            if (o_save_decl_entry.valid()) {
+              PieceSavedDeclEntry piece_save_decl_entry = *o_save_decl_entry;
+              set<PieceStoreInfo> store_info = piece_save_decl_entry.store_info;
+              PieceStoreInfo temp_info;
+              temp_info.file_id = itr->id;
+              temp_info.piece_id = itr->pieces[0].pieceid;
+              auto search = store_info.find(temp_info);
+              if (search != store_info.end()) {
+                upload_plus.num_of_declared = search->nodes.size();
+                for (auto itr2 = search->nodes.begin(); itr2 != search->nodes.end(); itr2++) {
+                  if (piece_saved_entry.storageNode.find(itr2->node) != piece_saved_entry.storageNode.end()) {
+                    upload_plus.storers.push_back(StoreNodeInfoPlus(itr2->node, itr2->key, true));
+                    upload_plus.num_of_confirmed++;
+                  } else {
+                    upload_plus.storers.push_back(StoreNodeInfoPlus(itr2->node, itr2->key, false));
+                  }
+                }
+              }
+            }
+            res.push_back(upload_plus);
           }
-        }      
+        }       
         return res;
       }
 

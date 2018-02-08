@@ -1145,10 +1145,10 @@ std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiRpcClient::wallet_li
 }
 
 //added on 02/03/2018
-std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiRpcClient::wallet_list_my_upload_requests(const std::string& account)
+std::vector<TiValue::blockchain::UploadRequestEntryPlus> CommonApiRpcClient::wallet_list_my_upload_requests(const std::string& account)
 {
   fc::variant result = get_json_connection()->async_call("wallet_list_my_upload_requests", std::vector < fc::variant > {fc::variant(account)}).wait();
-  return result.as<std::vector<TiValue::blockchain::UploadRequestEntry>>();
+  return result.as<std::vector<TiValue::blockchain::UploadRequestEntryPlus>>();
 }
 
 bool CommonApiRpcClient::blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key)

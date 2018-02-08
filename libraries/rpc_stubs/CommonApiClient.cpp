@@ -7106,7 +7106,7 @@ std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiClient::wallet_list_
 }
 
 //added on 02/03/2018
-std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::wallet_list_my_upload_requests(const std::string& account)
+std::vector<TiValue::blockchain::UploadRequestEntryPlus> CommonApiClient::wallet_list_my_upload_requests(const std::string& account)
 {
   ilog("received RPC call: wallet_list_my_upload_requests(${account})", ("account", account));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
@@ -7126,7 +7126,7 @@ std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::wallet_lis
   } execution_time_logger;
   try
   {
-    std::vector<TiValue::blockchain::UploadRequestEntry> result = get_impl()->wallet_list_my_upload_requests(account);
+    std::vector<TiValue::blockchain::UploadRequestEntryPlus> result = get_impl()->wallet_list_my_upload_requests(account);
     if (call_id != 0)
       glog->log_call_finished(call_id, this, "wallet_list_my_upload_requests", args, fc::variant(result));
 

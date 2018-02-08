@@ -27,10 +27,12 @@ namespace TiValue {
                         FC_ASSERT(_entrys.is_open());
 						if(WalletDb::types_not_save.count(entry.type) < 1)
 						{
-#ifndef TIV_TEST_NETWORK
-							_entrys.store(index, entry, sync);
+#ifdef TIV_TEST_NETWORK							
+              _entrys.store(index, entry);
+#elif TIV_TEST_NETWORK2
+              _entrys.store(index, entry);
 #else
-							_entrys.store(index, entry);
+              _entrys.store(index, entry, sync);	
 #endif
 						}
                         load_generic_entry(entry);

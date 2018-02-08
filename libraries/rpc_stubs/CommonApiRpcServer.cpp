@@ -7908,7 +7908,7 @@ fc::variant CommonApiRpcServer::wallet_list_my_upload_requests_positional(fc::rp
   if (parameters.size() <= 0)
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 1 (account)");
   std::string account = parameters[0].as<std::string>();
-  std::vector<TiValue::blockchain::UploadRequestEntry> result = get_client()->wallet_list_my_upload_requests(account);
+  std::vector<TiValue::blockchain::UploadRequestEntryPlus> result = get_client()->wallet_list_my_upload_requests(account);
   return fc::variant(result);
 }
 
@@ -7925,7 +7925,7 @@ fc::variant CommonApiRpcServer::wallet_list_my_upload_requests_named(fc::rpc::js
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'account'");
   std::string account = parameters["account"].as<std::string>();
   
-  std::vector<TiValue::blockchain::UploadRequestEntry> result = get_client()->wallet_list_my_upload_requests(account);
+  std::vector<TiValue::blockchain::UploadRequestEntryPlus> result = get_client()->wallet_list_my_upload_requests(account);
   return fc::variant(result);
 }
 

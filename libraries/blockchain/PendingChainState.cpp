@@ -169,16 +169,17 @@ namespace TiValue {
             //contract related
             populate_undo_state(undo_state, prev_state, _contract_id_to_entry, _contract_id_remove);
             populate_undo_state(undo_state, prev_state, _contract_id_to_storage, _contract_id_remove);
-			populate_undo_state(undo_state, prev_state, _request_id_to_result_id, _req_to_res_to_remove);
-			populate_undo_state(undo_state, prev_state, _result_id_to_request_id, _res_to_req_to_remove);
-			populate_undo_state(undo_state, prev_state, _trx_to_contract_id,_trx_to_contract_id_remove);
-			populate_undo_state(undo_state, prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
-			//filestore related
-			populate_undo_state(undo_state, prev_state, _upload_request_db, _upload_request_remove);
-			populate_undo_state(undo_state, prev_state, _store_request_db, _store_request_remove);
-			populate_undo_state(undo_state, prev_state, _piece_saved_db, _piece_saved_remove);
-			populate_undo_state(undo_state, prev_state, _file_saved_db, _file_saved_remove);
-			populate_undo_state(undo_state, prev_state, _enable_access_db, _enable_access_remove);
+			      populate_undo_state(undo_state, prev_state, _request_id_to_result_id, _req_to_res_to_remove);
+			      populate_undo_state(undo_state, prev_state, _result_id_to_request_id, _res_to_req_to_remove);
+			      populate_undo_state(undo_state, prev_state, _trx_to_contract_id,_trx_to_contract_id_remove);
+			      populate_undo_state(undo_state, prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
+			      //filestore related
+			      populate_undo_state(undo_state, prev_state, _upload_request_db, _upload_request_remove);
+			      populate_undo_state(undo_state, prev_state, _store_request_db, _store_request_remove);
+			      populate_undo_state(undo_state, prev_state, _piece_saved_db, _piece_saved_remove);
+			      populate_undo_state(undo_state, prev_state, _file_saved_db, _file_saved_remove);
+			      populate_undo_state(undo_state, prev_state, _enable_access_db, _enable_access_remove);
+            populate_undo_state(undo_state, prev_state, _savedecl_db, _savedecl_remove);
         }
 
         /** load the state from a variant */
@@ -639,6 +640,7 @@ namespace TiValue {
 		}
 		void PendingChainState::savedecl_insert_into_id_map(const FilePieceIdType & file_id, const PieceSavedDeclEntry & entry)
 		{
+      //_savedecl_db.erase(file_id);
 			_savedecl_db[file_id] = entry;
 			_savedecl_remove.erase(file_id);
 		}
