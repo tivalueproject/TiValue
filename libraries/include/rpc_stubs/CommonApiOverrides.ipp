@@ -251,12 +251,16 @@
     std::string blockchain_get_file_authorizing_contract(const std::string& file_id) override;
     std::vector<TiValue::blockchain::StoreRequestInfo> wallet_list_store_request_for_my_file(const std::string& file_id = fc::json::from_string("\"\"").as<std::string>()) override;
 
+	std::vector<TiValue::blockchain::HaveAppliedFileEntry> wallet_list_my_declared_file(const std::string& account) override;
 	std::vector<TiValue::blockchain::UploadRequestEntryPlus> wallet_list_my_upload_requests(const std::string& account) override;
 
     bool blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key) override;
     std::vector<TiValue::blockchain::FileAccessInfo> wallet_get_my_access() override;
     std::vector<TiValue::blockchain::UploadRequestEntry> wallet_get_my_upload_requests() override;
     std::vector<TiValue::blockchain::UploadRequestEntry> blockchain_get__upload_requests() override;
+	std::vector<TiValue::blockchain::UploadRequestEntry> blockchain_list_file_saved_info() override;
+	std::vector<TiValue::blockchain::CanApplyEntry> blockchain_list_can_apply_file() override;
+	
     std::vector<TiValue::blockchain::LocalStoreRequestInfo> wallet_get_my_store_request() override;
     vector<string> wallet_get_my_store_confirmed() override;
     std::vector<TiValue::blockchain::FilePieceInfo> wallet_get_my_store_rejected() override;

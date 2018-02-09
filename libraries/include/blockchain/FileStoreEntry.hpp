@@ -288,6 +288,30 @@ namespace TiValue {
       string file_name;
       string description;
     };
+
+    struct CanApplyEntry {
+      FileIdType file_id;
+      PieceUploadInfo piece;
+      size_t num_of_copy;
+      //size_t num_of_declared;
+      size_t num_of_confirmed;
+      NodeIdType node_id;
+      string file_name;
+      string description;
+    };
+
+    struct HaveAppliedFileEntry{
+      FileIdType file_id;
+      PieceUploadInfo piece;
+      bool is_confirmed;
+      size_t num_of_copy;
+      size_t num_of_declared;
+      size_t num_of_confirmed;
+      NodeIdType node_id;
+      string file_name;
+      string description;
+    };
+
 	}
 }
 namespace std
@@ -427,3 +451,24 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
   (node)
   (key)
   (is_confirmed))
+
+  FC_REFLECT(TiValue::blockchain::CanApplyEntry,
+  (file_id)
+  (piece)
+  (num_of_copy)
+  (num_of_confirmed)
+  (node_id)
+  (file_name)
+  (description))
+
+  FC_REFLECT(TiValue::blockchain::HaveAppliedFileEntry,
+  (file_id)
+  (piece)
+  (is_confirmed)
+  (num_of_copy)
+  (num_of_declared)
+  (num_of_confirmed)
+  (node_id)
+  (file_name)
+  (description))
+
