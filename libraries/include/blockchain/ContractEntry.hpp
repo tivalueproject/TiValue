@@ -119,25 +119,25 @@ namespace TiValue {
         //contract information
         struct  ContractEntry
         {
-            ContractName  contract_name; // contract name
-            ContractIdType  id; //contract address
-            fc::enum_type<fc::unsigned_int, ContractLevel> level = ContractLevel::temp; //the level of the contract
-            PublicKeyType owner; //the owner of the contract
-            fc::enum_type<fc::unsigned_int, ContractState> state = ContractState::valid; //contract state
-            std::string description; //the description of contract
-            Code code; // code-related of contract
-            fc::optional<uint64_t>    reserved;
-            TransactionIdType trx_id;
-			fc::time_point register_time;
-            //the address string, contain contract address prefix
-            std::string id_to_base58()const;
+          ContractName  contract_name; // contract name
+          ContractIdType  id; //contract address
+          fc::enum_type<fc::unsigned_int, ContractLevel> level = ContractLevel::temp; //the level of the contract
+          PublicKeyType owner; //the owner of the contract
+          fc::enum_type<fc::unsigned_int, ContractState> state = ContractState::valid; //contract state
+          std::string description; //the description of contract
+          Code code; // code-related of contract
+          fc::optional<uint64_t>    reserved;
+          TransactionIdType trx_id;
+			    fc::time_point register_time;
+          //the address string, contain contract address prefix
+          std::string id_to_base58()const;
 		
 
-            // database related functions
-            static oContractEntry lookup(const ChainInterface&, const ContractIdType&);
-            static oContractEntry lookup(const ChainInterface&, const ContractName&);
-            static void store(ChainInterface&, const ContractIdType&, const ContractEntry&);
-            static void remove(ChainInterface&, const ContractIdType&);
+          // database related functions
+          static oContractEntry lookup(const ChainInterface&, const ContractIdType&);
+          static oContractEntry lookup(const ChainInterface&, const ContractName&);
+          static void store(ChainInterface&, const ContractIdType&, const ContractEntry&);
+          static void remove(ChainInterface&, const ContractIdType&);
 
         };
 

@@ -40,7 +40,7 @@
 #include <fc/time.hpp>
 #include <net/Node.hpp>
 #include <stdint.h>
-#include <string> 
+#include <string>
 #include <wallet/Pretty.hpp>
 #include <wallet/TransactionBuilder.hpp>
 #include <wallet/Wallet.hpp>
@@ -4730,24 +4730,27 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_address_rpc_positional(fc::rp
 		verify_wallet_is_open();
 		// done checking prerequisites
 
-		if (parameters.size() <= 0)
-			FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 1 (amount_to_transfer)");
-		std::string amount_to_transfer = parameters[0].as<std::string>();
-		if (parameters.size() <= 1)
-			FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 2 (asset_symbol)");
-		std::string asset_symbol = parameters[1].as<std::string>();
-		if (parameters.size() <= 2)
-			FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 3 (from_account_name)");
-		std::string from_account_name = parameters[2].as<std::string>();
-		if (parameters.size() <= 3)
-			FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 4 (to_address)");
-		std::string to_address = parameters[3].as<std::string>();
-		TiValue::blockchain::Imessage memo_message = (parameters.size() <= 4) ?
-			(fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>()) :
-			parameters[4].as<TiValue::blockchain::Imessage>();
-		TiValue::wallet::VoteStrategy strategy = (parameters.size() <= 5) ?
-			(fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
-			parameters[5].as<TiValue::wallet::VoteStrategy>();
+  if (parameters.size() <= 0)
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 1 (amount_to_transfer)");
+  std::string amount_to_transfer = parameters[0].as<std::string>();
+  if (parameters.size() <= 1)
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 2 (asset_symbol)");
+  std::string asset_symbol = parameters[1].as<std::string>();
+  if (parameters.size() <= 2)
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 3 (from_account_name)");
+  std::string from_account_name = parameters[2].as<std::string>();
+  if (parameters.size() <= 3)
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 4 (to_address)");
+  std::string to_address = parameters[3].as<std::string>();
+  TiValue::blockchain::Imessage memo_message = (parameters.size() <= 4) ?
+    (fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>()) :
+    parameters[4].as<TiValue::blockchain::Imessage>();
+  TiValue::wallet::VoteStrategy strategy = (parameters.size() <= 5) ?
+    (fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) :
+    parameters[5].as<TiValue::wallet::VoteStrategy>();
+  bool broadcast = (parameters.size() <= 6) ?
+    (fc::json::from_string("true").as<bool>()) :
+    parameters[6].as<bool>();
 
 		std::string result = get_client()->wallet_transfer_to_address_rpc(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
 		return fc::variant(result);
@@ -4760,8 +4763,6 @@ fc::variant CommonApiRpcServer::wallet_transfer_to_address_rpc_positional(fc::rp
                 return res;
             }
 }
-
-
 
 fc::variant CommonApiRpcServer::wallet_transfer_to_address_rpc_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters)
 {
@@ -7481,43 +7482,40 @@ fc::variant CommonApiRpcServer::store_file_to_network_positional(fc::rpc::json_c
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 1 (owner)");
   std::string owner = parameters[0].as<std::string>();
   if (parameters.size() <= 1)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 2 (AuthorizatingContractId)");
-  std::string AuthorizatingContractId = parameters[1].as<std::string>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 2 (filename)");
+  TiValue::blockchain::FilePath filename = parameters[1].as<TiValue::blockchain::FilePath>();
   if (parameters.size() <= 2)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 3 (filename)");
-  TiValue::blockchain::FilePath filename = parameters[2].as<TiValue::blockchain::FilePath>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 3 (filesize)");
+  uint32_t filesize = parameters[2].as<uint32_t>();
   if (parameters.size() <= 3)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 4 (filesize)");
-  uint32_t filesize = parameters[3].as<uint32_t>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 4 (description)");
+  std::string description = parameters[3].as<std::string>();
   if (parameters.size() <= 4)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 5 (description)");
-  std::string description = parameters[4].as<std::string>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 5 (piecesinfo)");
+  std::string piecesinfo = parameters[4].as<std::string>();
   if (parameters.size() <= 5)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 6 (piecesinfo)");
-  std::string piecesinfo = parameters[5].as<std::string>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 6 (asset_symbol)");
+  std::string asset_symbol = parameters[5].as<std::string>();
   if (parameters.size() <= 6)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 7 (asset_symbol)");
-  std::string asset_symbol = parameters[6].as<std::string>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 7 (price)");
+  double price = parameters[6].as<double>();
   if (parameters.size() <= 7)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 8 (price)");
-  double price = parameters[7].as<double>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 8 (numofcopy)");
+  uint32_t numofcopy = parameters[7].as<uint32_t>();
   if (parameters.size() <= 8)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 9 (numofcopy)");
-  uint32_t numofcopy = parameters[8].as<uint32_t>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 9 (numofpiece)");
+  uint32_t numofpiece = parameters[8].as<uint32_t>();
   if (parameters.size() <= 9)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 10 (numofpiece)");
-  uint32_t numofpiece = parameters[9].as<uint32_t>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 10 (payterm)");
+  uint32_t payterm = parameters[9].as<uint32_t>();
   if (parameters.size() <= 10)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 11 (payterm)");
-  uint32_t payterm = parameters[10].as<uint32_t>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 11 (node_id)");
+  std::string node_id = parameters[10].as<std::string>();
   if (parameters.size() <= 11)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 12 (node_id)");
-  std::string node_id = parameters[11].as<std::string>();
-  if (parameters.size() <= 12)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 13 (exec_limit)");
-  double exec_limit = parameters[12].as<double>();
+    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 12 (exec_limit)");
+  double exec_limit = parameters[11].as<double>();
 
-  TiValue::blockchain::UploadRequestEntry result = get_client()->store_file_to_network(owner, AuthorizatingContractId, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
+  TiValue::blockchain::UploadRequestEntry result = get_client()->store_file_to_network(owner, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
   return fc::variant(result);
 }
 
@@ -7532,9 +7530,6 @@ fc::variant CommonApiRpcServer::store_file_to_network_named(fc::rpc::json_connec
   if (!parameters.contains("owner"))
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'owner'");
   std::string owner = parameters["owner"].as<std::string>();
-  if (!parameters.contains("AuthorizatingContractId"))
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'AuthorizatingContractId'");
-  std::string AuthorizatingContractId = parameters["AuthorizatingContractId"].as<std::string>();
   if (!parameters.contains("filename"))
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'filename'");
   TiValue::blockchain::FilePath filename = parameters["filename"].as<TiValue::blockchain::FilePath>();
@@ -7569,7 +7564,7 @@ fc::variant CommonApiRpcServer::store_file_to_network_named(fc::rpc::json_connec
     FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'exec_limit'");
   double exec_limit = parameters["exec_limit"].as<double>();
 
-  TiValue::blockchain::UploadRequestEntry result = get_client()->store_file_to_network(owner, AuthorizatingContractId, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
+  TiValue::blockchain::UploadRequestEntry result = get_client()->store_file_to_network(owner, filename, filesize, description, piecesinfo, asset_symbol, price, numofcopy, numofpiece, payterm, node_id, exec_limit);
   return fc::variant(result);
 }
 
@@ -10494,11 +10489,9 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
   json_connection->add_named_param_method("delete_event_handler", bound_named_method);
 
   // register method store_file_to_network
-  bound_positional_method = boost::bind(&CommonApiRpcServer::store_file_to_network_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::store_file_to_network_positional, this, capture_con, _1);
   json_connection->add_method("store_file_to_network", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::store_file_to_network_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::store_file_to_network_named, this, capture_con, _1);
   json_connection->add_named_param_method("store_file_to_network", bound_named_method);
 
   // register method get_file_access
@@ -10590,19 +10583,15 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
   json_connection->add_named_param_method("wallet_get_my_access", bound_named_method);
 
   // register method wallet_get_my_upload_requests
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_upload_requests", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_upload_requests_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_upload_requests", bound_named_method);
 
   // register method blockchain_get__upload_requests
-  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_positional, this, capture_con, _1);
   json_connection->add_method("blockchain_get__upload_requests", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get__upload_requests_named, this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_get__upload_requests", bound_named_method);
 
   //added on 02/08/2018
@@ -10621,59 +10610,45 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
 
 
   // register method wallet_get_my_store_request
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_store_request", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_store_request", bound_named_method);
 
   // register method wallet_get_my_store_confirmed
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_store_confirmed", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_store_confirmed", bound_named_method);
 
   // register method wallet_get_my_store_rejected
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_positional, this, capture_con, _1);
   json_connection->add_method("wallet_get_my_store_rejected", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_rejected_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_get_my_store_rejected", bound_named_method);
 
   // register method blockchain_get_file_save_node
-  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_positional, this, capture_con, _1);
   json_connection->add_method("blockchain_get_file_save_node", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_named, this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_get_file_save_node", bound_named_method);
 
   // register method download_validation
-  bound_positional_method = boost::bind(&CommonApiRpcServer::download_validation_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::download_validation_positional, this, capture_con, _1);
   json_connection->add_method("download_validation", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::download_validation_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::download_validation_named, this, capture_con, _1);
   json_connection->add_named_param_method("download_validation", bound_named_method);
 
   // register method wallet_allow_store_request
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_positional, this, capture_con, _1);
   json_connection->add_method("wallet_allow_store_request", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_allow_store_request_named, this, capture_con, _1);
   json_connection->add_named_param_method("wallet_allow_store_request", bound_named_method);
 
   // register method generate_download_validation
-  bound_positional_method = boost::bind(&CommonApiRpcServer::generate_download_validation_positional, 
-                                        this, capture_con, _1);
+  bound_positional_method = boost::bind(&CommonApiRpcServer::generate_download_validation_positional, this, capture_con, _1);
   json_connection->add_method("generate_download_validation", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::generate_download_validation_named, 
-                                        this, capture_con, _1);
+  bound_named_method = boost::bind(&CommonApiRpcServer::generate_download_validation_named, this, capture_con, _1);
   json_connection->add_named_param_method("generate_download_validation", bound_named_method);
 
   // register method declare_piece_saved
@@ -12691,13 +12666,13 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
   {
     // register method wallet_login_start
     TiValue::api::MethodData wallet_login_start_method_metadata{"wallet_login_start", nullptr,
-      /* description */ "Initiates the login procedure by providing a  Login URL",
+      /* description */ "Initiates the login procedure by providing a Alp Login URL",
       /* returns */ "string",
       /* params: */ {
         {"server_account", "string", TiValue::api::required_positional, fc::ovariant()}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "Initiates the login procedure by providing a  Login URL\n\nParameters:\n  server_account (string, required): Name of the account of the server. The user will be shown this name as the site he is logging into.\n\nReturns:\n  string\n",
+      /* detailed description */ "Initiates the login procedure by providing a Alp Login URL\n\nParameters:\n  server_account (string, required): Name of the account of the server. The user will be shown this name as the site he is logging into.\n\nReturns:\n  string\n",
       /* aliases */ {}, false};
     store_method_metadata(wallet_login_start_method_metadata);
   }
@@ -13049,13 +13024,13 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
   {
     // register method validate_address
     TiValue::api::MethodData validate_address_method_metadata{"validate_address", nullptr,
-      /* description */ "Return information about given  address",
+      /* description */ "Return information about given Alp address",
       /* returns */ "json_object",
       /* params: */ {
         {"address", "string", TiValue::api::required_positional, fc::ovariant()}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 0,
-      /* detailed description */ "Return information about given  address\n\nParameters:\n  address (string, required): the address or public key to validate\n\nReturns:\n  json_object\n",
+      /* detailed description */ "Return information about given Alp address\n\nParameters:\n  address (string, required): the address or public key to validate\n\nReturns:\n  json_object\n",
       /* aliases */ {"validateaddress"}, false};
     store_method_metadata(validate_address_method_metadata);
   }
@@ -13978,7 +13953,6 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
       /* returns */ "UploadRequestEntry",
       /* params: */ {
         {"owner", "string", TiValue::api::required_positional, fc::ovariant()},
-        {"AuthorizatingContractId", "string", TiValue::api::required_positional, fc::ovariant()},
         {"filename", "path", TiValue::api::required_positional, fc::ovariant()},
         {"filesize", "uint32_t", TiValue::api::required_positional, fc::ovariant()},
         {"description", "string", TiValue::api::required_positional, fc::ovariant()},
@@ -13992,7 +13966,7 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
         {"exec_limit", "real_amount", TiValue::api::required_positional, fc::ovariant()}
       },
       /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "Call FileUpload Contract to ask for file storage\n\nParameters:\n  owner (string, required): File owner address\n  AuthorizatingContractId (string, required): contract checking and authorizating to caller\n  filename (path, required): file to be uploaded\n  filesize (uint32_t, required): file to be uploaded\n  description (string, required): file to be uploaded\n  piecesinfo (string, required): info of pieces\n  asset_symbol (string, required): asset symbol name\n  price (real_amount, required): the limit of asset amount used to init contract \n  numofcopy (uint32_t, required): Nums of Copys \n  numofpiece (uint32_t, required): Nums of pieces \n  payterm (uint32_t, required): Nums of pieces \n  node_id (string, required): node_id of uploader \n  exec_limit (real_amount, required): the limit of asset amount used to call FileUploadContract\n\nReturns:\n  UploadRequestEntry\n",
+      /* detailed description */ "Call FileUpload Contract to ask for file storage\n\nParameters:\n  owner (string, required): File owner address\n  filename (path, required): file to be uploaded\n  filesize (uint32_t, required): file to be uploaded\n  description (string, required): file to be uploaded\n  piecesinfo (string, required): info of pieces\n  asset_symbol (string, required): asset symbol name\n  price (real_amount, required): the limit of asset amount used to init contract \n  numofcopy (uint32_t, required): Nums of Copys \n  numofpiece (uint32_t, required): Nums of pieces \n  payterm (uint32_t, required): Nums of pieces \n  node_id (string, required): node_id of uploader \n  exec_limit (real_amount, required): the limit of asset amount used to call FileUploadContract\n\nReturns:\n  UploadRequestEntry\n",
       /* aliases */ {}, false};
     store_method_metadata(store_file_to_network_method_metadata);
   }

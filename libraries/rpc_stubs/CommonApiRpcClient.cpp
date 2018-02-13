@@ -1099,9 +1099,9 @@ void CommonApiRpcClient::delete_event_handler(const std::string& contract_id_str
 {
   fc::variant result = get_json_connection()->async_call("delete_event_handler", std::vector<fc::variant>{fc::variant(contract_id_str), fc::variant(event_type), fc::variant(script_id)}).wait();
 }
-TiValue::blockchain::UploadRequestEntry CommonApiRpcClient::store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
+TiValue::blockchain::UploadRequestEntry CommonApiRpcClient::store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
 {
-  fc::variant result = get_json_connection()->async_call("store_file_to_network", std::vector<fc::variant>{fc::variant(owner), fc::variant(AuthorizatingContractId), fc::variant(filename), fc::variant(filesize), fc::variant(description), fc::variant(piecesinfo), fc::variant(asset_symbol), fc::variant(price), fc::variant(numofcopy), fc::variant(numofpiece), fc::variant(payterm), fc::variant(node_id), fc::variant(exec_limit)}).wait();
+  fc::variant result = get_json_connection()->async_call("store_file_to_network", std::vector<fc::variant>{fc::variant(owner), fc::variant(filename), fc::variant(filesize), fc::variant(description), fc::variant(piecesinfo), fc::variant(asset_symbol), fc::variant(price), fc::variant(numofcopy), fc::variant(numofpiece), fc::variant(payterm), fc::variant(node_id), fc::variant(exec_limit)}).wait();
   return result.as<TiValue::blockchain::UploadRequestEntry>();
 }
 TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::get_file_access(const std::string& requester, const std::string& file_id, double exec_limit)

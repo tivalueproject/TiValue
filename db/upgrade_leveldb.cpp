@@ -14,8 +14,8 @@ namespace bts { namespace db {
         return mapper;
     }
 
-    int32_t upgrade_db_mapper::add_type( const std::string& type_name, const upgrade_db_function& function) 
-    { 
+    int32_t upgrade_db_mapper::add_type( const std::string& type_name, const upgrade_db_function& function)
+    {
         _upgrade_db_function_registry[type_name] = function;
         return 0;
     }
@@ -25,14 +25,14 @@ namespace bts { namespace db {
     // could be moved to fc, if fc ever adds a leveldb dependency
     void try_upgrade_db( const fc::path& dir, leveldb::DB* dbase, const char* record_type, size_t record_type_size )
     {
-      size_t old_record_type_size = 0;
+      size_t old_record_type_size = 0 ;
       std::string old_record_type;
-      fc::path record_type_filename = dir / "RECORD_TYPE";
+      fc::path record_type_filename = dir / "RECORD_TYPE" ;
       //if no RECORD_TYPE file exists
       if ( !boost::filesystem::exists( record_type_filename ) )
-      { 
+      {
         //must be original type for the database
-        old_record_type = record_type;
+        old_record_type = record_type ;
         int last_char = old_record_type.length() - 1;
         //strip version number from current_record_name and append 0 to set old_record_type (e.g. mytype0)
         while (last_char >= 0 && isdigit(old_record_type[last_char]))
@@ -49,7 +49,7 @@ namespace bts { namespace db {
 
         ++last_char;
         old_record_type[last_char] = '0';
-        old_record_type.resize(last_char+1);
+        old_record_type.resize(last_char+1) ;
       }
       else //read record type from file
       {

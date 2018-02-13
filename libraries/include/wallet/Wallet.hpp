@@ -1601,26 +1601,6 @@ namespace TiValue {
             vector<ScriptIdType> list_event_handler(const ContractIdType& contract_id, const std::string& event_type);
             void add_event_handler(const ContractIdType& contract_id, const std::string& event_type, const ScriptIdType& script_id, uint32_t index);
             void delete_event_handler(const ContractIdType& contract_id, const std::string& event_type, const ScriptIdType& script_id);
-<<<<<<< HEAD
-			std::vector<std::string> get_events_bound(const std::string& script_id);
-
-			vector<FilePieceInfo> get_my_store_rejected();
-			vector<string> get_my_store_confirmed();
-			std::vector<LocalStoreRequestInfo> get_local_store_requests();
-			std::vector<FilePieceIdType> get_my_store_request_piece_id();
-			unordered_map<FilePieceIdType, std::set<FileIdType>> get_my_store_requests();
-			bool is_my_public_key(const PublicKeyType& key);
-			std::vector<TiValue::blockchain::FileAccessInfo> get_my_access();
-			std::vector<TiValue::blockchain::UploadRequestEntry> get_my_upload_requests();
-			std::vector<TiValue::blockchain::StoreRequestInfo> list_store_request_for_my_file(const std::string& file_id);
-			void set_node_id(const NodeIdType& node);
-			std::pair<UploadRequestEntry, WalletTransactionEntry>  store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, std::string node_id, double exec_limit);
-			TiValue::wallet::WalletTransactionEntry store_reject(const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit);
-			TiValue::wallet::WalletTransactionEntry get_file_access(const std::string& requester, const std::string& file_id, double exec_limit);
-			TiValue::wallet::WalletTransactionEntry store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit);
-			TiValue::wallet::WalletTransactionEntry confirm_piece_saved(const std::string& confirmer, const std::string& file_id, const std::string& file_piece_id, const std::string& Storage, double exec_limit);
-			TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer);
-=======
             std::vector<std::string> get_events_bound(const std::string& script_id);
 
             vector<FilePieceInfo> get_my_store_rejected();
@@ -1643,7 +1623,6 @@ namespace TiValue {
 			      TiValue::wallet::WalletTransactionEntry store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit);
 			      TiValue::wallet::WalletTransactionEntry confirm_piece_saved(const std::string& confirmer, const std::string& file_id, const std::string& file_piece_id, const std::string& Storage, double exec_limit);
             TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id);
->>>>>>> dev
             void allow_store(const std::string& file_id, const std::string& piece_id, const std::string& storer);
             bool check_store_allowed(const std::string& file_id, const std::string& piece_id, const PublicKeyType& storer);
         private:

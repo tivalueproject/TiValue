@@ -278,16 +278,6 @@ namespace TiValue
                 { "contract_transfer", "(...) => object" },
                 { "contract_transfer_to", "(...) => object" },
                 { "transfer_from_contract_to_address", "(string, string, int) => int" },
-<<<<<<< HEAD
-				{"allow_upload_request", "(object,string,object,string,int,int,string,string,string) => bool"},
-				{"allow_store_request","(object,string,string,string) => bool"},
-				{"allow_piece_saved","(string,string,string) => bool"},
-				{"allow_enable_access","(string,string) => bool "},
-				{"allow_store_reject","(string,string,string) => bool "},
-				{"contract_api_check","(string,string) => bool"},
-				{"get_publickey_address","(string)=> string"},
-				{ "transfer_from_contract_to_public_account", "(string, string, int) => int"},
-=======
 				        { "allow_upload_request", "(object,string,object,int,int,string,string,string) => bool"},
 				        { "allow_store_request","(object,string,string,string) => bool"},
 				        { "allow_piece_saved","(string,string,string) => bool"},
@@ -297,7 +287,6 @@ namespace TiValue
                 { "allow_declare_piece_saved", "(string,string,string,string) => bool"},
 				        { "get_publickey_address","(string)=> string"},
 				        { "transfer_from_contract_to_public_account", "(string, string, int) => int"},
->>>>>>> dev
                 { "get_chain_random", "() => number" },
                 { "get_transaction_fee", "() => int" },
                 { "get_transaction_id", "() => string" },
