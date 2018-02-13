@@ -100,7 +100,8 @@ namespace fc {
     template<typename Stream> inline void pack( Stream& s, const char* v );
     template<typename Stream> inline void pack( Stream& s, const std::vector<char>& value );
     template<typename Stream> inline void unpack( Stream& s, std::vector<char>& value );
-
+    template<typename Stream, typename K, typename V> inline void pack( Stream& s, const std::multimap<K,V>& value );
+    template<typename Stream, typename K, typename V> inline void unpack( Stream& s, std::multimap<K,V>& value );
     template<typename Stream, typename T, size_t N> inline void pack( Stream& s, const fc::array<T,N>& v);
     template<typename Stream, typename T, size_t N> inline void unpack( Stream& s, fc::array<T,N>& v);
 
