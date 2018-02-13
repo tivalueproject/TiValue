@@ -374,23 +374,23 @@ namespace TiValue {
                 TiValue::db::fast_level_map<ContractIdType, ContractEntry>                  _contract_id_to_entry;
                 TiValue::db::fast_level_map<ContractIdType, ContractStorageEntry>               _contract_id_to_storage;
                 TiValue::db::fast_level_map<ContractName, ContractIdType>                  _contract_name_to_id;
-				TiValue::db::fast_level_map<TransactionIdType, ResultTIdEntry>		  _request_to_result_iddb;
-				TiValue::db::fast_level_map<TransactionIdType, RequestIdEntry>		  _result_to_request_iddb;
-				TiValue::db::fast_level_map<TransactionIdType, ContractinTrxEntry>		  _trx_to_contract_iddb;
-				TiValue::db::fast_level_map<ContractIdType,ContractTrxEntry>		  _contract_to_trx_iddb;
+				        TiValue::db::fast_level_map<TransactionIdType, ResultTIdEntry>		  _request_to_result_iddb;
+				        TiValue::db::fast_level_map<TransactionIdType, RequestIdEntry>		  _result_to_request_iddb;
+				        TiValue::db::fast_level_map<TransactionIdType, ContractinTrxEntry>		  _trx_to_contract_iddb;
+				        TiValue::db::fast_level_map<ContractIdType,ContractTrxEntry>		  _contract_to_trx_iddb;
                 // sandbox contract related
                 PendingChainStatePtr	_sandbox_pending_state = nullptr;
                 bool                    _is_in_sandbox = false;
 
-				//TiValue related db
-				TiValue::db::fast_level_map<FileIdType, UploadRequestEntry>			_upload_request_db;
-				TiValue::db::fast_level_map<FilePieceIdType, StoreRequestEntry>		_store_request_db;
-				TiValue::db::fast_level_map<FilePieceIdType, PieceSavedEntry>		_piece_saved_db;
-				TiValue::db::fast_level_map<FileIdType, FileSavedEntry>				_file_saved_db;
-				TiValue::db::fast_level_map<FileIdType, EnableAccessEntry>			_enable_access_db;
-				TiValue::db::fast_level_map<FilePieceIdType, StoreRejectEntry>		_reject_store_db;
-				TiValue::db::fast_level_map<FilePieceIdType, PieceSavedDeclEntry>		_save_decl_db;
-};
+				        //TiValue related db
+				        TiValue::db::fast_level_map<FileIdType, UploadRequestEntry>			_upload_request_db;
+				        TiValue::db::fast_level_map<FilePieceIdType, StoreRequestEntry>		_store_request_db;
+				        TiValue::db::fast_level_map<FilePieceIdType, PieceSavedEntry>		_piece_saved_db;
+				        TiValue::db::fast_level_map<FileIdType, FileSavedEntry>				_file_saved_db;
+				        TiValue::db::fast_level_map<FileIdType, EnableAccessEntry>			_enable_access_db;
+				        TiValue::db::fast_level_map<FilePieceIdType, StoreRejectEntry>		_reject_store_db;
+				        TiValue::db::fast_level_map<FilePieceIdType, PieceSavedDeclEntry>		_save_decl_db;
+            };
 
         } // detail
     }

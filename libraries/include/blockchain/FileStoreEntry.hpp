@@ -37,6 +37,8 @@ namespace TiValue {
 			return id_1.file_id < id_2.file_id;
 		}
 
+
+
 		struct UploadRequestEntry
 		{
 			FileIdType id;
@@ -51,6 +53,7 @@ namespace TiValue {
 			static void store(ChainInterface&, const FileIdType&, const UploadRequestEntry&);
 			static void remove(ChainInterface&, const FileIdType&);
 		};
+
 		inline bool operator == (const UploadRequestEntry& entry_1, const UploadRequestEntry& entry_2)
 		{
 			return entry_1.id == entry_2.id;
@@ -92,6 +95,7 @@ namespace TiValue {
 			static void store(ChainInterface&, const FileIdType&, const FileSavedEntry&);
 			static void remove(ChainInterface&, const FileIdType&);
 		};
+
 
 		struct EnableAccessEntry;
 		typedef optional<EnableAccessEntry> oEnableAccessEntry;
@@ -264,6 +268,50 @@ namespace TiValue {
 			}
 		};
 		FileContentIdType GetFileInfo(std::string filename, vector<PieceUploadInfo>& infos, ShareType num_of_pieces, double Price,uint32_t filesize);
+
+    struct StoreNodeInfoPlus {
+      NodeIdType node;
+      PublicKeyType key;
+      bool is_confirmed;
+      StoreNodeInfoPlus(){}
+      StoreNodeInfoPlus(NodeIdType node, PublicKeyType key, bool is_confirmed) :node(node), key(key), is_confirmed(is_confirmed){}
+    };
+
+    struct UploadRequestEntryPlus {
+      FileIdType file_id;
+      PieceUploadInfo piece;
+      vector<StoreNodeInfoPlus> storers;
+      size_t num_of_copy;
+      size_t num_of_declared;
+      size_t num_of_confirmed;
+      NodeIdType node_id;
+      string file_name;
+      string description;
+    };
+
+    struct CanApplyEntry {
+      FileIdType file_id;
+      PieceUploadInfo piece;
+      size_t num_of_copy;
+      //size_t num_of_declared;
+      size_t num_of_confirmed;
+      NodeIdType node_id;
+      string file_name;
+      string description;
+    };
+
+    struct HaveAppliedFileEntry{
+      FileIdType file_id;
+      PieceUploadInfo piece;
+      bool is_confirmed;
+      size_t num_of_copy;
+      size_t num_of_declared;
+      size_t num_of_confirmed;
+      NodeIdType node_id;
+      string file_name;
+      string description;
+    };
+
 	}
 }
 namespace std
@@ -388,3 +436,40 @@ FC_REFLECT(TiValue::blockchain::PieceUploadInfo,
   (file_id)
   (piece_id)
   (storer))
+
+  FC_REFLECT(TiValue::blockchain::UploadRequestEntryPlus,
+  (file_id)
+  (piece)
+  (storers)
+  (num_of_copy)
+  (num_of_declared)
+  (num_of_confirmed)
+  (node_id)
+  (file_name)
+  (description))
+  
+  FC_REFLECT(TiValue::blockchain::StoreNodeInfoPlus,
+  (node)
+  (key)
+  (is_confirmed))
+
+  FC_REFLECT(TiValue::blockchain::CanApplyEntry,
+  (file_id)
+  (piece)
+  (num_of_copy)
+  (num_of_confirmed)
+  (node_id)
+  (file_name)
+  (description))
+
+  FC_REFLECT(TiValue::blockchain::HaveAppliedFileEntry,
+  (file_id)
+  (piece)
+  (is_confirmed)
+  (num_of_copy)
+  (num_of_declared)
+  (num_of_confirmed)
+  (node_id)
+  (file_name)
+  (description))
+

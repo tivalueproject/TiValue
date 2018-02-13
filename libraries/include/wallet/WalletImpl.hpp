@@ -38,16 +38,16 @@ namespace TiValue {
                 bool                                             _dirty_accounts = true;
                 vector<PrivateKeyType>                         _stealth_private_keys;
 
-				// tichain3.0 contract related
-				bool                                             _dirty_contracts = true;
-				unordered_map<ContractIdType, ContractEntry>   _contract_entrys;
+				        // tichain3.0 contract related
+				        bool                                             _dirty_contracts = true;
+				        unordered_map<ContractIdType, ContractEntry>   _contract_entrys;
 
-				unordered_map<Address, set<UploadRequestEntry>>   _upload_request_entrys;
-				unordered_map<FilePieceIdType, std::map<NodeIdType, PublicKeyType>>   _store_request_entrys_for_my_file;
-				unordered_map<FilePieceIdType,std::set<FileIdType>>					my_store_requests;
-				unordered_map<FilePieceIdType, int>					my_store_confirmed;
-				std::map<FilePieceIdType,std::set<FileIdType>>											my_store_rejected;
-				std::map<FileIdType, std::set<PublicKeyType>>    my_access_info;
+				        unordered_map<Address, set<UploadRequestEntry>>                      _upload_request_entrys;
+				        unordered_map<FilePieceIdType, std::map<NodeIdType, PublicKeyType>>  _store_request_entrys_for_my_file;
+				        unordered_map<FilePieceIdType,std::set<FileIdType>>					         my_store_requests;
+				        unordered_map<FilePieceIdType, int>					                         my_store_confirmed;
+				        std::map<FilePieceIdType,std::set<FileIdType>>											 my_store_rejected;
+				        std::map<FileIdType, std::set<PublicKeyType>>                        my_access_info;
                 struct LoginEntry
                 {
                     PrivateKeyType key;
@@ -124,9 +124,9 @@ namespace TiValue {
 
                 void scan_balances_experimental();
 
-				void scan_contracts();
+				        void scan_contracts();
 
-				void scan_file_store();
+				        void scan_file_store();
 
                 /**  Get the secret hash according to the block number
                 *

@@ -182,35 +182,31 @@ namespace TiValue {
             unordered_set<ContractIdType>                                     _contract_id_remove;
             unordered_map<ContractName, ContractIdType>                       _contract_name_to_id;
             unordered_map<ContractIdType, ContractStorageEntry>                    _contract_id_to_storage;
-			unordered_map<TransactionIdType, ResultTIdEntry>					_request_id_to_result_id;
-			unordered_set<TransactionIdType>								  _req_to_res_to_remove;
-			unordered_map<TransactionIdType, RequestIdEntry>					_result_id_to_request_id;
-			unordered_set<TransactionIdType>								  _res_to_req_to_remove;
-			unordered_map<TransactionIdType, ContractinTrxEntry>					  _trx_to_contract_id;
-			unordered_set<TransactionIdType>					_trx_to_contract_id_remove;
-			unordered_map<ContractIdType, ContractTrxEntry>	_contract_to_trx_id;
-			unordered_set<ContractIdType>						_contract_to_trx_id_remove;
-
-
-
-			//filestore related
-			
-			unordered_map<FileIdType, UploadRequestEntry>			_upload_request_db;
-			unordered_set<FileIdType>								_upload_request_remove;
-			unordered_map<FilePieceIdType, StoreRequestEntry>		_store_request_db;
-			unordered_set<FilePieceIdType>							_store_request_remove;
-			unordered_map<FilePieceIdType, PieceSavedEntry>			_piece_saved_db;
-			unordered_set<FilePieceIdType>							_piece_saved_remove;
-			unordered_map<FileIdType, FileSavedEntry>				_file_saved_db;
-			unordered_set<FileIdType>								_file_saved_remove;
-			unordered_map<FileIdType, EnableAccessEntry>			_enable_access_db;
-			unordered_set<FileIdType>								_enable_access_remove;
-			unordered_map<FilePieceIdType, StoreRejectEntry>	    _reject_store_db;
-			unordered_set<FilePieceIdType>							_reject_store_remove;
-			unordered_map<FilePieceIdType, PieceSavedDeclEntry>		_savedecl_db;
-			unordered_set<FilePieceIdType> _savedecl_remove;
-            vector<EventOperation> event_vector;
-			vector<TiValue::blockchain::SandboxAccountInfo>                     _vec_wallet_accounts;
+			      unordered_map<TransactionIdType, ResultTIdEntry>			_request_id_to_result_id;
+			      unordered_set<TransactionIdType>								      _req_to_res_to_remove;
+			      unordered_map<TransactionIdType, RequestIdEntry>		  _result_id_to_request_id;
+			      unordered_set<TransactionIdType>								      _res_to_req_to_remove;
+			      unordered_map<TransactionIdType, ContractinTrxEntry>  _trx_to_contract_id;
+			      unordered_set<TransactionIdType>					            _trx_to_contract_id_remove;
+			      unordered_map<ContractIdType, ContractTrxEntry>	      _contract_to_trx_id;
+			      unordered_set<ContractIdType>						              _contract_to_trx_id_remove;
+			      //filestore related	
+			      unordered_map<FileIdType, UploadRequestEntry>			    _upload_request_db;
+			      unordered_set<FileIdType>								              _upload_request_remove;
+			      unordered_map<FilePieceIdType, StoreRequestEntry>		  _store_request_db;
+			      unordered_set<FilePieceIdType>							          _store_request_remove;
+			      unordered_map<FilePieceIdType, PieceSavedEntry>			  _piece_saved_db;
+			      unordered_set<FilePieceIdType>							          _piece_saved_remove;
+			      unordered_map<FileIdType, FileSavedEntry>				      _file_saved_db;
+			      unordered_set<FileIdType>								              _file_saved_remove;
+			      unordered_map<FileIdType, EnableAccessEntry>			    _enable_access_db;
+			      unordered_set<FileIdType>								              _enable_access_remove;
+			      unordered_map<FilePieceIdType, StoreRejectEntry>	    _reject_store_db;
+			      unordered_set<FilePieceIdType>							          _reject_store_remove;
+			      unordered_map<FilePieceIdType, PieceSavedDeclEntry>		_savedecl_db;
+			      unordered_set<FilePieceIdType>                        _savedecl_remove;
+            vector<EventOperation>                                event_vector;
+			      vector<TiValue::blockchain::SandboxAccountInfo>       _vec_wallet_accounts;
 
         private:
             // Not serialized

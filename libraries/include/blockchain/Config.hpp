@@ -78,7 +78,9 @@
 
 #define TIV_BLOCKCHAIN_MIN_BURN_FEE                         TIV_BLOCKCHAIN_PRECISION * 1 // 1 XTS
 
-#ifdef TIV_TEST_NETWORK
+#ifdef TIV_TEST_NETWORK 
+#define TIV_BLOCKCHAIN_VOTE_UPDATE_PERIOD_SEC               10
+#elif TIV_TEST_NETWORK2
 #define TIV_BLOCKCHAIN_VOTE_UPDATE_PERIOD_SEC               10
 #else
 #define TIV_BLOCKCHAIN_VOTE_UPDATE_PERIOD_SEC               (60*60) // 1 hour
@@ -90,6 +92,8 @@
 #define TIV_BLOCKCHAIN_MAX_YIELD_PERIOD_SEC                 (TIV_BLOCKCHAIN_BLOCKS_PER_YEAR * TIV_BLOCKCHAIN_BLOCK_INTERVAL_SEC) // 1 year
 
 #ifdef TIV_TEST_NETWORK
+#define TIV_BLOCKCHAIN_MAX_SHORT_PERIOD_SEC                 (2*60*60) // 2 hours
+#elif TIV_TEST_NETWORK2
 #define TIV_BLOCKCHAIN_MAX_SHORT_PERIOD_SEC                 (2*60*60) // 2 hours
 #else
 #define TIV_BLOCKCHAIN_MAX_SHORT_PERIOD_SEC                 (30*24*60*60) // 1 month

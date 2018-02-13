@@ -513,6 +513,9 @@ namespace TiValue {
     //added on 02/03/2018
     fc::variant wallet_list_my_upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_list_my_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+    //added on 02/08/2018
+    fc::variant wallet_list_my_declared_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant wallet_list_my_declared_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
 
     fc::variant blockchain_check_signature_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_check_signature_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
@@ -522,6 +525,15 @@ namespace TiValue {
     fc::variant wallet_get_my_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_get__upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_get__upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+
+    //added on 02/08/2018
+    fc::variant blockchain_list_file_saved_info_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant blockchain_list_file_saved_info_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+
+    //added on 02/08/2018
+    fc::variant blockchain_list_can_apply_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant blockchain_list_can_apply_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+
     fc::variant wallet_get_my_store_request_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_get_my_store_request_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_get_my_store_confirmed_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);

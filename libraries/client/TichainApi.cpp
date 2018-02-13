@@ -85,17 +85,103 @@ namespace TiValue {
 			{
 				return _wallet->list_store_request_for_my_file(file_id);
 			}
+      //added on 02/08/2018
+      std::vector<TiValue::blockchain::HaveAppliedFileEntry> ClientImpl::wallet_list_my_declared_file(const std::string& account)
+      {
+        std::vector<HaveAppliedFileEntry> res;
+        PublicKeyType public_key = _wallet->get_owner_public_key(account);
+        std::vector<TiValue::blockchain::UploadRequestEntry> upload_reqeusts = _chain_db->list_upload_requests();
 
-      //added on 02/03/2018
-      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::wallet_list_my_upload_requests(const std::string& account) {
-        std::vector<TiValue::blockchain::UploadRequestEntry> vec = _chain_db->list_upload_requests();
-        std::vector<TiValue::blockchain::UploadRequestEntry> res;
-        PublicKeyType pub_key = _wallet->get_owner_public_key(account);
-        for (auto itr = vec.begin(); itr != vec.end(); itr++) {
-          if (itr->id.uploader == pub_key) {
-            res.push_back(*itr);
+        for (auto itr = upload_reqeusts.begin(); itr != upload_reqeusts.end(); itr++) {
+          if (public_key != itr->id.uploader) {
+            HaveAppliedFileEntry applied_entry;
+            applied_entry.file_id = itr->id;
+            applied_entry.piece = itr->pieces[0];
+            applied_entry.description = itr->description;
+            applied_entry.file_name = itr->filename;
+            applied_entry.is_confirmed = false;
+            applied_entry.node_id = itr->node_id;
+            applied_entry.num_of_copy = itr->num_of_copys;
+            applied_entry.num_of_confirmed = 0;
+            applied_entry.num_of_declared = 0;
+            oPieceSavedDeclEntry o_decl_entry = _chain_db->get_save_decl_entry(itr->pieces[0].pieceid);
+            oPieceSavedEntry o_piece_saved_entry = _chain_db->get_piece_saved_entry(itr->pieces[0].pieceid);
+            PieceSavedEntry piece_saved_entry;
+            if (o_piece_saved_entry.valid()) {
+              piece_saved_entry = *o_piece_saved_entry;
+            }
+            if (o_decl_entry.valid()) {
+              PieceSavedDeclEntry piece_save_decl_entry = *o_decl_entry;
+              set<PieceStoreInfo> store_info = piece_save_decl_entry.store_info;
+              PieceStoreInfo temp_info;
+              temp_info.file_id = itr->id;
+              temp_info.piece_id = itr->pieces[0].pieceid;
+              auto search = store_info.find(temp_info);
+              if (search != store_info.end()) {
+                
+                applied_entry.num_of_declared = search->nodes.size();
+                for (auto itr2 = search->nodes.begin(); itr2 != search->nodes.end(); itr2++) {
+                  if (itr2->key == public_key) {
+                    if (piece_saved_entry.storageNode.find(itr2->node) != piece_saved_entry.storageNode.end()) {
+                      applied_entry.is_confirmed = true;
+                      applied_entry.num_of_confirmed++;
+                    }
+                    res.push_back(applied_entry);
+                  }
+                }
+              }
+            }
+
+          }     
+        }
+        return res;
+      }
+      //added on 02/07/2018
+      std::vector<TiValue::blockchain::UploadRequestEntryPlus> ClientImpl::wallet_list_my_upload_requests(const std::string& account) {
+        std::vector<TiValue::blockchain::UploadRequestEntryPlus> res;
+        std::vector<TiValue::blockchain::UploadRequestEntry> upload_reqeusts = _chain_db->list_upload_requests();
+        PublicKeyType public_key = _wallet->get_owner_public_key(account);
+        for (auto itr = upload_reqeusts.begin(); itr != upload_reqeusts.end(); itr++) {
+          if (public_key == itr->id.uploader)  {
+            UploadRequestEntryPlus upload_plus;
+            upload_plus.file_id          = itr->id;
+            upload_plus.piece            = itr->pieces[0];   
+            upload_plus.node_id          = itr->node_id;
+            upload_plus.file_name        = itr->filename;
+            upload_plus.description      = itr->description;
+            upload_plus.num_of_copy      = itr->num_of_copys;
+            upload_plus.num_of_declared  = 0;
+            upload_plus.num_of_confirmed = 0;
+
+            oPieceSavedDeclEntry o_save_decl_entry = _chain_db->get_save_decl_entry(itr->pieces[0].pieceid);      
+            oPieceSavedEntry o_piece_saved_entry = _chain_db->get_piece_saved_entry(itr->pieces[0].pieceid);
+            PieceSavedEntry piece_saved_entry;
+            if (o_piece_saved_entry.valid()) {
+              piece_saved_entry = *o_piece_saved_entry;
+            }
+            
+            if (o_save_decl_entry.valid()) {
+              PieceSavedDeclEntry piece_save_decl_entry = *o_save_decl_entry;
+              set<PieceStoreInfo> store_info = piece_save_decl_entry.store_info;
+              PieceStoreInfo temp_info;
+              temp_info.file_id = itr->id;
+              temp_info.piece_id = itr->pieces[0].pieceid;
+              auto search = store_info.find(temp_info);
+              if (search != store_info.end()) {
+                upload_plus.num_of_declared = search->nodes.size();
+                for (auto itr2 = search->nodes.begin(); itr2 != search->nodes.end(); itr2++) {
+                  if (piece_saved_entry.storageNode.find(itr2->node) != piece_saved_entry.storageNode.end()) {
+                    upload_plus.storers.push_back(StoreNodeInfoPlus(itr2->node, itr2->key, true));
+                    upload_plus.num_of_confirmed++;
+                  } else {
+                    upload_plus.storers.push_back(StoreNodeInfoPlus(itr2->node, itr2->key, false));
+                  }
+                }
+              }
+            }
+            res.push_back(upload_plus);
           }
-        }      
+        }       
         return res;
       }
 
@@ -107,7 +193,8 @@ namespace TiValue {
 					FC_CAPTURE_AND_THROW(upload_request_not_exsited,(file_id));
 				return entry->authenticating_contract.AddressToString(AddressType::contract_address);
 			}
-			std::vector<std::string> ClientImpl::blockchain_list_file_saved()
+			
+      std::vector<std::string> ClientImpl::blockchain_list_file_saved()
 			{
 				vector<std::string> res;
 				//auto file_ids=_chain_db->get_file_saved();
@@ -119,14 +206,20 @@ namespace TiValue {
         }
 				return res;
 			}
-			void ClientImpl::wallet_set_node_id(const std::string& node_id)
+			
+      void ClientImpl::wallet_set_node_id(const std::string& node_id)
 			{
 				_wallet->set_node_id(node_id);
 			}
+<<<<<<< HEAD
 			TiValue::blockchain::UploadRequestEntry ClientImpl::store_file_to_network(const std::string& owner, const std::string& AuthorizatingContractId, 
 				const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description,
 				const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy,
 				uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
+=======
+			
+      TiValue::blockchain::UploadRequestEntry ClientImpl::store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize,  const std::string& description,const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit)
+>>>>>>> dev
 			{
 				ContractIdType cid(AuthorizatingContractId,AddressType::contract_address);
 				auto contract_entry=_chain_db->get_contract_entry(cid);
@@ -144,28 +237,32 @@ namespace TiValue {
 				network_broadcast_transaction(res.second.trx);
 				return res.first;
 			}
-			TiValue::wallet::WalletTransactionEntry ClientImpl::store_reject(const std::string& file_id, const std::string& file_piece_id, const std::string& node_id,double exec_limit)
+			
+      TiValue::wallet::WalletTransactionEntry ClientImpl::store_reject(const std::string& file_id, const std::string& file_piece_id, const std::string& node_id,double exec_limit)
 			{
 				auto entry= _wallet->store_reject(file_id, file_piece_id, node_id, exec_limit);
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;
 			}
-			TiValue::wallet::WalletTransactionEntry ClientImpl::get_file_access(const std::string& requester, const std::string& file_id, double exec_limit)
+			
+      TiValue::wallet::WalletTransactionEntry ClientImpl::get_file_access(const std::string& requester, const std::string& file_id, double exec_limit)
 			{
 				auto entry = _wallet->get_file_access(requester, file_id, exec_limit);
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;
 			}
-			TiValue::wallet::WalletTransactionEntry  ClientImpl::store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
+			
+      TiValue::wallet::WalletTransactionEntry ClientImpl::store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
 			{
 				auto entry = _wallet->store_file_piece(requester, file_id, file_piece_id,node_id, exec_limit);
 				_wallet->cache_transaction(entry, false);
 				network_broadcast_transaction(entry.trx);
 				return entry;
 			}
-			bool ClientImpl::blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key)
+			
+      bool ClientImpl::blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key)
 			{
 				PublicKeyType pkey(key);
 				//fc::ecc::compact_signature sig=;
@@ -174,10 +271,53 @@ namespace TiValue {
 				//	fc::ecc::public_key(sig, trx_digest, _enforce_canonical_signatures).serialize();
 				return true;
 			}
-			std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_get__upload_requests()
+			
+      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_get__upload_requests()
 			{
 				return _chain_db->list_upload_requests();
 			}
+
+      //added on 02/08/2018
+      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_list_file_saved_info() {
+        std::vector<TiValue::blockchain::UploadRequestEntry> upload_requests = _chain_db->list_upload_requests();
+        std::vector<TiValue::blockchain::UploadRequestEntry> res;
+        for (std::vector<UploadRequestEntry>::iterator itr = upload_requests.begin(); itr != upload_requests.end(); itr++) {
+          oPieceSavedEntry o_piece_saved_entry = _chain_db->get_piece_saved_entry(itr->pieces[0].pieceid);
+          if (o_piece_saved_entry.valid()) {
+            res.push_back(*itr);
+          }
+        }
+        return res;
+      }
+
+      //added on 02/08/2018
+      std::vector<TiValue::blockchain::CanApplyEntry> ClientImpl::blockchain_list_can_apply_file()
+      {
+        std::vector<TiValue::blockchain::UploadRequestEntry> upload_requests = _chain_db->list_upload_requests();
+        std::vector<TiValue::blockchain::CanApplyEntry> res;
+        for (std::vector<UploadRequestEntry>::iterator itr = upload_requests.begin(); itr != upload_requests.end(); itr++) {
+          CanApplyEntry apply_entry;
+          apply_entry.file_id          = itr->id;
+          apply_entry.file_name        = itr->filename;
+          apply_entry.description      = itr->description;
+          apply_entry.node_id          = itr->node_id;
+          apply_entry.num_of_copy      = itr->num_of_copys;
+          apply_entry.piece            = itr->pieces[0];
+          apply_entry.num_of_confirmed = 0;
+          size_t num_of_confirmed = 0;
+          oPieceSavedEntry o_piece_saved_entry = _chain_db->get_piece_saved_entry(itr->pieces[0].pieceid);  
+          if (o_piece_saved_entry.valid()) {
+            PieceSavedEntry piece_saved_entry = *o_piece_saved_entry;
+            size_t num_of_confirmed = piece_saved_entry.storageNode.size();
+            apply_entry.num_of_confirmed = num_of_confirmed;
+          }
+          if (apply_entry.num_of_confirmed < apply_entry.num_of_copy) {
+            res.push_back(apply_entry);
+          }
+        }
+        return res;
+      }
+
 			TiValue::wallet::WalletTransactionEntry ClientImpl::confirm_piece_saved(const std::string& confirmer, const std::string& file_id, const std::string& file_piece_id, const std::string& Storage, double exec_limit)
 			{
 				auto entry = _wallet->confirm_piece_saved(confirmer, file_id, file_piece_id, Storage, exec_limit);
@@ -185,7 +325,8 @@ namespace TiValue {
 				network_broadcast_transaction(entry.trx);
 				return entry;
 			}
-			bool inline check_upload_request(oUploadRequestEntry entry, string piece_id)
+			
+      bool inline check_upload_request(oUploadRequestEntry entry, string piece_id)
 			{
 				if (!entry.valid())
 					return false;
@@ -198,10 +339,18 @@ namespace TiValue {
 				}
 				return false;
 			}
+<<<<<<< HEAD
             void ClientImpl::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
             {
                 _wallet->allow_store(file_id,piece_id,storer);
             }
+=======
+      
+      void ClientImpl::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
+      {
+        _wallet->allow_store(file_id, piece_id, storer);
+      }
+>>>>>>> dev
 
 			bool ClientImpl::download_validation(const std::string& file_id, const std::string& authentication)
 			{
@@ -302,7 +451,8 @@ namespace TiValue {
 					}
 					return false;
 			}
-			std::string ClientImpl::generate_download_validation(const std::string& file_id)
+			
+      std::string ClientImpl::generate_download_validation(const std::string& file_id)
 			{
 				auto accesss=_wallet->get_my_access();
 				for (auto accessinfo : accesss)
@@ -343,7 +493,8 @@ namespace TiValue {
 				}
 				FC_CAPTURE_AND_THROW(access_unauthorized,(file_id));
 			}
-			TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
+			
+      TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 			{
 				auto sr_entry=_chain_db->get_store_request_entry(piece_id);
 				auto acc_entry=_wallet->get_account(storer);
@@ -385,7 +536,8 @@ namespace TiValue {
 				network_broadcast_transaction(entry.trx);
 				return entry;
 			}
-			std::set<TiValue::blockchain::PieceStoreInfo> ClientImpl::blockchain_list_file_save_declare(const std::string& file_id)
+			
+      std::set<TiValue::blockchain::PieceStoreInfo> ClientImpl::blockchain_list_file_save_declare(const std::string& file_id)
 			{
 				std::set<TiValue::blockchain::PieceStoreInfo> res;
 				FileIdType fid(file_id);

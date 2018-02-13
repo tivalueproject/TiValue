@@ -526,6 +526,8 @@ namespace TiValue {
                 try {
 #ifdef TIV_TEST_NETWORK
                     //entry.sanity_check(*this);
+#elif TIV_TEST_NETWORK2
+                  //entry.sanity_check(*this);
 #endif
                     T::store(*this, key, entry);
                 } FC_CAPTURE_AND_RETHROW((key)(entry))
