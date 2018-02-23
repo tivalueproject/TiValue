@@ -1180,6 +1180,35 @@ std::string CommonApiClient::blockchain_get_transaction_rpc(const std::string& t
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
+TiValue::blockchain::TransactionIdType CommonApiClient::blockchain_get_transaction_id(const TiValue::blockchain::SignedTransaction& transaction_to_broadcast) const
+{
+  ilog("received RPC call: blockchain_get_transaction_id(${transaction_to_broadcast})", ("transaction_to_broadcast", transaction_to_broadcast));
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    args.push_back( fc::variant(transaction_to_broadcast) );
+    call_id = glog->log_call_started( this, "blockchain_get_transaction_id", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call blockchain_get_transaction_id finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    TiValue::blockchain::TransactionIdType result = get_impl()->blockchain_get_transaction_id(transaction_to_broadcast);
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "blockchain_get_transaction_id", args, fc::variant(result) );
+
+    return result;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
 void CommonApiClient::blockchain_set_node_vm_enabled(bool enabled)
 {
   ilog("received RPC call: blockchain_set_node_vm_enabled(${enabled})", ("enabled", enabled));
@@ -2887,6 +2916,40 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::wallet_transfer_to_addr
     TiValue::wallet::WalletTransactionEntry result = get_impl()->wallet_transfer_to_address(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy, broadcast);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "wallet_transfer_to_address", args, fc::variant(result) );
+
+    return result;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
+TiValue::blockchain::SignedTransaction CommonApiClient::create_transfer_transaction(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */)
+{
+  ilog("received RPC call: create_transfer_transaction(${amount_to_transfer}, ${asset_symbol}, ${from_account_name}, ${to_address}, ${memo_message}, ${strategy})", ("amount_to_transfer", amount_to_transfer)("asset_symbol", asset_symbol)("from_account_name", from_account_name)("to_address", to_address)("memo_message", memo_message)("strategy", strategy));
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    args.push_back( fc::variant(amount_to_transfer) );
+    args.push_back( fc::variant(asset_symbol) );
+    args.push_back( fc::variant(from_account_name) );
+    args.push_back( fc::variant(to_address) );
+    args.push_back( fc::variant(memo_message) );
+    args.push_back( fc::variant(strategy) );
+    call_id = glog->log_call_started( this, "create_transfer_transaction", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call create_transfer_transaction finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    TiValue::blockchain::SignedTransaction result = get_impl()->create_transfer_transaction(amount_to_transfer, asset_symbol, from_account_name, to_address, memo_message, strategy);
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "create_transfer_transaction", args, fc::variant(result) );
 
     return result;
   }

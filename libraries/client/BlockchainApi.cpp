@@ -879,6 +879,12 @@ namespace TiValue {
                     return result;
                 }
             }
+
+			TiValue::blockchain::TransactionIdType detail::ClientImpl::blockchain_get_transaction_id(const TiValue::blockchain::SignedTransaction& transaction_to_broadcast) const
+			{
+				return transaction_to_broadcast.id();
+			}
+
             void ClientImpl::blockchain_set_node_vm_enabled(bool enabled)
             {
                 // set limit in  sandbox state

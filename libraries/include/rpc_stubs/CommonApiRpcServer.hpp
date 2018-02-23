@@ -117,6 +117,8 @@ namespace TiValue {
     fc::variant blockchain_btc_address_convert_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_get_transaction_rpc_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_get_transaction_rpc_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+    fc::variant blockchain_get_transaction_id_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant blockchain_get_transaction_id_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_set_node_vm_enabled_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_set_node_vm_enabled_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_get_node_vm_enabled_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
@@ -231,6 +233,8 @@ namespace TiValue {
     fc::variant wallet_address_create_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_transfer_to_address_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_transfer_to_address_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+    fc::variant create_transfer_transaction_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant create_transfer_transaction_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_transfer_to_public_account_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_transfer_to_public_account_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_withdraw_from_address_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);

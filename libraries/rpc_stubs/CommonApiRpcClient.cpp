@@ -216,6 +216,11 @@ std::string CommonApiRpcClient::blockchain_get_transaction_rpc(const std::string
   fc::variant result = get_json_connection()->async_call("blockchain_get_transaction_rpc", std::vector<fc::variant>{fc::variant(transaction_id_prefix), fc::variant(exact)}).wait();
   return result.as<std::string>();
 }
+TiValue::blockchain::TransactionIdType CommonApiRpcClient::blockchain_get_transaction_id(const TiValue::blockchain::SignedTransaction& transaction_to_broadcast) const
+{
+  fc::variant result = get_json_connection()->async_call("blockchain_get_transaction_id", std::vector<fc::variant>{fc::variant(transaction_to_broadcast)}).wait();
+  return result.as<TiValue::blockchain::TransactionIdType>();
+}
 void CommonApiRpcClient::blockchain_set_node_vm_enabled(bool enabled)
 {
   fc::variant result = get_json_connection()->async_call("blockchain_set_node_vm_enabled", std::vector<fc::variant>{fc::variant(enabled)}).wait();
@@ -476,6 +481,11 @@ TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::wallet_transfer_to_a
 {
   fc::variant result = get_json_connection()->async_call("wallet_transfer_to_address", std::vector<fc::variant>{fc::variant(amount_to_transfer), fc::variant(asset_symbol), fc::variant(from_account_name), fc::variant(to_address), fc::variant(memo_message), fc::variant(strategy), fc::variant(broadcast)}).wait();
   return result.as<TiValue::wallet::WalletTransactionEntry>();
+}
+TiValue::blockchain::SignedTransaction CommonApiRpcClient::create_transfer_transaction(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */)
+{
+  fc::variant result = get_json_connection()->async_call("create_transfer_transaction", std::vector<fc::variant>{fc::variant(amount_to_transfer), fc::variant(asset_symbol), fc::variant(from_account_name), fc::variant(to_address), fc::variant(memo_message), fc::variant(strategy)}).wait();
+  return result.as<TiValue::blockchain::SignedTransaction>();
 }
 TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::wallet_transfer_to_public_account(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_account_name, const TiValue::blockchain::Imessage& memo_message /* = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>() */, const TiValue::wallet::VoteStrategy& strategy /* = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>() */, bool broadcast /* = fc::json::from_string("true").as<bool>() */)
 {

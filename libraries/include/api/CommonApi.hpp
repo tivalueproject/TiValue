@@ -363,6 +363,14 @@ namespace TiValue { namespace api {
      */
     virtual std::string blockchain_get_transaction_rpc(const std::string& transaction_id_prefix, bool exact = fc::json::from_string("false").as<bool>()) const = 0;
     /**
+     * Get transaction id.
+     *
+     * @param transaction_to_broadcast the transaction to broadcast (signed_transaction, required)
+     *
+     * @return transaction_id
+     */
+    virtual TiValue::blockchain::TransactionIdType blockchain_get_transaction_id(const TiValue::blockchain::SignedTransaction& transaction_to_broadcast) const = 0;
+    /**
      * set the vm enabled flag of normal node, no effect for the delegate.
      *
      * @param enabled vm enabled flag (bool, required)
@@ -798,6 +806,20 @@ namespace TiValue { namespace api {
      * @return transaction_entry
      */
     virtual TiValue::wallet::WalletTransactionEntry wallet_transfer_to_address(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>(), bool broadcast = fc::json::from_string("true").as<bool>()) = 0;
+    /**
+     * Create a transfer transaction.
+     *
+     * @param amount_to_transfer the amount of shares to transfer (string, required)
+     * @param asset_symbol the asset to transfer (asset_symbol, required)
+     * @param from_account_name the source account to draw the shares from (account_name, required)
+     * @param to_address the address or pubkey to transfer to (string, required)
+     * @param memo_message a memo to store with the transaction (information, optional, defaults to "")
+     * @param strategy enumeration [vote_none | vote_all | vote_random | vote_recommended] (vote_strategy, optional,
+     *                 defaults to "vote_recommended")
+     *
+     * @return signed_transaction
+     */
+    virtual TiValue::blockchain::SignedTransaction create_transfer_transaction(const std::string& amount_to_transfer, const std::string& asset_symbol, const std::string& from_account_name, const std::string& to_address, const TiValue::blockchain::Imessage& memo_message = fc::json::from_string("\"\"").as<TiValue::blockchain::Imessage>(), const TiValue::wallet::VoteStrategy& strategy = fc::json::from_string("\"vote_recommended\"").as<TiValue::wallet::VoteStrategy>()) = 0;
     /**
      * Sends given amount to the given account.
      *
