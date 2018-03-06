@@ -42,10 +42,6 @@ namespace TiValue {
 				}
 				return result;
 			}
-			vector<FilePieceInfo> ClientImpl::wallet_get_my_store_rejected()
-			{
-				return _wallet->get_my_store_rejected();
-			}
 			std::vector<string> ClientImpl::wallet_get_my_store_confirmed()
 			{
 				return _wallet->get_my_store_confirmed();
@@ -73,10 +69,6 @@ namespace TiValue {
 				 }
 				 return store_req_res;
 			}	
-			std::vector<TiValue::blockchain::FileAccessInfo> ClientImpl::wallet_get_my_access()
-			{
-				return _wallet->get_my_access();
-			}
 			std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::wallet_get_my_upload_requests()
 			{
 				return _wallet->get_my_upload_requests();
@@ -185,15 +177,6 @@ namespace TiValue {
         return res;
       }
 
-			std::string ClientImpl::blockchain_get_file_authorizing_contract(const std::string& file_id)
-			{
-				FileIdType id(file_id);
-				auto entry=_chain_db->get_upload_request(id);
-				if (!entry.valid())
-					FC_CAPTURE_AND_THROW(upload_request_not_exsited,(file_id));
-				//return entry->authenticating_contract.AddressToString(AddressType::contract_address);
-        return "";
-			}
 			
       std::vector<std::string> ClientImpl::blockchain_list_file_saved()
 			{
@@ -231,22 +214,6 @@ namespace TiValue {
 				return res.first;
 			}
 			
-      TiValue::wallet::WalletTransactionEntry ClientImpl::store_reject(const std::string& file_id, const std::string& file_piece_id, const std::string& node_id,double exec_limit)
-			{
-				auto entry= _wallet->store_reject(file_id, file_piece_id, node_id, exec_limit);
-				_wallet->cache_transaction(entry, false);
-				network_broadcast_transaction(entry.trx);
-				return entry;
-			}
-			
-      TiValue::wallet::WalletTransactionEntry ClientImpl::get_file_access(const std::string& requester, const std::string& file_id, double exec_limit)
-			{
-				auto entry = _wallet->get_file_access(requester, file_id, exec_limit);
-				_wallet->cache_transaction(entry, false);
-				network_broadcast_transaction(entry.trx);
-				return entry;
-			}
-			
       TiValue::wallet::WalletTransactionEntry ClientImpl::store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
 			{
 				auto entry = _wallet->store_file_piece(requester, file_id, file_piece_id,node_id, exec_limit);
@@ -265,13 +232,13 @@ namespace TiValue {
 				return true;
 			}
 			
-      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_get__upload_requests()
+      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_get_upload_requests()
 			{
 				return _chain_db->list_upload_requests();
 			}
 
       //added on 02/08/2018
-      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_list_file_saved_info() {
+      std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::blockchain_list_file_saved_info() const {
         std::vector<TiValue::blockchain::UploadRequestEntry> upload_requests = _chain_db->list_upload_requests();
         std::vector<TiValue::blockchain::UploadRequestEntry> res;
         for (std::vector<UploadRequestEntry>::iterator itr = upload_requests.begin(); itr != upload_requests.end(); itr++) {
@@ -284,7 +251,7 @@ namespace TiValue {
       }
 
       //added on 02/08/2018
-      std::vector<TiValue::blockchain::CanApplyEntry> ClientImpl::blockchain_list_can_apply_file()
+      std::vector<TiValue::blockchain::CanApplyEntry> ClientImpl::blockchain_list_can_apply_file() const
       {
         std::vector<TiValue::blockchain::UploadRequestEntry> upload_requests = _chain_db->list_upload_requests();
         std::vector<TiValue::blockchain::CanApplyEntry> res;
@@ -333,153 +300,6 @@ namespace TiValue {
 				return false;
 			}
       
-      void ClientImpl::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
-      {
-        _wallet->allow_store(file_id, piece_id, storer);
-      }
-
-			bool ClientImpl::download_validation(const std::string& file_id, const std::string& authentication)
-			{
-				string fid = file_id;
-				bool got_piece = false;
-				int copy = 0;
-				auto reqs=_chain_db->list_upload_requests();
-				for (auto req : reqs)
-				{
-					for (auto it : req.pieces)
-					{
-						if (fid == it.pieceid)
-						{
-							fid = req.id;
-							got_piece = true;
-							copy = req.num_of_copys;
-							break;
-						}
-					}
-					if (got_piece)
-						break;
-				}
-				
-				auto au_info = fc::from_base58(authentication);
-				fc::ecc::compact_signature sig;
-				for (int i = 0; i < au_info.size(); i++)
-				{
-					sig.at(i) = au_info[i];
-				}
-				auto digest = sha256::hash(fid);
-				auto key = fc::ecc::public_key(sig, digest, false).serialize();
-
-				PublicKeyType pkey(key);
-				printf("file_id=%s\n,au=%s\n,key=", fid.c_str(), authentication.c_str(), pkey.operator fc::string().c_str());
-					//auto files = _chain_db->get_file_saved();
-        auto infos = _chain_db->get_file_saved();
-        std::vector<FileIdType> files;
-        for (auto info : infos) {
-          files.push_back(info.file_id);
-        }
-					for (auto file : files)
-					{
-						if (file == fid)
-						{
-							auto access_enable = _chain_db->get_enable_access_entry(file);
-							if (!access_enable.valid())
-								continue;
-							for (auto fe : access_enable->fetcher)
-								printf("%s\n",fe.operator fc::string().c_str());
-							if (access_enable->fetcher.find(pkey) != access_enable->fetcher.end())
-								return true;
-						}
-						/*
-						else if (check_upload_request(_chain_db->get_upload_request(file), file_id))
-						{
-							auto req = _chain_db->get_store_request(file_id);
-							if (!req.valid())
-								continue;
-							auto it = req->store_request.begin();
-							while (it != req->store_request.end())
-							{
-								if (it->second == pkey)
-									return true;
-								it++;
-							}
-						}
-						*/
-					}
-					//校验是否时存储请求
-					auto reqs_for_my_file=_wallet->list_store_request_for_my_file(fid);
-                    
-					auto sd_entry=_chain_db->get_save_decl_entry(file_id);
-					if (sd_entry.valid())
-					{
-						for (auto& it : sd_entry->store_info)
-						{
-							if (it.file_id == fid)
-								copy--;
-						}
-						if (copy <= 0)
-							return false;
-					}
-					for (auto req_for_my_file : reqs_for_my_file)
-					{
-						
-						if (req_for_my_file.piece_id == file_id)
-						{
-							for (auto reqer : req_for_my_file.requestors)
-							{
-                if (reqer.key == pkey)
-                {
-                  if(_wallet->check_store_allowed( fid,file_id, pkey))
-                      return true;
-                  return false;
-                }
-							}
-						}
-					}
-					return false;
-			}
-			
-      std::string ClientImpl::generate_download_validation(const std::string& file_id)
-			{
-				auto accesss=_wallet->get_my_access();
-				for (auto accessinfo : accesss)
-				{
-					for (auto file: accessinfo.file_id)
-					{
-						if (file != file_id&&!check_upload_request(_chain_db->get_upload_request(file), file_id))
-							continue;
-						auto entry = _wallet->get_account(accessinfo.account);
-						auto private_key=_wallet->get_private_key(entry.owner_address());
-						auto sig = private_key.sign_compact(sha256::hash(file));
-						return fc::to_base58((char*)&(sig.data), sig.size());
-					}
-				}
-				auto storerequestss = _wallet->get_local_store_requests();
-
-				auto storerequests = _wallet->get_my_store_requests();
-				for (auto req = storerequests.begin(); req != storerequests.end(); req++)
-				{
-					if (req->second.find(file_id)!=req->second.end())
-					{
-						auto store_req = _chain_db->get_store_request(req->first);
-						if (!store_req.valid())
-							continue;
-						auto req_it = store_req->store_request.begin();
-						while (req_it != store_req->store_request.end())
-						{
-							if (_wallet->is_my_public_key(req_it->second))
-							{
-								auto private_key = _wallet->get_private_key(Address(req_it->second));
-								auto sig = private_key.sign_compact(sha256::hash(file_id));
-								string res;
-								return fc::to_base58((char*)&(sig.data), sig.size());
-							}
-							req_it++;
-						}
-					}
-				}
-				FC_CAPTURE_AND_THROW(access_unauthorized,(file_id));
-			}
-			
       TiValue::wallet::WalletTransactionEntry ClientImpl::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 			{
 				//auto sr_entry=_chain_db->get_store_request_entry(piece_id);

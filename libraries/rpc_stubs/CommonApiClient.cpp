@@ -6,6 +6,62 @@
 namespace TiValue {
 	 namespace rpc_stubs {
 
+std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::blockchain_list_file_saved_info() const
+{
+  ilog("received RPC call: blockchain_list_file_saved_info()", );
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    call_id = glog->log_call_started( this, "blockchain_list_file_saved_info", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call blockchain_list_file_saved_info finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    std::vector<TiValue::blockchain::UploadRequestEntry> result = get_impl()->blockchain_list_file_saved_info();
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "blockchain_list_file_saved_info", args, fc::variant(result) );
+
+    return result;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
+std::vector<TiValue::blockchain::CanApplyEntry> CommonApiClient::blockchain_list_can_apply_file() const
+{
+  ilog("received RPC call: blockchain_list_can_apply_file()", );
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    call_id = glog->log_call_started( this, "blockchain_list_can_apply_file", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call blockchain_list_can_apply_file finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    std::vector<TiValue::blockchain::CanApplyEntry> result = get_impl()->blockchain_list_can_apply_file();
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "blockchain_list_can_apply_file", args, fc::variant(result) );
+
+    return result;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
 fc::variant_object CommonApiClient::blockchain_get_info() const
 {
   ilog("received RPC call: blockchain_get_info()", );
@@ -2109,6 +2165,64 @@ void CommonApiClient::delegate_blacklist_remove_operation(const TiValue::blockch
       glog->log_call_finished( call_id, this, "delegate_blacklist_remove_operation", args, fc::variant(result) );
 
     return;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
+std::vector<TiValue::blockchain::UploadRequestEntryPlus> CommonApiClient::wallet_list_my_upload_requests(const std::string& account)
+{
+  ilog("received RPC call: wallet_list_my_upload_requests(${account})", ("account", account));
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    args.push_back( fc::variant(account) );
+    call_id = glog->log_call_started( this, "wallet_list_my_upload_requests", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call wallet_list_my_upload_requests finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    std::vector<TiValue::blockchain::UploadRequestEntryPlus> result = get_impl()->wallet_list_my_upload_requests(account);
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "wallet_list_my_upload_requests", args, fc::variant(result) );
+
+    return result;
+  }
+  FC_RETHROW_EXCEPTIONS(warn, "")
+}
+
+std::vector<TiValue::blockchain::HaveAppliedFileEntry> CommonApiClient::wallet_list_my_declared_file(const std::string& account)
+{
+  ilog("received RPC call: wallet_list_my_declared_file(${account})", ("account", account));
+  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
+  uint64_t call_id = 0;
+  fc::variants args;
+  if( glog != NULL )
+  {
+    args.push_back( fc::variant(account) );
+    call_id = glog->log_call_started( this, "wallet_list_my_declared_file", args );
+  }
+
+  struct scope_exit
+  {
+    fc::time_point start_time;
+    scope_exit() : start_time(fc::time_point::now()) {}
+    ~scope_exit() { dlog("RPC call wallet_list_my_declared_file finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+  } execution_time_logger;
+  try
+  {
+    std::vector<TiValue::blockchain::HaveAppliedFileEntry> result = get_impl()->wallet_list_my_declared_file(account);
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "wallet_list_my_declared_file", args, fc::variant(result) );
+
+    return result;
   }
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
@@ -6923,37 +7037,6 @@ TiValue::blockchain::UploadRequestEntry CommonApiClient::store_file_to_network(c
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-TiValue::wallet::WalletTransactionEntry CommonApiClient::get_file_access(const std::string& requester, const std::string& file_id, double exec_limit)
-{
-  ilog("received RPC call: get_file_access(${requester}, ${file_id}, ${exec_limit})", ("requester", requester)("file_id", file_id)("exec_limit", exec_limit));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    args.push_back( fc::variant(requester) );
-    args.push_back( fc::variant(file_id) );
-    args.push_back( fc::variant(exec_limit) );
-    call_id = glog->log_call_started( this, "get_file_access", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call get_file_access finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    TiValue::wallet::WalletTransactionEntry result = get_impl()->get_file_access(requester, file_id, exec_limit);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "get_file_access", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
 TiValue::wallet::WalletTransactionEntry CommonApiClient::store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
 {
   ilog("received RPC call: store_file_piece(${requester}, ${file_id}, ${file_piece_id}, ${node_id}, ${exec_limit})", ("requester", requester)("file_id", file_id)("file_piece_id", file_piece_id)("node_id", node_id)("exec_limit", exec_limit));
@@ -6981,38 +7064,6 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::store_file_piece(const 
     TiValue::wallet::WalletTransactionEntry result = get_impl()->store_file_piece(requester, file_id, file_piece_id, node_id, exec_limit);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "store_file_piece", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
-TiValue::wallet::WalletTransactionEntry CommonApiClient::store_reject(const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
-{
-  ilog("received RPC call: store_reject(${file_id}, ${file_piece_id}, ${node_id}, ${exec_limit})", ("file_id", file_id)("file_piece_id", file_piece_id)("node_id", node_id)("exec_limit", exec_limit));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    args.push_back( fc::variant(file_id) );
-    args.push_back( fc::variant(file_piece_id) );
-    args.push_back( fc::variant(node_id) );
-    args.push_back( fc::variant(exec_limit) );
-    call_id = glog->log_call_started( this, "store_reject", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call store_reject finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    TiValue::wallet::WalletTransactionEntry result = get_impl()->store_reject(file_id, file_piece_id, node_id, exec_limit);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "store_reject", args, fc::variant(result) );
 
     return result;
   }
@@ -7110,45 +7161,16 @@ std::vector<std::string> CommonApiClient::blockchain_list_file_saved()
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-std::string CommonApiClient::blockchain_get_file_authorizing_contract(const std::string& file_id)
-{
-  ilog("received RPC call: blockchain_get_file_authorizing_contract(${file_id})", ("file_id", file_id));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    args.push_back( fc::variant(file_id) );
-    call_id = glog->log_call_started( this, "blockchain_get_file_authorizing_contract", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call blockchain_get_file_authorizing_contract finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::string result = get_impl()->blockchain_get_file_authorizing_contract(file_id);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "blockchain_get_file_authorizing_contract", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
 std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiClient::wallet_list_store_request_for_my_file(const std::string& file_id /* = fc::json::from_string("\"\"").as<std::string>() */)
 {
   ilog("received RPC call: wallet_list_store_request_for_my_file(${file_id})", ("file_id", file_id));
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
-  if (glog != NULL)
+  if( glog != NULL )
   {
-    args.push_back(fc::variant(file_id));
-    call_id = glog->log_call_started(this, "wallet_list_store_request_for_my_file", args);
+    args.push_back( fc::variant(file_id) );
+    call_id = glog->log_call_started( this, "wallet_list_store_request_for_my_file", args );
   }
 
   struct scope_exit
@@ -7160,74 +7182,13 @@ std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiClient::wallet_list_
   try
   {
     std::vector<TiValue::blockchain::StoreRequestInfo> result = get_impl()->wallet_list_store_request_for_my_file(file_id);
-    if (call_id != 0)
-      glog->log_call_finished(call_id, this, "wallet_list_store_request_for_my_file", args, fc::variant(result));
+    if( call_id != 0 )
+      glog->log_call_finished( call_id, this, "wallet_list_store_request_for_my_file", args, fc::variant(result) );
 
     return result;
   }
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
-
-//added on 02/03/2018
-std::vector<TiValue::blockchain::UploadRequestEntryPlus> CommonApiClient::wallet_list_my_upload_requests(const std::string& account)
-{
-  ilog("received RPC call: wallet_list_my_upload_requests(${account})", ("account", account));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if (glog != NULL)
-  {
-    args.push_back(fc::variant(account));
-    call_id = glog->log_call_started(this, "wallet_list_my_upload_requests", args);
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call wallet_list_my_upload_requests finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::vector<TiValue::blockchain::UploadRequestEntryPlus> result = get_impl()->wallet_list_my_upload_requests(account);
-    if (call_id != 0)
-      glog->log_call_finished(call_id, this, "wallet_list_my_upload_requests", args, fc::variant(result));
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
-//added on 02/08/2018
-std::vector<TiValue::blockchain::HaveAppliedFileEntry> CommonApiClient::wallet_list_my_declared_file(const std::string& account)
-{
-  ilog("received RPC call: wallet_list_my_declared_file(${account})", ("account", account));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if (glog != NULL)
-  {
-    args.push_back(fc::variant(account));
-    call_id = glog->log_call_started(this, "wallet_list_my_declared_file", args);
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call wallet_list_my_declared_file finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::vector<TiValue::blockchain::HaveAppliedFileEntry> result = get_impl()->wallet_list_my_declared_file(account);
-    if (call_id != 0)
-      glog->log_call_finished(call_id, this, "wallet_list_my_declared_file", args, fc::variant(result));
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
 
 bool CommonApiClient::blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key)
 {
@@ -7254,34 +7215,6 @@ bool CommonApiClient::blockchain_check_signature(const std::string& origin_data,
     bool result = get_impl()->blockchain_check_signature(origin_data, signature, key);
     if( call_id != 0 )
       glog->log_call_finished( call_id, this, "blockchain_check_signature", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
-std::vector<TiValue::blockchain::FileAccessInfo> CommonApiClient::wallet_get_my_access()
-{
-  ilog("received RPC call: wallet_get_my_access()", );
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    call_id = glog->log_call_started( this, "wallet_get_my_access", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call wallet_get_my_access finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::vector<TiValue::blockchain::FileAccessInfo> result = get_impl()->wallet_get_my_access();
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "wallet_get_my_access", args, fc::variant(result) );
 
     return result;
   }
@@ -7316,92 +7249,33 @@ std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::wallet_get
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::blockchain_get__upload_requests()
+std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::blockchain_get_upload_requests()
 {
-  ilog("received RPC call: blockchain_get__upload_requests()", );
+  ilog("received RPC call: blockchain_get_upload_requests()", );
   TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
   uint64_t call_id = 0;
   fc::variants args;
   if( glog != NULL )
   {
-    call_id = glog->log_call_started( this, "blockchain_get__upload_requests", args );
+    call_id = glog->log_call_started( this, "blockchain_get_upload_requests", args );
   }
 
   struct scope_exit
   {
     fc::time_point start_time;
     scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call blockchain_get__upload_requests finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
+    ~scope_exit() { dlog("RPC call blockchain_get_upload_requests finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
   } execution_time_logger;
   try
   {
-    std::vector<TiValue::blockchain::UploadRequestEntry> result = get_impl()->blockchain_get__upload_requests();
+    std::vector<TiValue::blockchain::UploadRequestEntry> result = get_impl()->blockchain_get_upload_requests();
     if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "blockchain_get__upload_requests", args, fc::variant(result) );
+      glog->log_call_finished( call_id, this, "blockchain_get_upload_requests", args, fc::variant(result) );
 
     return result;
   }
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
-
-//added on 02/08/2018
-std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiClient::blockchain_list_file_saved_info()
-{
-  ilog("received RPC call: blockchain_list_file_saved_info()", );
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if (glog != NULL)
-  {
-    call_id = glog->log_call_started(this, "blockchain_list_file_saved_info", args);
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call blockchain_list_file_saved_info finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::vector<TiValue::blockchain::UploadRequestEntry> result = get_impl()->blockchain_list_file_saved_info();
-    if (call_id != 0)
-      glog->log_call_finished(call_id, this, "blockchain_list_file_saved_info", args, fc::variant(result));
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
-//added on 02/08/2018
-std::vector<TiValue::blockchain::CanApplyEntry> CommonApiClient::blockchain_list_can_apply_file()
-{
-  ilog("received RPC call: blockchain_list_can_apply_file()", );
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if (glog != NULL)
-  {
-    call_id = glog->log_call_started(this, "blockchain_list_can_apply_file", args);
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call blockchain_list_can_apply_file finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::vector<TiValue::blockchain::CanApplyEntry> result = get_impl()->blockchain_list_can_apply_file();
-    if (call_id != 0)
-      glog->log_call_finished(call_id, this, "blockchain_list_can_apply_file", args, fc::variant(result));
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
 
 std::vector<TiValue::blockchain::LocalStoreRequestInfo> CommonApiClient::wallet_get_my_store_request()
 {
@@ -7459,34 +7333,6 @@ vector<string> CommonApiClient::wallet_get_my_store_confirmed()
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-std::vector<TiValue::blockchain::FilePieceInfo> CommonApiClient::wallet_get_my_store_rejected()
-{
-  ilog("received RPC call: wallet_get_my_store_rejected()", );
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    call_id = glog->log_call_started( this, "wallet_get_my_store_rejected", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call wallet_get_my_store_rejected finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::vector<TiValue::blockchain::FilePieceInfo> result = get_impl()->wallet_get_my_store_rejected();
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "wallet_get_my_store_rejected", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
 TiValue::blockchain::FileSaveInfo CommonApiClient::blockchain_get_file_save_node(const std::string& file_id)
 {
   ilog("received RPC call: blockchain_get_file_save_node(${file_id})", ("file_id", file_id));
@@ -7516,97 +7362,6 @@ TiValue::blockchain::FileSaveInfo CommonApiClient::blockchain_get_file_save_node
   FC_RETHROW_EXCEPTIONS(warn, "")
 }
 
-bool CommonApiClient::download_validation(const std::string& file_id, const std::string& authentication)
-{
-  ilog("received RPC call: download_validation(${file_id}, ${authentication})", ("file_id", file_id)("authentication", authentication));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    args.push_back( fc::variant(file_id) );
-    args.push_back( fc::variant(authentication) );
-    call_id = glog->log_call_started( this, "download_validation", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call download_validation finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    bool result = get_impl()->download_validation(file_id, authentication);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "download_validation", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
-void CommonApiClient::wallet_allow_store_request(const std::string& file_id, const std::string& piece_id, const std::string& storer)
-{
-  ilog("received RPC call: wallet_allow_store_request(${file_id}, ${piece_id}, ${storer})", ("file_id", file_id)("piece_id", piece_id)("storer", storer));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    args.push_back( fc::variant(file_id) );
-    args.push_back( fc::variant(piece_id) );
-    args.push_back( fc::variant(storer) );
-    call_id = glog->log_call_started( this, "wallet_allow_store_request", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call wallet_allow_store_request finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::nullptr_t result = nullptr;
-    get_impl()->wallet_allow_store_request(file_id, piece_id, storer);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "wallet_allow_store_request", args, fc::variant(result) );
-
-    return;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
-std::string CommonApiClient::generate_download_validation(const std::string& file_id)
-{
-  ilog("received RPC call: generate_download_validation(${file_id})", ("file_id", file_id));
-  TiValue::api::GlobalApiLogger* glog = TiValue::api::GlobalApiLogger::get_instance();
-  uint64_t call_id = 0;
-  fc::variants args;
-  if( glog != NULL )
-  {
-    args.push_back( fc::variant(file_id) );
-    call_id = glog->log_call_started( this, "generate_download_validation", args );
-  }
-
-  struct scope_exit
-  {
-    fc::time_point start_time;
-    scope_exit() : start_time(fc::time_point::now()) {}
-    ~scope_exit() { dlog("RPC call generate_download_validation finished in ${time} ms", ("time", (fc::time_point::now() - start_time).count() / 1000)); }
-  } execution_time_logger;
-  try
-  {
-    std::string result = get_impl()->generate_download_validation(file_id);
-    if( call_id != 0 )
-      glog->log_call_finished( call_id, this, "generate_download_validation", args, fc::variant(result) );
-
-    return result;
-  }
-  FC_RETHROW_EXCEPTIONS(warn, "")
-}
-
 TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 {
   ilog("received RPC call: declare_piece_saved(${file_id}, ${piece_id}, ${storer}, ${node_id})", ("file_id", file_id)("piece_id", piece_id)("storer", storer)("node_id", node_id));
@@ -7618,7 +7373,7 @@ TiValue::wallet::WalletTransactionEntry CommonApiClient::declare_piece_saved(con
     args.push_back( fc::variant(file_id) );
     args.push_back( fc::variant(piece_id) );
     args.push_back( fc::variant(storer) );
-    args.push_back(fc::variant(node_id));
+    args.push_back( fc::variant(node_id) );
     call_id = glog->log_call_started( this, "declare_piece_saved", args );
   }
 

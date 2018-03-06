@@ -37,6 +37,10 @@ namespace TiValue {
 
     void register_CommonApi_method_metadata();
 
+    fc::variant blockchain_list_file_saved_info_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant blockchain_list_file_saved_info_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+    fc::variant blockchain_list_can_apply_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant blockchain_list_can_apply_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_get_info_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_get_info_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_generate_snapshot_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
@@ -181,6 +185,10 @@ namespace TiValue {
     fc::variant delegate_blacklist_add_operation_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant delegate_blacklist_remove_operation_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant delegate_blacklist_remove_operation_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+    fc::variant wallet_list_my_upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant wallet_list_my_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
+    fc::variant wallet_list_my_declared_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant wallet_list_my_declared_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_get_info_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_get_info_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_open_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
@@ -497,61 +505,28 @@ namespace TiValue {
     fc::variant delete_event_handler_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant store_file_to_network_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant store_file_to_network_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant get_file_access_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant get_file_access_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant store_file_piece_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant store_file_piece_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant store_reject_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant store_reject_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant confirm_piece_saved_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant confirm_piece_saved_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_set_node_id_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_set_node_id_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_list_file_saved_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_list_file_saved_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant blockchain_get_file_authorizing_contract_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant blockchain_get_file_authorizing_contract_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_list_store_request_for_my_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_list_store_request_for_my_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-
-    //added on 02/03/2018
-    fc::variant wallet_list_my_upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant wallet_list_my_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    //added on 02/08/2018
-    fc::variant wallet_list_my_declared_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant wallet_list_my_declared_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-
     fc::variant blockchain_check_signature_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_check_signature_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant wallet_get_my_access_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant wallet_get_my_access_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_get_my_upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_get_my_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant blockchain_get__upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant blockchain_get__upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-
-    //added on 02/08/2018
-    fc::variant blockchain_list_file_saved_info_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant blockchain_list_file_saved_info_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-
-    //added on 02/08/2018
-    fc::variant blockchain_list_can_apply_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant blockchain_list_can_apply_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-
+    fc::variant blockchain_get_upload_requests_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
+    fc::variant blockchain_get_upload_requests_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_get_my_store_request_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_get_my_store_request_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant wallet_get_my_store_confirmed_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant wallet_get_my_store_confirmed_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant wallet_get_my_store_rejected_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant wallet_get_my_store_rejected_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_get_file_save_node_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant blockchain_get_file_save_node_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant download_validation_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant download_validation_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant wallet_allow_store_request_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant wallet_allow_store_request_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
-    fc::variant generate_download_validation_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
-    fc::variant generate_download_validation_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant declare_piece_saved_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
     fc::variant declare_piece_saved_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters);
     fc::variant blockchain_list_file_save_declare_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters);
