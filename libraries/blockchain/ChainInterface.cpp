@@ -499,24 +499,6 @@ namespace TiValue {
         }
 
 
-		oStoreRequestEntry ChainInterface::get_store_request_entry(const FilePieceIdType& id)
-		{
-			try {
-				return lookup<StoreRequestEntry, FilePieceIdType>(id);
-			}FC_CAPTURE_AND_RETHROW((id))
-		}
-
-		void ChainInterface::store_store_request(const StoreRequestEntry & entry)
-		{
-			try {
-				store(entry.piece_id, entry);
-			}FC_CAPTURE_AND_RETHROW((entry))
-		}
-
-		void ChainInterface::store_store_reject(const StoreRejectEntry & entry)
-		{
-			StoreRejectEntry::store(*this, entry.piece_id, entry);
-		}
 
 		void ChainInterface::store_save_decl_entry(const PieceSavedDeclEntry & entry)
 		{
@@ -753,10 +735,6 @@ namespace TiValue {
 		{
 			return UploadRequestEntry::lookup(*this, id);
 		}
-		oStoreRequestEntry ChainInterface::get_store_request(const FilePieceIdType & id)
-		{
-			return StoreRequestEntry::lookup(*this, id);
-		}
 		oPieceSavedEntry ChainInterface::get_piece_saved_entry(const FilePieceIdType & id)
 		{
 			return PieceSavedEntry::lookup(*this, id);
@@ -769,14 +747,6 @@ namespace TiValue {
 		{
 			PieceSavedEntry::remove(*this, id);
 		}
-		oEnableAccessEntry ChainInterface::get_enable_access_entry(const FileIdType & id)
-		{
-			return EnableAccessEntry::lookup(*this,id);
-		}
-		void ChainInterface::store_enable_access_entry(const EnableAccessEntry & entry)
-		{
-			EnableAccessEntry::store(*this, entry.file_id, entry);
-		}
 		void ChainInterface::store_file_saved_entry(const FileSavedEntry & entry)
 		{
 			FileSavedEntry::store(*this, entry.file_id, entry);
@@ -788,14 +758,6 @@ namespace TiValue {
 		oFileSavedEntry ChainInterface::get_file_saved_entry(const FileIdType & id)
 		{
 			return FileSavedEntry::lookup(*this,id);
-		}
-		oRejectStoreEntry ChainInterface::get_reject_store_entry(const FilePieceIdType & id)
-		{
-			return StoreRejectEntry::lookup(*this,id);
-		}
-		void ChainInterface::remove_reject_store_entry(const FilePieceIdType & id)
-		{
-			StoreRejectEntry::remove(*this, id);
 		}
 		void ChainInterface::store_upload_request(const UploadRequestEntry & entry)
 		{

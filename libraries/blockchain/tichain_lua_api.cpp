@@ -999,98 +999,6 @@ namespace TiValue {
 				lua_pushboolean(L, res);
 				return 1;
 			}
-			int GluaChainApi::allow_enable_access_wrapper_func(lua_State *L)
-			{
-				if (lua_gettop(L) < 2)
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_enable_access need 2 arguments");
-					return 0;
-				}
-				if (!lua_isstring(L, 1))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_enable_access need 1 string argument of file id");
-					return 0;
-				}
-				if (!lua_isstring(L, 2))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_enable_access need 1 string argument of file piece id");
-					return 0;
-				}
-				const char* file_id = luaL_checkstring(L, 1);
-				const char* requestor = luaL_checkstring(L, 2);
-				bool res = TiValue::lua::api::global_glua_chain_api->allow_enable_access(L, string(file_id), string(requestor));
-				lua_pushboolean(L, res);
-				return 1;
-			}
-			int GluaChainApi::allow_store_reject_wrapper_func(lua_State *L)
-			{
-				if (lua_gettop(L) < 3)
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 4 arguments");
-					return 0;
-				}
-				if (!lua_isstring(L, 1))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_store_reject need 1 string argument of file id");
-					return 0;
-				}
-				if (!lua_isstring(L, 2))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_store_reject need 1 string argument of file piece id");
-					return 0;
-				}
-				if (!lua_isstring(L, 3))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR,
-						"allow_store_reject need 1 string argument of node_id");
-					return 0;
-				}
-				const char* file_id = luaL_checkstring(L, 1);
-				const char* file_piece_id = luaL_checkstring(L, 2);
-				const char* node_id = luaL_checkstring(L, 3);
-				bool res = TiValue::lua::api::global_glua_chain_api->allow_store_reject(L, string(file_id), string(file_piece_id), node_id);
-				lua_pushboolean(L, res);
-				return 1;
-			}
-			int GluaChainApi::allow_store_request_wrapper_func(lua_State *L)
-			{
-				if (lua_gettop(L) < 4)
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 4 arguments");
-					return 0;
-				}
-				if (!lua_isstring(L, 1))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 1 string argument of file id");
-					return 0;
-				}
-				if (!lua_isstring(L, 2))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 1 string argument of file piece id");
-					return 0;
-				}
-				if (!lua_isstring(L, 3))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_store_request need 1 string argument of public key");
-					return 0;
-				}
-				if (!lua_isstring(L, 4))
-				{
-					TiValue::lua::api::global_glua_chain_api->throw_exception(L, tichain_API_SIMPLE_ERROR, "allow_upload_request need 1 string argument of node id");
-					return 0;
-				}
-				const char* file_id = luaL_checkstring(L, 1);
-				const char* file_piece_id = luaL_checkstring(L, 2);
-				const char* requestor = luaL_checkstring(L, 3);
-				const char* node_id = luaL_checkstring(L, 4);
-				bool res = TiValue::lua::api::global_glua_chain_api->allow_store_request(L, string(file_id), string(file_piece_id), requestor, node_id);
-				lua_pushboolean(L, res);
-				return 1;
-			}
       
       //added on 1/10/2018
       int GluaChainApi::allow_declare_piece_saved_wrapper_func(lua_State *L) {
@@ -1145,34 +1053,6 @@ namespace TiValue {
         }
       }
 
-			bool GluaChainApi::allow_store_request(lua_State * L, const blockchain::FileIdType & file_id, const std::string & piece_id, const std::string & requester, const std::string & node_id)
-			{
-				TiValue::lua::lib::increment_lvm_instructions_executed_count(L, CHAIN_GLUA_API_EACH_INSTRUCTIONS_COUNT - 1);
-				try {
-					TiValue::blockchain::TransactionEvaluationState* eval_state_ptr =
-						(TiValue::blockchain::TransactionEvaluationState*)
-						(TiValue::lua::lib::get_lua_state_value(L, "evaluate_state").pointer_value);
-
-					if (eval_state_ptr == NULL)
-						FC_CAPTURE_AND_THROW(lua_executor_internal_error, (""));
-					try
-					{
-						StoreRequestOperation op(FileIdType(file_id),FilePieceIdType(piece_id),PublicKeyType(requester),node_id);
-						eval_state_ptr->p_result_trx.operations.emplace_back(Operation(op));
-						return true;
-					}
-					catch (...)
-					{
-						return false;
-					}
-				}
-				catch (const fc::exception&)
-				{
-					L->force_stopping = true;
-					L->exit_code = LUA_API_INTERNAL_ERROR;
-					return false;
-				}
-			}
 			bool GluaChainApi::allow_piece_saved(lua_State * L, const FileIdType & file_id, const std::string & piece_id, const std::string & Node)
 			{
 				TiValue::lua::lib::increment_lvm_instructions_executed_count(L, CHAIN_GLUA_API_EACH_INSTRUCTIONS_COUNT - 1);
@@ -1186,67 +1066,6 @@ namespace TiValue {
 					try
 					{
 						PieceSavedOperation op(FileIdType(file_id), FilePieceIdType(piece_id), Node);
-						eval_state_ptr->p_result_trx.operations.emplace_back(Operation(op));
-						return true;
-					}
-					catch (...)
-					{
-						return false;
-					}
-				}
-				catch (const fc::exception&)
-				{
-					L->force_stopping = true;
-					L->exit_code = LUA_API_INTERNAL_ERROR;
-					return false;
-				}
-			}
-			bool GluaChainApi::allow_enable_access(lua_State * L, const std::string & file_id, const std::string & requestor)
-			{
-				TiValue::lua::lib::increment_lvm_instructions_executed_count(L, CHAIN_GLUA_API_EACH_INSTRUCTIONS_COUNT - 1);
-				try {
-					TiValue::blockchain::TransactionEvaluationState* eval_state_ptr =
-						(TiValue::blockchain::TransactionEvaluationState*)
-						(TiValue::lua::lib::get_lua_state_value(L, "evaluate_state").pointer_value);
-
-					if (eval_state_ptr == NULL)
-						FC_CAPTURE_AND_THROW(lua_executor_internal_error, (""));
-					try
-					{
-						EnableAccessOperation op;
-						op.file_id = FileIdType(file_id);
-						op.requester = PublicKeyType(requestor);
-						eval_state_ptr->p_result_trx.operations.emplace_back(Operation(op));
-						return true;
-					}
-					catch (...)
-					{
-						return false;
-					}
-				}
-				catch (const fc::exception&)
-				{
-					L->force_stopping = true;
-					L->exit_code = LUA_API_INTERNAL_ERROR;
-					return false;
-				}
-			}
-			bool GluaChainApi::allow_store_reject(lua_State * L, const blockchain::FileIdType & file_id, const std::string & piece_id, const std::string & node_id)
-			{
-				TiValue::lua::lib::increment_lvm_instructions_executed_count(L, CHAIN_GLUA_API_EACH_INSTRUCTIONS_COUNT - 1);
-				try {
-					TiValue::blockchain::TransactionEvaluationState* eval_state_ptr =
-						(TiValue::blockchain::TransactionEvaluationState*)
-						(TiValue::lua::lib::get_lua_state_value(L, "evaluate_state").pointer_value);
-
-					if (eval_state_ptr == NULL)
-						FC_CAPTURE_AND_THROW(lua_executor_internal_error, (""));
-					try
-					{
-						StoreRejectOperation op;
-						op.file_id = file_id;
-						op.node_id = node_id;
-						op.piece_id = FilePieceIdType(piece_id);
 						eval_state_ptr->p_result_trx.operations.emplace_back(Operation(op));
 						return true;
 					}

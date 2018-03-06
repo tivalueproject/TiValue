@@ -124,14 +124,8 @@ namespace TiValue {
 
 			//tichain file store related
 			void store_upload_request(const blockchain::UploadRequestEntry& upload_request);
-			void store_store_request_for_my_file(const blockchain::StoreRequestEntry& store_request);
-			void store_my_store_request(const blockchain::StoreRequestEntry& store_request);
 			oWalletUploadRequestEntry lookup_upload_request(const FileIdType& file_id)const;
-			oWalletStoreRequestEntry lookup_store_request(const FilePieceIdType& piece_id)const;
-			oMyStoreRequestEntry lookup_my_store_request(const FilePieceIdType& piece_id)const;
 
-			void store_local_store_req(const blockchain::LocalStoreRequestInfo& info) ;
-            void store_allow_store_req(const blockchain::AllowedStoreRequest& info);
             unordered_map<TransactionIdType, TransactionLedgerEntry>   experimental_transactions;
 
         private:
@@ -164,12 +158,8 @@ namespace TiValue {
 			//wallet file store related
 			unordered_map<Address, vector<WalletUploadRequestEntry>>           upload_requests_of_wallet;
 			unordered_map<FileIdType, WalletUploadRequestEntry>					id_to_upload_requests;
-			unordered_map<FilePieceIdType, MyStoreRequestEntry>						my_store_requests;
 			public:
-			unordered_set<LocalStoreRequestInfo>			local_store_requests;
-            unordered_set<AllowedStoreRequest> allow_store_requests;
 			private:
-			unordered_map<FilePieceIdType, WalletStoreRequestEntry>				 store_requests_for_my_file;
             void remove_item(int32_t index);
 
             template<typename T>

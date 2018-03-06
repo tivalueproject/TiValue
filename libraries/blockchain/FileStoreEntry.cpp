@@ -24,27 +24,6 @@ namespace TiValue {
 				db.uploadrequest_remove_by_id(id);
 			}FC_CAPTURE_AND_RETHROW((id));
 		}
-		oStoreRequestEntry StoreRequestEntry::lookup(const ChainInterface &db, const FilePieceIdType &piece_id)
-		{
-			try
-			{
-				return db.storerequest_lookup_by_id(piece_id);
-			}FC_CAPTURE_AND_RETHROW((piece_id));
-		}
-		void StoreRequestEntry::store(ChainInterface &db, const FilePieceIdType &id, const StoreRequestEntry &entry)
-		{
-			try
-			{
-				db.storerequest_insert_into_id_map(id, entry);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		void StoreRequestEntry::remove(ChainInterface &db, const FilePieceIdType &id)
-		{
-			try
-			{
-				db.storerequest_remove_by_id(id);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
 		oPieceSavedEntry PieceSavedEntry::lookup(const ChainInterface &db, const FilePieceIdType &id)
 		{
 			try
@@ -84,48 +63,6 @@ namespace TiValue {
 		{
 			try {
 				db.filesaved_remove_by_id(id);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		oEnableAccessEntry EnableAccessEntry::lookup(const ChainInterface &db, const FileIdType &id)
-		{
-			try
-			{
-				return db.enableaccess_lookup_by_id(id);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		void EnableAccessEntry::store(ChainInterface &db, const FileIdType &id, const EnableAccessEntry &entry)
-		{
-			try
-			{
-				db.enableaccess_insert_into_id_map(id, entry);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		void EnableAccessEntry::remove(ChainInterface &db, const FileIdType &id)
-		{
-			try
-			{
-				db.enableaccess_remove_by_id(id);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		oRejectStoreEntry StoreRejectEntry::lookup(const ChainInterface & db, const FilePieceIdType & id)
-		{
-			try
-			{
-			return db.rejectstore_lookup_by_id(id);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		void StoreRejectEntry::store(ChainInterface & db, const FilePieceIdType & id, const StoreRejectEntry & entry)
-		{
-			try
-			{
-				db.rejectstore_insert_into_id_map(id, entry);
-			}FC_CAPTURE_AND_RETHROW((id));
-		}
-		void StoreRejectEntry::remove(ChainInterface & db, const FilePieceIdType & id)
-		{
-			try
-			{
-				db.rejectstore_remove_by_id(id);
 			}FC_CAPTURE_AND_RETHROW((id));
 		}
 		FileIdType::FileIdType() 
@@ -200,21 +137,8 @@ namespace TiValue {
 			return result;
 		}
 
-		LocalStoreRequestInfo::LocalStoreRequestInfo()
-		{
-		}
 
-    LocalStoreRequestInfo::LocalStoreRequestInfo(const FileIdType& fid, 
-      const FilePieceIdType& piece_id,
-      const NodeIdType& node, 
-      int piece_index, 
-      size_t piece_size,
-      const string& filename) :
-      file_id(fid), piece_id(piece_id), node_id(node), c_id(fid.file_id),
-      piece_index(piece_index), piece_size(piece_size), filename(filename)
-		{
 
-		}
 
 		oPieceSavedDeclEntry PieceSavedDeclEntry::lookup(const ChainInterface & db, const FilePieceIdType & id)
 		{
@@ -256,9 +180,6 @@ namespace TiValue {
 			return false;
 		}
 
-    AllowedStoreRequest::AllowedStoreRequest(const FileIdType & fid, const FilePieceIdType & piece_id, const PublicKeyType storer) :file_id(file_id), piece_id(piece_id), storer(storer)
-    {
-    }
 
   }
 }

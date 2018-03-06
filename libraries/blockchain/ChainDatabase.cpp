@@ -192,10 +192,8 @@ namespace TiValue {
 					//filestore related
 
 					_upload_request_db.open(data_dir / "index/_upload_request_db");
-					_store_request_db.open(data_dir / "index/_store_request_db");
 					_piece_saved_db.open(data_dir / "index/_piece_saved_db");
 					_file_saved_db.open(data_dir / "index/_file_saved_db");
-					_enable_access_db.open(data_dir / "index/_enable_access_db");
 					_save_decl_db.open(data_dir / "index/_save_decl_db");
                     _pending_trx_state = std::make_shared<PendingChainState>(self->shared_from_this());
 
@@ -1450,10 +1448,8 @@ namespace TiValue {
 
 							              //filestore related
 							              my->_upload_request_db.toggle_leveldb(enabled);
-							              my->_store_request_db.toggle_leveldb(enabled);
 							              my->_piece_saved_db.toggle_leveldb(enabled);
 							              my->_file_saved_db.toggle_leveldb(enabled);
-							              my->_enable_access_db.toggle_leveldb(enabled);
 							              my->_save_decl_db.toggle_leveldb(enabled);
 
                         };
@@ -1654,10 +1650,8 @@ namespace TiValue {
 
 
 
-				my->_store_request_db.close();
 				my->_piece_saved_db.close();
 				my->_file_saved_db.close();
-				my->_enable_access_db.close();
 
             } FC_CAPTURE_AND_RETHROW()
         }
@@ -3732,10 +3726,6 @@ namespace TiValue {
 			my->_upload_request_db.store(file_id, entry);
 		}
 
-		void TiValue::blockchain::ChainDatabase::storerequest_insert_into_id_map(const FilePieceIdType & piece_id, const StoreRequestEntry & entry)
-		{
-			my->_store_request_db.store(piece_id, entry);
-		}
 
 		void TiValue::blockchain::ChainDatabase::piecesaved_insert_into_id_map(const FilePieceIdType & piece_id, const PieceSavedEntry & entry)
 		{
@@ -3747,15 +3737,7 @@ namespace TiValue {
 			my->_file_saved_db.store(piece_id,entry);
 		}
 
-		void TiValue::blockchain::ChainDatabase::enableaccess_insert_into_id_map(const FileIdType & file_id, const EnableAccessEntry & entry)
-		{
-			my->_enable_access_db.store(file_id,entry);
-		}
 
-		void TiValue::blockchain::ChainDatabase::rejectstore_insert_into_id_map(const FilePieceIdType & file_id, const StoreRejectEntry & entry)
-		{
-			my->_reject_store_db.store(file_id, entry);
-		}
 
 		void ChainDatabase::savedecl_insert_into_id_map(const FilePieceIdType & file_id, const PieceSavedDeclEntry & entry)
 		{
@@ -3770,13 +3752,6 @@ namespace TiValue {
 			return oUploadRequestEntry();
 		}
 
-		oStoreRequestEntry TiValue::blockchain::ChainDatabase::storerequest_lookup_by_id(const FilePieceIdType & file_id)const
-		{
-			auto it = my->_store_request_db.unordered_find(file_id);
-			if (it != my->_store_request_db.unordered_end())
-				return it->second;
-			return oStoreRequestEntry();
-		}
 
 		oPieceSavedEntry TiValue::blockchain::ChainDatabase::piecesaved_lookup_by_id(const FilePieceIdType & file_id)const
 		{
@@ -3794,21 +3769,6 @@ namespace TiValue {
 			return oFileSavedEntry();
 		}
 
-		oEnableAccessEntry TiValue::blockchain::ChainDatabase::enableaccess_lookup_by_id(const FileIdType & file_id)const
-		{
-			auto it = my->_enable_access_db.unordered_find(file_id);
-			if (it != my->_enable_access_db.unordered_end())
-				return it->second;
-			return oEnableAccessEntry();
-		}
-
-		oRejectStoreEntry TiValue::blockchain::ChainDatabase::rejectstore_lookup_by_id(const FilePieceIdType & file_id) const
-		{
-			auto it = my->_reject_store_db.unordered_find(file_id);
-			if (it != my->_reject_store_db.unordered_end())
-				return it->second;
-			return oRejectStoreEntry();
-		}
 
 		oPieceSavedDeclEntry ChainDatabase::savedecl_lookup_by_id(const FilePieceIdType & file_id) const
 		{
@@ -3823,10 +3783,6 @@ namespace TiValue {
 			my->_upload_request_db.remove(file_id);
 		}
 
-		void TiValue::blockchain::ChainDatabase::storerequest_remove_by_id(const FilePieceIdType & file_id)
-		{
-			my->_store_request_db.remove(file_id);
-		}
 
 		void TiValue::blockchain::ChainDatabase::piecesaved_remove_by_id(const FilePieceIdType & file_id)
 		{
@@ -3838,15 +3794,7 @@ namespace TiValue {
 			my->_file_saved_db.remove(file_id);
 		}
 
-		void TiValue::blockchain::ChainDatabase::enableaccess_remove_by_id(const FileIdType & file_id)
-		{
-			my->_enable_access_db.remove(file_id);
-		}
 
-		void TiValue::blockchain::ChainDatabase::rejectstore_remove_by_id(const FilePieceIdType & file_id)
-		{
-			my->_reject_store_db.remove(file_id);
-		}
 
 		void ChainDatabase::savedecl_remove_by_id(const FilePieceIdType & file_id)
 		{
@@ -3897,41 +3845,6 @@ namespace TiValue {
 
 		}
 
-		void TiValue::blockchain::ChainDatabase::scan_store_request(const function<void(const StoreRequestEntry&)> callback) const
-		{
-			for (auto iter = my->_store_request_db.unordered_begin();
-				iter != my->_store_request_db.unordered_end(); ++iter)
-			{
-				callback(iter->second);
-			}
-
-		}
-		void TiValue::blockchain::ChainDatabase::scan_pieced_saved(const function<void(const PieceSavedEntry&)> callback) const
-		{
-			for (auto iter = my->_piece_saved_db.unordered_begin();
-				iter != my->_piece_saved_db.unordered_end(); ++iter)
-			{
-				callback(iter->second);
-			}
-
-		}
-		void TiValue::blockchain::ChainDatabase::scan_store_reject(const function<void(const StoreRejectEntry&)> callback) const
-		{
-			for (auto iter = my->_reject_store_db.unordered_begin();
-				iter != my->_reject_store_db.unordered_end(); ++iter)
-			{
-				callback(iter->second);
-			}
-
-		}
-		void TiValue::blockchain::ChainDatabase::scan_enable_access(const function<void(const EnableAccessEntry&)> callback) const
-		{
-			for (auto iter = my->_enable_access_db.unordered_begin();
-				iter != my->_enable_access_db.unordered_end(); ++iter)
-			{
-				callback(iter->second);
-			}
-		}
 
     }
 } // TiValue::blockchain

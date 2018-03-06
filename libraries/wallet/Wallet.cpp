@@ -5878,79 +5878,12 @@ namespace TiValue {
         }
 
 
-		vector<FilePieceInfo> Wallet::get_my_store_rejected()
-		{
-			vector<FilePieceInfo> result;
-			for (auto& fileinfo : my->my_store_rejected)
-			{
-				for (auto& file_id : fileinfo.second)
-				{
-					FilePieceInfo info;
-					info.file_id = std::string(file_id);
-					info.piece_id = fileinfo.first;
-					result.push_back(info);
-				}
-			}
-			return result;
-		}
-		vector<string> Wallet::get_my_store_confirmed()
-		{
-			vector<string> result;
-			for (auto& piece_id : my->my_store_confirmed)
-			{
-				result.push_back(piece_id.first);
-			}
-			return result;
-		}
-		std::vector<LocalStoreRequestInfo> Wallet::get_local_store_requests()
-		{
-			vector<TiValue::blockchain::LocalStoreRequestInfo> res;
-			for (auto request = get_wallet_db().local_store_requests.begin(); request != get_wallet_db().local_store_requests.end(); request++)
-			{
-				res.push_back(*request);
-			}
-			return res;
-		}
-		std::vector<FilePieceIdType> Wallet::get_my_store_request_piece_id()
-		{
-			vector<TiValue::blockchain::FilePieceIdType> res;
-			for (auto request = my->my_store_requests.begin(); request != my->my_store_requests.end(); request++)
-			{
-				res.push_back(request->first);
-			}
-			return res;
-		}
-		unordered_map<FilePieceIdType, std::set<FileIdType>> Wallet::get_my_store_requests()
-		{
-			return my->my_store_requests;
-		}
 		bool Wallet::is_my_public_key(const PublicKeyType & key)
 		{
 			const oWalletKeyEntry key_entry = my->_wallet_db.lookup_key(Address(key));
 			if (key_entry.valid() && key_entry->has_private_key())
 				return true;
 			return false;
-		}
-		std::vector<TiValue::blockchain::FileAccessInfo> Wallet::get_my_access()
-		{
-			std::vector<TiValue::blockchain::FileAccessInfo> res;
-			std::map<string,TiValue::blockchain::FileAccessInfo> account_to_info_map;
-			for(auto& info_it:my->my_access_info)
-			{ 
-				for(auto& key:info_it.second)
-				{
-					auto account=get_wallet_db().lookup_account(Address(key));
-					if (!account.valid())
-						continue;
-					account_to_info_map[account->name].account = account->name;
-					account_to_info_map[account->name].file_id.push_back(string(info_it.first));
-				}
-			}
-			for (auto map_it = account_to_info_map.begin();map_it!= account_to_info_map.end();map_it++)
-			{
-				res.push_back(map_it->second);
-			}
-			return res;
 		}
 		std::vector<TiValue::blockchain::UploadRequestEntry> Wallet::get_my_upload_requests()
 		{
@@ -5961,33 +5894,6 @@ namespace TiValue {
 			{
 				for(auto& entry:entry_set->second)
 					res.push_back(entry);
-			}
-			return res;
-		}
-		std::vector<TiValue::blockchain::StoreRequestInfo> Wallet::list_store_request_for_my_file(const std::string & file_id)
-		{
-			vector<TiValue::blockchain::StoreRequestInfo> res;
-			map<FilePieceIdType, StoreRequestInfo> res_map;
-			FilePieceIdType id(file_id);
-			bool filter = false;
-			if (file_id == "")
-				filter = true;
-			auto search_end= my->_store_request_entrys_for_my_file.end();
-			for (auto request = my->_store_request_entrys_for_my_file.begin(); request != search_end; request++)
-			{
-				if (filter&&id != request->first)
-					continue;
-				res_map[request->first].piece_id= request->first;
-				auto node_search_end = request->second.end();
-				for (auto node_it =request->second.begin();node_it!=node_search_end;node_it++)
-				{
-					res_map[request->first].requestors.push_back(StoreNodeInfo(node_it->first,node_it->second));
-				}
-			}
-			auto map_end = res_map.end();
-			for (auto it = res_map.begin(); it != map_end; it++)
-			{
-				res.push_back(it->second);
 			}
 			return res;
 		}
@@ -6121,102 +6027,6 @@ namespace TiValue {
 			res.second = call_contract(owner, contract_upload->id, TIV_FILE_UPLOAD_INTERFACE, params, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
 			return res;
 		}
-		TiValue::wallet::WalletTransactionEntry Wallet::store_reject(const std::string & file_id, const std::string & file_piece_id, const std::string & node_id,double exec_limit)
-		{
-			FileIdType fileid(file_id);
-			FilePieceIdType piece_id(file_piece_id);
-			ChainInterfacePtr chaindb_ptr = get_correct_state_ptr();
-			auto contract_upload = chaindb_ptr->get_contract_entry(TIV_FILE_UPLOAD_CONTRACT_NAME);
-			if (!contract_upload.valid())
-				FC_CAPTURE_AND_THROW(file_upload_contract_not_exsited, (TIV_FILE_UPLOAD_CONTRACT_NAME));
-			auto piece_save_entry=chaindb_ptr->get_piece_saved_entry(piece_id);
-			if (!piece_save_entry.valid())
-				FC_CAPTURE_AND_THROW(piece_not_saved,(file_piece_id));
-			if (piece_save_entry->storageNode.count(node_id) < 1)
-				FC_CAPTURE_AND_THROW(piece_not_saved_by_this_node,(node_id));
-			std::string params;
-			auto account = get_account_for_address(Address(fileid.uploader));
-			if (!account.valid()||!account->is_my_account)
-				FC_CAPTURE_AND_THROW(not_my_account, (fileid.uploader));
-			params += fileid;
-			params += ";";
-			params += file_piece_id;
-			params += ";";
-			params += node_id;
-			return 	call_contract(account->name, contract_upload->id, TIV_FILE_REJECT_INTERFACE, params, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
-		}
-		TiValue::wallet::WalletTransactionEntry Wallet::get_file_access(const std::string & requester, const std::string & file_id, double exec_limit)
-		{
-			FileIdType fileid(file_id);
-			ChainInterfacePtr chaindb_ptr = get_correct_state_ptr();
-			auto contract_upload = chaindb_ptr->get_contract_entry(TIV_FILE_UPLOAD_CONTRACT_NAME);
-			if (!contract_upload.valid())
-				FC_CAPTURE_AND_THROW(file_upload_contract_not_exsited, (TIV_FILE_UPLOAD_CONTRACT_NAME));
-
-			auto file_save_entry=chaindb_ptr->get_file_saved_entry(fileid);
-			if(!file_save_entry.valid())
-				FC_CAPTURE_AND_THROW(file_not_exsited, (file_piece_id));
-			string param = fileid;
-			return 	call_contract(requester, contract_upload->id, TIV_FILE_ACCESS_INTERFACE, param, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
-		}
-		TiValue::wallet::WalletTransactionEntry Wallet::store_file_piece(const std::string & requester, const std::string & file_id, const std::string & file_piece_id, const std::string & node_id, double exec_limit)
-		{
-			FileIdType fileid(file_id);
-			ChainInterfacePtr chaindb_ptr = get_correct_state_ptr();
-			auto contract_upload = chaindb_ptr->get_contract_entry(TIV_FILE_UPLOAD_CONTRACT_NAME);
-			if (!contract_upload.valid())
-				FC_CAPTURE_AND_THROW(file_upload_contract_not_exsited, (TIV_FILE_UPLOAD_CONTRACT_NAME));
-
-			auto file_upload_entry = chaindb_ptr->get_upload_request(fileid);
-			if (!file_upload_entry.valid())
-				FC_CAPTURE_AND_THROW(upload_request_not_exsited, (file_piece_id));
-			bool got_piece = false;
-			int piece_index = 0;
-
-			size_t piece_size = 0;
-			for (auto piece : file_upload_entry->pieces)
-			{
-				if (piece.pieceid == file_piece_id)
-				{
-					got_piece = true;
-					piece_size = piece.piece_size;
-					break;
-				}
-				piece_index++;
-			}
-			NodeIdType upload_node = file_upload_entry->node_id;
-			if (!got_piece)
-				FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited,(file_piece_id));
-			string param = fileid;
-			param += ";";
-			param += file_piece_id;			
-			param += ";";
-			if(node_id != "")
-				param += node_id;
-			else
-			{
-				param += my->_wallet_db.get_property(PropertyEnum::node_id).as_string();
-			}
-			auto res = call_contract(requester, contract_upload->id, TIV_FILE_STORE_INTERFACE, param, TIV_BLOCKCHAIN_SYMBOL, exec_limit);
-			my->_wallet_db.store_local_store_req(LocalStoreRequestInfo(file_id, file_piece_id, upload_node, piece_index, piece_size, file_upload_entry->filename));
-			return res;
-		}
-
-    void Wallet::allow_store(const std::string& file_id, const std::string& piece_id, const std::string& storer)
-    {
-      AllowedStoreRequest entry(FileIdType(file_id), piece_id, PublicKeyType(storer));
-      my->_wallet_db.store_allow_store_req(entry);
-    }
-
-    bool Wallet::check_store_allowed(const std::string & file_id, const std::string & piece_id, const PublicKeyType & storer)
-    {
-      for (auto ap : my->_wallet_db.allow_store_requests)
-      {
-        if (ap.file_id == FileIdType(file_id) && ap.piece_id == piece_id && storer == ap.storer)
-          return true;
-      }
-      return false;
-    }
 
 		TiValue::wallet::WalletTransactionEntry Wallet::declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id)
 		{

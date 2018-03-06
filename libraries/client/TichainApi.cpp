@@ -42,40 +42,9 @@ namespace TiValue {
 				}
 				return result;
 			}
-			std::vector<string> ClientImpl::wallet_get_my_store_confirmed()
-			{
-				return _wallet->get_my_store_confirmed();
-			}
-			std::vector<LocalStoreRequestInfo> ClientImpl::wallet_get_my_store_request()
-			{
-				 auto store_req_res=  _wallet->get_local_store_requests();
-				 auto upload_req_res = _chain_db->list_upload_requests();
-				 for (auto& sit : store_req_res)
-				 {
-					 for (auto uit : upload_req_res)
-					 {
-						 if (uit.id == sit.file_id)
-						 {
-							 for (auto piece_it : uit.pieces)
-							 {
-								 if (piece_it.pieceid == sit.piece_id)
-								 {
-									 sit.piece_size = piece_it.piece_size;
-									 break;
-								 }
-							 }
-						 }
-					 } 
-				 }
-				 return store_req_res;
-			}	
 			std::vector<TiValue::blockchain::UploadRequestEntry> ClientImpl::wallet_get_my_upload_requests()
 			{
 				return _wallet->get_my_upload_requests();
-			}
-			std::vector<TiValue::blockchain::StoreRequestInfo> ClientImpl::wallet_list_store_request_for_my_file(const std::string& file_id)
-			{
-				return _wallet->list_store_request_for_my_file(file_id);
 			}
       //added on 02/08/2018
       std::vector<TiValue::blockchain::HaveAppliedFileEntry> ClientImpl::wallet_list_my_declared_file(const std::string& account)
@@ -214,13 +183,6 @@ namespace TiValue {
 				return res.first;
 			}
 			
-      TiValue::wallet::WalletTransactionEntry ClientImpl::store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
-			{
-				auto entry = _wallet->store_file_piece(requester, file_id, file_piece_id,node_id, exec_limit);
-				_wallet->cache_transaction(entry, false);
-				network_broadcast_transaction(entry.trx);
-				return entry;
-			}
 			
       bool ClientImpl::blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key)
 			{

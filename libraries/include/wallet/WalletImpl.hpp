@@ -43,11 +43,6 @@ namespace TiValue {
 				        unordered_map<ContractIdType, ContractEntry>   _contract_entrys;
 
 				        unordered_map<Address, set<UploadRequestEntry>>                      _upload_request_entrys;
-				        unordered_map<FilePieceIdType, std::map<NodeIdType, PublicKeyType>>  _store_request_entrys_for_my_file;
-				        unordered_map<FilePieceIdType,std::set<FileIdType>>					         my_store_requests;
-				        unordered_map<FilePieceIdType, int>					                         my_store_confirmed;
-				        std::map<FilePieceIdType,std::set<FileIdType>>											 my_store_rejected;
-				        std::map<FileIdType, std::set<PublicKeyType>>                        my_access_info;
                 struct LoginEntry
                 {
                     PrivateKeyType key;

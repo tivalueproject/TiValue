@@ -40,49 +40,11 @@ namespace TiValue
 			FC_CAPTURE_AND_RETHROW((*this))
 		}
 
-		StoreRequestOperation::StoreRequestOperation(const FileIdType& file_id, const FilePieceIdType & piece_id, const PublicKeyType & requester, const NodeIdType & node_id) :piece_id(piece_id), requester(requester), node_id(node_id), file_id(file_id)
-		{
 
-		}
 
-		void StoreRequestOperation::evaluate(TransactionEvaluationState & eval_state) const
-		{
-			try {
-				if (!eval_state.evaluate_contract_result)
-					FC_CAPTURE_AND_THROW(in_result_of_execute, ("StoreRequestOperation can only in result transaction"));
 
-				oUploadRequestEntry uploadrequest_entry = eval_state._current_state->get_upload_request(file_id);
-				if (!uploadrequest_entry.valid())
-					FC_CAPTURE_AND_THROW(upload_request_not_exsited, (file_id));
-				auto search_end = uploadrequest_entry->pieces.end();
-				auto piece = uploadrequest_entry->pieces.begin();
-				for (; piece != search_end; piece++)
-				{
-					if (piece->pieceid == piece_id)
-						break;
-				}
-				if (piece == search_end)
-					FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, ((file_id, piece_id)));
-				oStoreRequestEntry storeRequest = eval_state._current_state->get_store_request(piece_id);
-				if (storeRequest.valid())
-				{
-					storeRequest->store_request.insert(std::make_pair(node_id, requester));
 
-					storeRequest->file_id.insert(file_id);
-					eval_state._current_state->store_store_request(*storeRequest);
-				}
-				else
-				{
-					StoreRequestEntry entry;
-					entry.file_id.insert(file_id);
-					entry.piece_id = piece_id;
-					entry.store_request.insert(std::make_pair(node_id, requester));
-					eval_state._current_state->store_store_request(entry);
 
-				}
-			}
-			FC_CAPTURE_AND_RETHROW((*this))
-		}
 
 		PieceSavedOperation::PieceSavedOperation(const FileIdType & file_id, const FilePieceIdType & piece_id, const NodeIdType & Node):file_id(file_id), piece_id(piece_id), Node(Node)
 		{
@@ -95,7 +57,6 @@ namespace TiValue
 			auto _cur_state = eval_state._current_state;
 			if (!eval_state.evaluate_contract_result)
 				FC_CAPTURE_AND_THROW(in_result_of_execute, ("PieceSavedOperation can only in result transaction"));
-			oStoreRequestEntry store_request_entry= _cur_state->get_store_request_entry(piece_id);
 			//if (!store_request_entry.valid() ||
 			//	store_request_entry->store_request.find(this->Node) == store_request_entry->store_request.end())
 			//	FC_CAPTURE_AND_THROW(store_request_not_exsited, ((this->piece_id, Node)));
@@ -169,81 +130,10 @@ namespace TiValue
 			FC_CAPTURE_AND_RETHROW((*this))
 		}
 
-		EnableAccessOperation::EnableAccessOperation(const FileIdType & file_id, const PublicKeyType & requester) :file_id(file_id), requester(requester) 
-		{}
 
-		void EnableAccessOperation::evaluate(TransactionEvaluationState & eval_state) const
-		{
-			try{
-			auto _cur_state = eval_state._current_state;
-			if (!eval_state.evaluate_contract_result)
-				FC_CAPTURE_AND_THROW(in_result_of_execute, ("EnableAccessOperation can only in result transaction"));
-			auto enabe_access= _cur_state->get_enable_access_entry(this->file_id);
-			if (enabe_access.valid())
-			{
-				enabe_access->fetcher.insert(requester);
-				_cur_state->store_enable_access_entry(*enabe_access);
-			}
-			else
-			{
-				EnableAccessEntry new_entry;
-				new_entry.file_id = file_id;
-				new_entry.fetcher.insert(requester);
 
-				_cur_state->store_enable_access_entry(new_entry);
-			}
-			}
-			FC_CAPTURE_AND_RETHROW((*this))
-		}
 
-		StoreRejectOperation::StoreRejectOperation(const FileIdType & file_id, const FilePieceIdType & piece_id, const NodeIdType & node_id) :file_id(file_id), piece_id(piece_id), node_id(node_id) {}
 
-		void StoreRejectOperation::evaluate(TransactionEvaluationState & eval_state) const
-		{
-			try{
-			auto _cur_state = eval_state._current_state;
-			if (!eval_state.evaluate_contract_result)
-				FC_CAPTURE_AND_THROW(in_result_of_execute, ("EnableAccessOperation can only in result transaction"));
-			auto upload_request=_cur_state->get_upload_request(file_id);
-			if (!upload_request.valid())
-				FC_CAPTURE_AND_THROW(upload_request_not_exsited, ((file_id)));
-			auto search_end = upload_request->pieces.end();
-			auto piece = upload_request->pieces.begin();
-			for (; piece != search_end; piece++)
-			{
-				if (piece->pieceid == piece_id)
-					break;
-			}
-			if (piece == search_end)
-				FC_CAPTURE_AND_THROW(file_piece_upload_request_not_exsited, ((file_id, piece_id)));
-			auto piece_saved=_cur_state->get_piece_saved_entry(piece_id);
-			if(!piece_saved.valid())
-				FC_CAPTURE_AND_THROW(piece_not_saved, ((file_id, piece_id)));
-			if(piece_saved->storageNode.erase(node_id)==0)
-				FC_CAPTURE_AND_THROW(piece_not_saved_by_this_node, ((file_id, piece_id,node_id)));
-			if (piece_saved->storageNode.size() > 0)
-				_cur_state->store_piece_saved_entry(*piece_saved);
-			else
-			{
-				_cur_state->remove_piece_saved_entry(piece_id);
-				_cur_state->remove_file_saved_entry(file_id);
-			}
-			auto store_rejection = _cur_state->get_reject_store_entry(piece_id);
-			if (store_rejection.valid())
-			{
-				store_rejection->info.insert(std::make_pair(node_id, file_id));
-				_cur_state->store_store_reject(*store_rejection);
-			}
-			else
-			{
-				StoreRejectEntry new_entry;
-				new_entry.piece_id = piece_id;
-				new_entry.info.insert(std::make_pair(node_id,file_id));
-				_cur_state->store_store_reject(new_entry);
-			}
-			}
-			FC_CAPTURE_AND_RETHROW((*this))
-		}
 
 		PieceSavedDeclareOperation::PieceSavedDeclareOperation(const FileIdType & file_id, const FilePieceIdType & piece_id, 
 			const NodeIdType & node_id, const PublicKeyType & key):file_id(file_id),piece_id(piece_id),node_id(node_id),key(key)

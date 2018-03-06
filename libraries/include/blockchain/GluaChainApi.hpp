@@ -162,15 +162,9 @@ namespace  TiValue{
 			    const std::vector<blockchain::PieceUploadInfo>& pieces, int64_t num_of_copys, int64_t payterm, const std::string& filename,const std::string& description, const std::string& node_id);
 		    virtual int allow_upload_request_wrapper_func(lua_State *L);
 		    virtual int allow_piece_saved_wrapper_func(lua_State *L);
-		    virtual int allow_enable_access_wrapper_func(lua_State *L);
-		    virtual int allow_store_reject_wrapper_func(lua_State *L);
-		    virtual int allow_store_request_wrapper_func(lua_State *L);
         virtual int allow_declare_piece_saved_wrapper_func(lua_State *L);
         virtual bool allow_declare_piece_saved(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& storer, const std::string & node_id);
-		    virtual bool allow_store_request(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& requester, const std::string& node_id);
 		    virtual bool allow_piece_saved(lua_State *L, const blockchain::FileIdType& file_id, const  std::string& piece_id, const std::string& Node);
-		    virtual bool allow_enable_access(lua_State *L, const std::string& file_id, const std::string& requestor);
-		    virtual bool allow_store_reject(lua_State *L, const blockchain::FileIdType& file_id, const std::string& piece_id, const std::string& node_id);
 		    virtual const char* get_publickey_address(lua_State *L, const char* pubkey);
 };
 

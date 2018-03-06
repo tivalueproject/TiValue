@@ -71,17 +71,6 @@ namespace TiValue {
 						case upload_request_entry_type:
 							load_upload_request_entry(entry.as<WalletUploadRequestEntry>());
 							break;
-						case store_request_entry_type:
-							load_store_request_entry(entry.as<WalletStoreRequestEntry>());
-							break;						
-						case my_request_entry_type:
-							load_my_store_request_entry(entry.as<MyStoreRequestEntry>());
-							break;
-						case local_store_req_type:
-							load_local_store_request_entry(entry.as<LocalStoreRequestEntry>());
-							break;
-                        case allowed_store_req_type:
-                            load_allow_store_request_entry(entry.as<AllowedStoreRequestEntry>());
                         default:
                             elog("Unknown wallet entry type: ${type}", ("type", entry.type));
                             break;
@@ -150,22 +139,6 @@ namespace TiValue {
 					self->upload_requests_of_wallet[Address(upload_request_entry.id.uploader)].push_back(upload_request_entry);
 					self->id_to_upload_requests[upload_request_entry.id] = upload_request_entry;
 				}
-				void load_store_request_entry(const WalletStoreRequestEntry &store_request_entry)
-				{
-					self->store_requests_for_my_file[store_request_entry.piece_id] = store_request_entry;
-				}
-				void load_my_store_request_entry(const MyStoreRequestEntry &store_request_entry)
-				{
-					self->my_store_requests[store_request_entry.piece_id] = store_request_entry;
-				}
-				void load_local_store_request_entry(const LocalStoreRequestEntry&store_request_entry)
-				{
-					self->local_store_requests.insert(store_request_entry);
-				}
-                void load_allow_store_request_entry(const AllowedStoreRequestEntry&store_request_entry)
-                {
-                    self->allow_store_requests.insert(store_request_entry);
-                }
                 void load_key_entry(const WalletKeyEntry& key_entry)
                 {
                     try {
@@ -292,9 +265,6 @@ namespace TiValue {
 			contracts_of_wallet.clear();
 			id_to_entry_for_contract.clear();
 
-			//for file_store
-			my_store_requests.clear();
-			local_store_requests.clear();
         }
 
         bool WalletDb::is_open()const
@@ -899,39 +869,16 @@ namespace TiValue {
 			}FC_CAPTURE_AND_RETHROW((upload_request))
 		}
 
-		void WalletDb::store_store_request_for_my_file(const blockchain::StoreRequestEntry & store_request)
-		{
-			try
-			{
-				FC_ASSERT(is_open(), "Wallet not open!");
 
-				oWalletStoreRequestEntry store_request_entry = lookup_store_request(store_request.piece_id);
 
-				if (store_request_entry.valid())
-					return;
 
-				store_request_entry = store_request;
 
-				store_and_reload_entry(*store_request_entry);
 
-			}FC_CAPTURE_AND_RETHROW((store_request))
-		}
 
-		void WalletDb::store_my_store_request(const blockchain::StoreRequestEntry & store_request)
-		{
-			try {
-				FC_ASSERT(is_open(), "Wallet not open!");
 
-				oMyStoreRequestEntry store_request_entry = lookup_my_store_request(store_request.piece_id);
 
-				if (store_request_entry.valid())
-					return;
 
-				store_request_entry = store_request;
 
-				store_and_reload_entry(*store_request_entry);
-			}FC_CAPTURE_AND_RETHROW((store_request));
-		}
 
 		oWalletUploadRequestEntry WalletDb::lookup_upload_request(const FileIdType & file_id) const
 		{
@@ -944,38 +891,6 @@ namespace TiValue {
 			}FC_CAPTURE_AND_RETHROW((file_id));
 		}
 
-		oWalletStoreRequestEntry WalletDb::lookup_store_request(const FilePieceIdType & piece_id) const
-		{
-			try {
-				FC_ASSERT(is_open(), "Wallet not open!");
-				auto it = store_requests_for_my_file.find(piece_id);
-				if (it != store_requests_for_my_file.end())
-					return it->second;
-				return oWalletStoreRequestEntry();
-			}FC_CAPTURE_AND_RETHROW((piece_id));
-		}
-
-		oMyStoreRequestEntry WalletDb::lookup_my_store_request(const FilePieceIdType & piece_id) const
-		{
-			try {
-				FC_ASSERT(is_open(), "Wallet not open!");
-				auto it = my_store_requests.find(piece_id);
-				if (it != my_store_requests.end())
-					return it->second;
-				return oMyStoreRequestEntry();
-			}FC_CAPTURE_AND_RETHROW((piece_id));
-		}
-
-		void WalletDb::store_local_store_req(const blockchain::LocalStoreRequestInfo & info) 
-		{
-			this->local_store_requests.insert(info);
-			//store_and_reload_entry(LocalStoreRequestEntry(info));
-		}
-        void WalletDb::store_allow_store_req(const AllowedStoreRequest& info)
-        {
-            this->allow_store_requests.insert(info);
-            //store_and_reload_entry(AllowedStoreRequestEntry(info));
-        }
         oWalletKeyEntry WalletDb::lookup_key(const Address& derived_address)const
         {
             try {

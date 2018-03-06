@@ -1134,11 +1134,6 @@ TiValue::blockchain::UploadRequestEntry CommonApiRpcClient::store_file_to_networ
   fc::variant result = get_json_connection()->async_call("store_file_to_network", std::vector<fc::variant>{fc::variant(owner), fc::variant(filename), fc::variant(filesize), fc::variant(description), fc::variant(piecesinfo), fc::variant(asset_symbol), fc::variant(price), fc::variant(numofcopy), fc::variant(numofpiece), fc::variant(payterm), fc::variant(node_id), fc::variant(exec_limit)}).wait();
   return result.as<TiValue::blockchain::UploadRequestEntry>();
 }
-TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit)
-{
-  fc::variant result = get_json_connection()->async_call("store_file_piece", std::vector<fc::variant>{fc::variant(requester), fc::variant(file_id), fc::variant(file_piece_id), fc::variant(node_id), fc::variant(exec_limit)}).wait();
-  return result.as<TiValue::wallet::WalletTransactionEntry>();
-}
 TiValue::wallet::WalletTransactionEntry CommonApiRpcClient::confirm_piece_saved(const std::string& confirmer, const std::string& file_id, const std::string& file_piece_id, const std::string& Storage, double exec_limit)
 {
   fc::variant result = get_json_connection()->async_call("confirm_piece_saved", std::vector<fc::variant>{fc::variant(confirmer), fc::variant(file_id), fc::variant(file_piece_id), fc::variant(Storage), fc::variant(exec_limit)}).wait();
@@ -1152,11 +1147,6 @@ std::vector<std::string> CommonApiRpcClient::blockchain_list_file_saved()
 {
   fc::variant result = get_json_connection()->async_call("blockchain_list_file_saved", std::vector<fc::variant>{}).wait();
   return result.as<std::vector<std::string>>();
-}
-std::vector<TiValue::blockchain::StoreRequestInfo> CommonApiRpcClient::wallet_list_store_request_for_my_file(const std::string& file_id /* = fc::json::from_string("\"\"").as<std::string>() */)
-{
-  fc::variant result = get_json_connection()->async_call("wallet_list_store_request_for_my_file", std::vector<fc::variant>{fc::variant(file_id)}).wait();
-  return result.as<std::vector<TiValue::blockchain::StoreRequestInfo>>();
 }
 bool CommonApiRpcClient::blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key)
 {
@@ -1172,16 +1162,6 @@ std::vector<TiValue::blockchain::UploadRequestEntry> CommonApiRpcClient::blockch
 {
   fc::variant result = get_json_connection()->async_call("blockchain_get_upload_requests", std::vector<fc::variant>{}).wait();
   return result.as<std::vector<TiValue::blockchain::UploadRequestEntry>>();
-}
-std::vector<TiValue::blockchain::LocalStoreRequestInfo> CommonApiRpcClient::wallet_get_my_store_request()
-{
-  fc::variant result = get_json_connection()->async_call("wallet_get_my_store_request", std::vector<fc::variant>{}).wait();
-  return result.as<std::vector<TiValue::blockchain::LocalStoreRequestInfo>>();
-}
-vector<string> CommonApiRpcClient::wallet_get_my_store_confirmed()
-{
-  fc::variant result = get_json_connection()->async_call("wallet_get_my_store_confirmed", std::vector<fc::variant>{}).wait();
-  return result.as<vector<string>>();
 }
 TiValue::blockchain::FileSaveInfo CommonApiRpcClient::blockchain_get_file_save_node(const std::string& file_id)
 {

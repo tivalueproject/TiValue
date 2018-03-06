@@ -821,10 +821,6 @@ namespace TiValue {
 
 			//file store 
 			void    scan_upload_request(const function<void(const UploadRequestEntry&)> callback)const;
-			void    scan_store_request(const function<void(const StoreRequestEntry&)> callback)const;
-			void	scan_pieced_saved(const function<void(const PieceSavedEntry&)> callback) const;
-			void	scan_store_reject(const function<void(const StoreRejectEntry&)> callback) const;
-			void	scan_enable_access(const function<void(const EnableAccessEntry&)> callback) const;
 
 			std::vector<FileSavedEntry> get_file_saved() const;
 
@@ -1277,30 +1273,21 @@ private:
 			//filestore
 			//insert related
 			virtual void uploadrequest_insert_into_id_map(const FileIdType& file_id, const UploadRequestEntry& entry);
-			virtual void storerequest_insert_into_id_map(const FilePieceIdType& piece_id, const StoreRequestEntry& entry);
 			virtual void piecesaved_insert_into_id_map(const FilePieceIdType& piece_id, const PieceSavedEntry& entry) ;
 			virtual void filesaved_insert_into_id_map(const FileIdType& piece_id, const FileSavedEntry& entry);
-			virtual void enableaccess_insert_into_id_map(const FileIdType& file_id, const EnableAccessEntry& entry);
-			virtual void rejectstore_insert_into_id_map(const FilePieceIdType& file_id, const StoreRejectEntry& entry);
 			virtual void savedecl_insert_into_id_map(const FilePieceIdType& file_id, const PieceSavedDeclEntry& entry);
 
 
 			//lookup related
 			virtual oUploadRequestEntry uploadrequest_lookup_by_id(const FileIdType& file_id)const;
-			virtual oStoreRequestEntry storerequest_lookup_by_id(const FilePieceIdType& file_id)const;
 			virtual oPieceSavedEntry piecesaved_lookup_by_id(const FilePieceIdType& file_id)const;
 			virtual oFileSavedEntry filesaved_lookup_by_id(const FileIdType& file_id)const;
-			virtual oEnableAccessEntry enableaccess_lookup_by_id(const FileIdType& file_id)const;
-			virtual oRejectStoreEntry rejectstore_lookup_by_id(const FilePieceIdType& file_id)const;
 			virtual oPieceSavedDeclEntry savedecl_lookup_by_id(const FilePieceIdType& file_id)const;
 
 			//remove related			
 			virtual void uploadrequest_remove_by_id(const FileIdType& file_id);
-			virtual void storerequest_remove_by_id(const FilePieceIdType& file_id);
 			virtual void piecesaved_remove_by_id(const FilePieceIdType& file_id);
 			virtual void filesaved_remove_by_id(const FileIdType& file_id);
-			virtual void enableaccess_remove_by_id(const FileIdType& file_id);
-			virtual void rejectstore_remove_by_id(const FilePieceIdType& file_id);
 			virtual void savedecl_remove_by_id(const FilePieceIdType& file_id);
 
 

@@ -382,13 +382,9 @@ namespace TiValue {
                 PendingChainStatePtr	_sandbox_pending_state = nullptr;
                 bool                    _is_in_sandbox = false;
 
-				        //TiValue related db
 				        TiValue::db::fast_level_map<FileIdType, UploadRequestEntry>			_upload_request_db;
-				        TiValue::db::fast_level_map<FilePieceIdType, StoreRequestEntry>		_store_request_db;
 				        TiValue::db::fast_level_map<FilePieceIdType, PieceSavedEntry>		_piece_saved_db;
 				        TiValue::db::fast_level_map<FileIdType, FileSavedEntry>				_file_saved_db;
-				        TiValue::db::fast_level_map<FileIdType, EnableAccessEntry>			_enable_access_db;
-				        TiValue::db::fast_level_map<FilePieceIdType, StoreRejectEntry>		_reject_store_db;
 				        TiValue::db::fast_level_map<FilePieceIdType, PieceSavedDeclEntry>		_save_decl_db;
             };
 

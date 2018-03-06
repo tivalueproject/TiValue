@@ -426,9 +426,6 @@ namespace TiValue {
 
 
 			//FileStore related functions
-			oStoreRequestEntry get_store_request_entry(const FilePieceIdType& id );
-			void store_store_request(const StoreRequestEntry& entry);
-			void store_store_reject(const StoreRejectEntry& entry);
 			void store_save_decl_entry(const PieceSavedDeclEntry& entry);
 			oPieceSavedDeclEntry get_save_decl_entry(const FilePieceIdType& id);
 
@@ -485,17 +482,12 @@ namespace TiValue {
 
 			oUploadRequestEntry  get_upload_request(const FileIdType& id);
 			void store_upload_request(const UploadRequestEntry& entry);
-			oStoreRequestEntry   get_store_request(const FilePieceIdType& id);
 			oPieceSavedEntry    get_piece_saved_entry(const FilePieceIdType& id);
 			void store_piece_saved_entry(const PieceSavedEntry& entry);
 			void remove_piece_saved_entry(const FilePieceIdType& id);
-			oEnableAccessEntry get_enable_access_entry(const FileIdType& id);
-			void  store_enable_access_entry(const EnableAccessEntry& entry);
 			void store_file_saved_entry(const FileSavedEntry& entry);
 			void remove_file_saved_entry(const FileIdType& id);
 			oFileSavedEntry get_file_saved_entry(const FileIdType& id);
-			oRejectStoreEntry get_reject_store_entry(const FilePieceIdType& id);
-			void remove_reject_store_entry(const FilePieceIdType& id);
 			//
             /**
             * call T::lookup to get an T type data from database according key

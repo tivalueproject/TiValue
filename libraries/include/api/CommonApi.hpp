@@ -1995,18 +1995,6 @@ namespace TiValue { namespace api {
      */
     virtual TiValue::blockchain::UploadRequestEntry store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit) = 0;
     /**
-     * get permission to save specific file piece.
-     *
-     * @param requester requester name (string, required)
-     * @param file_id id of file (string, required)
-     * @param file_piece_id id of file piece (string, required)
-     * @param node_id id of store node (string, required)
-     * @param exec_limit the limit of asset amount used to call FileUploadContract (real_amount, required)
-     *
-     * @return transaction_entry
-     */
-    virtual TiValue::wallet::WalletTransactionEntry store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit) = 0;
-    /**
      * confirm_piece_saved.
      *
      * @param confirmer confirmer (string, required)
@@ -2033,14 +2021,6 @@ namespace TiValue { namespace api {
     /**
      * get authorizing contract of specific file.
      *
-     * @param file_id id of specific files (string, optional, defaults to "")
-     *
-     * @return StoreRequestInfoList
-     */
-    virtual std::vector<TiValue::blockchain::StoreRequestInfo> wallet_list_store_request_for_my_file(const std::string& file_id = fc::json::from_string("\"\"").as<std::string>()) = 0;
-    /**
-     * get authorizing contract of specific file.
-     *
      * @param origin_data original data (string, required)
      * @param signature signature data (string, required)
      * @param key public key (string, required)
@@ -2060,18 +2040,6 @@ namespace TiValue { namespace api {
      * @return UploadRequestEntryList
      */
     virtual std::vector<TiValue::blockchain::UploadRequestEntry> blockchain_get_upload_requests() = 0;
-    /**
-     * list store requests related to local accounts.
-     *
-     * @return LocalStoreRequestList
-     */
-    virtual std::vector<TiValue::blockchain::LocalStoreRequestInfo> wallet_get_my_store_request() = 0;
-    /**
-     * list pieces which uploader has confirmed that we saved.
-     *
-     * @return piece_id_list
-     */
-    virtual vector<string> wallet_get_my_store_confirmed() = 0;
     /**
      * list all files.
      *

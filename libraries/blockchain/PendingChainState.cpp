@@ -68,10 +68,8 @@ namespace TiValue {
 
 			      //filestorerelated
 			      apply_entrys(prev_state, _upload_request_db, _upload_request_remove);
-			      apply_entrys(prev_state, _store_request_db, _store_request_remove);
 			      apply_entrys(prev_state, _piece_saved_db, _piece_saved_remove);
 			      apply_entrys(prev_state, _file_saved_db, _file_saved_remove);
-			      apply_entrys(prev_state, _enable_access_db, _enable_access_remove);
             apply_entrys(prev_state, _savedecl_db, _savedecl_remove);
             /** do this last because it could have side effects on other entrys while
              * we manage the short index
@@ -175,11 +173,8 @@ namespace TiValue {
 			      populate_undo_state(undo_state, prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
 			      //filestore related
 			      populate_undo_state(undo_state, prev_state, _upload_request_db, _upload_request_remove);
-			      populate_undo_state(undo_state, prev_state, _store_request_db, _store_request_remove);
 			      populate_undo_state(undo_state, prev_state, _piece_saved_db, _piece_saved_remove);
 			      populate_undo_state(undo_state, prev_state, _file_saved_db, _file_saved_remove);
-			      populate_undo_state(undo_state, prev_state, _enable_access_db, _enable_access_remove);
-            populate_undo_state(undo_state, prev_state, _savedecl_db, _savedecl_remove);
         }
 
         /** load the state from a variant */
@@ -613,11 +608,6 @@ namespace TiValue {
 			_upload_request_db[file_id] = entry;
 			_upload_request_remove.erase(file_id);
 		}
-		void PendingChainState::storerequest_insert_into_id_map(const FilePieceIdType & piece_id, const StoreRequestEntry & entry)
-		{
-			_store_request_db[piece_id] = entry;
-			_store_request_remove.erase(piece_id);
-		}
 		void PendingChainState::piecesaved_insert_into_id_map(const FilePieceIdType & piece_id, const PieceSavedEntry & entry)
 		{
 			_piece_saved_db[piece_id] = entry;
@@ -627,16 +617,6 @@ namespace TiValue {
 		{
 			_file_saved_db[piece_id] = entry;
 			_file_saved_remove.erase(piece_id);
-		}
-		void PendingChainState::enableaccess_insert_into_id_map(const FileIdType & file_id, const EnableAccessEntry & entry)
-		{
-			_enable_access_db[file_id] = entry;
-			_enable_access_remove.erase(file_id);
-		}
-		void PendingChainState::rejectstore_insert_into_id_map(const FilePieceIdType & file_id, const StoreRejectEntry & entry)
-		{
-			_reject_store_db[file_id] = entry;
-			_reject_store_remove.erase(file_id);
 		}
 		void PendingChainState::savedecl_insert_into_id_map(const FilePieceIdType & file_id, const PieceSavedDeclEntry & entry)
 		{
@@ -656,18 +636,6 @@ namespace TiValue {
 			if (!prev_state)
 				return oUploadRequestEntry();
 			return prev_state->lookup<UploadRequestEntry>(file_id);
-		}
-		oStoreRequestEntry PendingChainState::storerequest_lookup_by_id(const FilePieceIdType & file_id)const
-		{
-			auto it = _store_request_db.find(file_id);
-			if (it != _store_request_db.end())
-				return it->second;
-			if (_store_request_remove.count(file_id) > 0)
-				return oStoreRequestEntry();
-			const ChainInterfacePtr prev_state = _prev_state.lock();
-			if (!prev_state)
-				return oStoreRequestEntry();
-			return prev_state->lookup<StoreRequestEntry>(file_id);
 		}
 		oPieceSavedEntry PendingChainState::piecesaved_lookup_by_id(const FilePieceIdType & file_id)const
 		{
@@ -693,30 +661,6 @@ namespace TiValue {
 				return oFileSavedEntry();
 			return prev_state->lookup<FileSavedEntry>(file_id);
 		}
-		oEnableAccessEntry PendingChainState::enableaccess_lookup_by_id(const FileIdType & file_id)const
-		{
-			auto it = _enable_access_db.find(file_id);
-			if (it != _enable_access_db.end())
-				return it->second;
-			if (_enable_access_remove.count(file_id) > 0)
-				return oEnableAccessEntry();
-			const ChainInterfacePtr prev_state = _prev_state.lock();
-			if (!prev_state)
-				return oEnableAccessEntry();
-			return prev_state->lookup<EnableAccessEntry>(file_id);
-		}
-		oRejectStoreEntry PendingChainState::rejectstore_lookup_by_id(const FilePieceIdType & file_id) const
-		{
-			auto it = _reject_store_db.find(file_id);
-			if (it != _reject_store_db.end())
-				return it->second;
-			if (_reject_store_remove.count(file_id) > 0)
-				return oRejectStoreEntry();
-			const ChainInterfacePtr prev_state = _prev_state.lock();
-			if (!prev_state)
-				return oRejectStoreEntry();
-			return prev_state->lookup<StoreRejectEntry>(file_id);
-		}
 		oPieceSavedDeclEntry PendingChainState::savedecl_lookup_by_id(const FilePieceIdType & file_id) const
 		{
 			auto it = _savedecl_db.find(file_id);
@@ -734,11 +678,6 @@ namespace TiValue {
 			_upload_request_db.erase(file_id);
 			_upload_request_remove.insert(file_id);
 		}
-		void PendingChainState::storerequest_remove_by_id(const FilePieceIdType & file_id)
-		{
-			_store_request_db.erase(file_id);
-			_store_request_remove.insert(file_id);
-		}
 		void PendingChainState::piecesaved_remove_by_id(const FilePieceIdType & file_id)
 		{
 			_piece_saved_db.erase(file_id);
@@ -748,16 +687,6 @@ namespace TiValue {
 		{
 			_file_saved_db.erase(file_id);
 			_file_saved_remove.insert(file_id);
-		}
-		void PendingChainState::enableaccess_remove_by_id(const FileIdType & file_id)
-		{
-			_enable_access_db.erase(file_id);
-			_enable_access_remove.insert(file_id);
-		}
-		void PendingChainState::rejectstore_remove_by_id(const FilePieceIdType & file_id)
-		{
-			_reject_store_db.erase(file_id);
-			_reject_store_remove.insert(file_id);
 		}
 		void PendingChainState::savedecl_remove_by_id(const FilePieceIdType & file_id)
 		{

@@ -261,16 +261,12 @@ namespace TiValue {
     void add_event_handler(const std::string& contract_id_str, const std::string& event_type, const std::string& script_id, uint32_t index) override;
     void delete_event_handler(const std::string& contract_id_str, const std::string& event_type, const std::string& script_id) override;
     TiValue::blockchain::UploadRequestEntry store_file_to_network(const std::string& owner, const TiValue::blockchain::FilePath& filename, uint32_t filesize, const std::string& description, const std::string& piecesinfo, const std::string& asset_symbol, double price, uint32_t numofcopy, uint32_t numofpiece, uint32_t payterm, const std::string& node_id, double exec_limit) override;
-    TiValue::wallet::WalletTransactionEntry store_file_piece(const std::string& requester, const std::string& file_id, const std::string& file_piece_id, const std::string& node_id, double exec_limit) override;
     TiValue::wallet::WalletTransactionEntry confirm_piece_saved(const std::string& confirmer, const std::string& file_id, const std::string& file_piece_id, const std::string& Storage, double exec_limit) override;
     void wallet_set_node_id(const std::string& node_id) override;
     std::vector<std::string> blockchain_list_file_saved() override;
-    std::vector<TiValue::blockchain::StoreRequestInfo> wallet_list_store_request_for_my_file(const std::string& file_id = fc::json::from_string("\"\"").as<std::string>()) override;
     bool blockchain_check_signature(const std::string& origin_data, const std::string& signature, const std::string& key) override;
     std::vector<TiValue::blockchain::UploadRequestEntry> wallet_get_my_upload_requests() override;
     std::vector<TiValue::blockchain::UploadRequestEntry> blockchain_get_upload_requests() override;
-    std::vector<TiValue::blockchain::LocalStoreRequestInfo> wallet_get_my_store_request() override;
-    vector<string> wallet_get_my_store_confirmed() override;
     TiValue::blockchain::FileSaveInfo blockchain_get_file_save_node(const std::string& file_id) override;
     TiValue::wallet::WalletTransactionEntry declare_piece_saved(const std::string& file_id, const std::string& piece_id, const std::string& storer, const std::string& node_id) override;
     std::set<TiValue::blockchain::PieceStoreInfo> blockchain_list_file_save_declare(const std::string& file_id) override;

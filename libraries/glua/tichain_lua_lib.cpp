@@ -394,14 +394,6 @@ namespace TiValue
 			{
 				return TiValue::lua::api::global_glua_chain_api->allow_piece_saved_wrapper_func(L);
 			}
-			static int allow_enable_access(lua_State *L)
-			{
-				return TiValue::lua::api::global_glua_chain_api->allow_enable_access_wrapper_func(L);
-			}
-			static int allow_store_reject(lua_State *L)
-			{
-				return TiValue::lua::api::global_glua_chain_api->allow_store_reject_wrapper_func(L);
-			}
 
       static int allow_declare_piece_saved(lua_State *L) {
         return TiValue::lua::api::global_glua_chain_api->allow_declare_piece_saved_wrapper_func(L);
@@ -424,10 +416,6 @@ namespace TiValue
 				const char* res = TiValue::lua::api::global_glua_chain_api->get_publickey_address(L, pubkey);
 				lua_pushstring(L, res);
 				return 1;
-			}
-			static int allow_store_request(lua_State *L)
-			{
-				return TiValue::lua::api::global_glua_chain_api->allow_store_request_wrapper_func(L);
 			}
             /************************************************************************/
             /* transfer from contract to address                                    */
@@ -1247,10 +1235,7 @@ end
                     add_global_c_function(L, "contract_api_check", contract_api_check);
                     add_global_c_function(L, "get_publickey_address", get_publickey_address);
                     add_global_c_function(L, "allow_upload_request", allow_upload_request);
-                    add_global_c_function(L, "allow_enable_access", allow_enable_access);
                     add_global_c_function(L, "allow_piece_saved", allow_piece_saved);
-                    add_global_c_function(L, "allow_store_reject", allow_store_reject);
-                    add_global_c_function(L, "allow_store_request", allow_store_request);
                     add_global_c_function(L, "allow_declare_piece_saved", allow_declare_piece_saved);
                 }
                 return L;

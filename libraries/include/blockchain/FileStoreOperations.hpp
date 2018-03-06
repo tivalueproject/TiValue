@@ -32,17 +32,6 @@ namespace TiValue {
 			void evaluate(TransactionEvaluationState& eval_state)const;
 		};
 
-		struct StoreRequestOperation
-		{
-			static const OperationTypeEnum type;
-			FileIdType      file_id;
-			FilePieceIdType piece_id;
-			PublicKeyType   requester;
-			NodeIdType		node_id;
-			StoreRequestOperation() {}
-			StoreRequestOperation(const FileIdType& file_id, const FilePieceIdType& piece_id, const PublicKeyType& requester, const NodeIdType& node_id);
-			void evaluate(TransactionEvaluationState& eval_state)const;
-		};
 		struct PieceSavedOperation
 		{
 			static const OperationTypeEnum type;
@@ -53,25 +42,6 @@ namespace TiValue {
 			PieceSavedOperation(const FileIdType& file_id,const  FilePieceIdType& piece_id,const NodeIdType& Node);
 			void evaluate(TransactionEvaluationState& eval_state)const;
 
-		};
-		struct EnableAccessOperation
-		{
-			static const OperationTypeEnum type;
-			FileIdType file_id;
-			PublicKeyType requester;
-			EnableAccessOperation() {};
-			EnableAccessOperation(const FileIdType& file_id, const PublicKeyType& requester);
-			void evaluate(TransactionEvaluationState& eval_state)const;
-		};
-		struct StoreRejectOperation
-		{
-			static const OperationTypeEnum type;
-			FileIdType		file_id;
-			FilePieceIdType piece_id;
-			NodeIdType		node_id;
-			StoreRejectOperation() {};
-			StoreRejectOperation(const FileIdType& file_id, const FilePieceIdType& piece_id, const NodeIdType& node_id);
-			void evaluate(TransactionEvaluationState& eval_state)const;
 		};
 		struct PieceSavedDeclareOperation
 		{
@@ -97,25 +67,10 @@ FC_REFLECT(TiValue::blockchain::UploadRequestOperation,
 	(description)
 	(node_id)
 	)
-	FC_REFLECT(TiValue::blockchain::StoreRequestOperation,
-	(file_id)
-	(piece_id)
-	(requester)
-	(node_id)
-	)
-	FC_REFLECT(TiValue::blockchain::EnableAccessOperation,
-	(file_id)
-	(requester)
-	)
 	FC_REFLECT(TiValue::blockchain::PieceSavedOperation,
 	(file_id)
 	(piece_id)
 	(Node)
-	)
-	FC_REFLECT(TiValue::blockchain::StoreRejectOperation,
-		(file_id)
-		(piece_id)
-		(node_id)
 	)
 
 	FC_REFLECT(TiValue::blockchain::PieceSavedDeclareOperation,

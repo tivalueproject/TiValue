@@ -193,16 +193,10 @@ namespace TiValue {
 			      //filestore related	
 			      unordered_map<FileIdType, UploadRequestEntry>			    _upload_request_db;
 			      unordered_set<FileIdType>								              _upload_request_remove;
-			      unordered_map<FilePieceIdType, StoreRequestEntry>		  _store_request_db;
-			      unordered_set<FilePieceIdType>							          _store_request_remove;
 			      unordered_map<FilePieceIdType, PieceSavedEntry>			  _piece_saved_db;
 			      unordered_set<FilePieceIdType>							          _piece_saved_remove;
 			      unordered_map<FileIdType, FileSavedEntry>				      _file_saved_db;
 			      unordered_set<FileIdType>								              _file_saved_remove;
-			      unordered_map<FileIdType, EnableAccessEntry>			    _enable_access_db;
-			      unordered_set<FileIdType>								              _enable_access_remove;
-			      unordered_map<FilePieceIdType, StoreRejectEntry>	    _reject_store_db;
-			      unordered_set<FilePieceIdType>							          _reject_store_remove;
 			      unordered_map<FilePieceIdType, PieceSavedDeclEntry>		_savedecl_db;
 			      unordered_set<FilePieceIdType>                        _savedecl_remove;
             vector<EventOperation>                                event_vector;
@@ -638,29 +632,20 @@ namespace TiValue {
 			//filestore
 			//insert related
 			virtual void uploadrequest_insert_into_id_map(const FileIdType& file_id, const UploadRequestEntry& entry);
-			virtual void storerequest_insert_into_id_map(const FilePieceIdType& piece_id, const StoreRequestEntry& entry);
 			virtual void piecesaved_insert_into_id_map(const FilePieceIdType& piece_id, const PieceSavedEntry& entry);
 			virtual void filesaved_insert_into_id_map(const FileIdType& piece_id, const FileSavedEntry& entry);
-			virtual void enableaccess_insert_into_id_map(const FileIdType& file_id, const EnableAccessEntry& entry);
-			virtual void rejectstore_insert_into_id_map(const FilePieceIdType& file_id, const StoreRejectEntry& entry);
 			virtual void savedecl_insert_into_id_map(const FilePieceIdType& file_id, const PieceSavedDeclEntry& entry);
 
 			//lookup related
 			virtual oUploadRequestEntry uploadrequest_lookup_by_id(const FileIdType& file_id) const;
-			virtual oStoreRequestEntry storerequest_lookup_by_id(const FilePieceIdType& file_id)const;
 			virtual oPieceSavedEntry piecesaved_lookup_by_id(const FilePieceIdType& file_id)const;
 			virtual oFileSavedEntry filesaved_lookup_by_id(const FileIdType& file_id)const;
-			virtual oEnableAccessEntry enableaccess_lookup_by_id(const FileIdType& file_id)const;
-			virtual oRejectStoreEntry rejectstore_lookup_by_id(const FilePieceIdType& file_id)const;
 			virtual oPieceSavedDeclEntry savedecl_lookup_by_id(const FilePieceIdType& file_id)const;
 			
 			//remove related			
 			virtual void uploadrequest_remove_by_id(const FileIdType& file_id);
-			virtual void storerequest_remove_by_id(const FilePieceIdType& file_id);
 			virtual void piecesaved_remove_by_id(const FilePieceIdType& file_id);
 			virtual void filesaved_remove_by_id(const FileIdType& file_id);
-			virtual void enableaccess_remove_by_id(const FileIdType& file_id);
-			virtual void rejectstore_remove_by_id(const FilePieceIdType& file_id);
 			virtual void savedecl_remove_by_id(const FilePieceIdType& file_id);
 };
         typedef std::shared_ptr<PendingChainState> PendingChainStatePtr;
@@ -700,16 +685,10 @@ FC_REFLECT(TiValue::blockchain::PendingChainState,
 	(_vec_wallet_accounts)
 	(_upload_request_db)
 	(_upload_request_remove)
-	(_store_request_db)
-	(_store_request_remove)
 	(_piece_saved_db)
 	(_piece_saved_remove)
 	(_file_saved_db)
 	(_file_saved_remove)
-	(_enable_access_db)
-	(_enable_access_remove)
-	(_reject_store_db)
-	(_reject_store_remove)
 	(_savedecl_db)
 	(_savedecl_remove)
     )

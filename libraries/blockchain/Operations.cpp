@@ -44,10 +44,7 @@ namespace TiValue {
 		const OperationTypeEnum OnUpgradeOperation::type = on_upgrade_op_type;
         const OperationTypeEnum OnCallSuccessOperation::type = on_call_success_op_type;
 		const OperationTypeEnum UploadRequestOperation::type = upload_request_op_type;
-		const OperationTypeEnum StoreRequestOperation::type = store_request_op_type;
 		const OperationTypeEnum PieceSavedOperation::type = piece_saved_op_type;
-		const OperationTypeEnum EnableAccessOperation::type = enable_access_op_type;
-		const OperationTypeEnum StoreRejectOperation::type = store_reject_op_type;
 		const OperationTypeEnum PieceSavedDeclareOperation::type = piece_saved_decl_op_type;
         static bool first_chain = []()->bool{
             TiValue::blockchain::OperationFactory::instance().register_operation<WithdrawOperation>();
@@ -80,10 +77,7 @@ namespace TiValue {
 			TiValue::blockchain::OperationFactory::instance().register_operation<OnUpgradeOperation>();
 			TiValue::blockchain::OperationFactory::instance().register_operation<OnCallSuccessOperation>();
 			TiValue::blockchain::OperationFactory::instance().register_operation<UploadRequestOperation>();
-			TiValue::blockchain::OperationFactory::instance().register_operation<StoreRequestOperation>();
 			TiValue::blockchain::OperationFactory::instance().register_operation<PieceSavedOperation>();
-			TiValue::blockchain::OperationFactory::instance().register_operation<EnableAccessOperation>();
-			TiValue::blockchain::OperationFactory::instance().register_operation<StoreRejectOperation>();
 			TiValue::blockchain::OperationFactory::instance().register_operation<PieceSavedDeclareOperation>();
 
             return true;

@@ -249,10 +249,6 @@ namespace TiValue {
         typedef WalletEntry<Setting, setting_entry_type>        WalletSettingEntry;
 		typedef WalletEntry<ContractEntry, contract_entry_type> WalletContractEntry;
 		typedef WalletEntry<UploadRequestEntry, upload_request_entry_type> WalletUploadRequestEntry;
-		typedef WalletEntry<StoreRequestEntry, store_request_entry_type> WalletStoreRequestEntry;
-		typedef WalletEntry<StoreRequestEntry, my_request_entry_type> MyStoreRequestEntry;
-        typedef WalletEntry<LocalStoreRequestInfo, local_store_req_type> LocalStoreRequestEntry;		
-        typedef WalletEntry<AllowedStoreRequest, allowed_store_req_type> AllowedStoreRequestEntry;
 
 		typedef optional<WalletContractEntry>                             oWalletContractEntry;
         typedef optional<WalletPropertyEntry>                             oWalletPropertyEntry;
@@ -263,9 +259,6 @@ namespace TiValue {
         typedef optional<WalletTransactionEntry>                          oWalletTransactionEntry;
         typedef optional<WalletSettingEntry>                              oWalletSettingEntry;
 		typedef optional<WalletUploadRequestEntry>						  oWalletUploadRequestEntry;
-		typedef optional<WalletStoreRequestEntry>						 oWalletStoreRequestEntry;
-		typedef optional<MyStoreRequestEntry>						 oMyStoreRequestEntry;
-		typedef optional<LocalStoreRequestEntry>						 olocal_store_req_type;
         struct GenericWalletEntry
         {
             GenericWalletEntry() :type(0){}

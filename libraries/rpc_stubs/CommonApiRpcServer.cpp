@@ -7744,62 +7744,6 @@ fc::variant CommonApiRpcServer::store_file_to_network_named(fc::rpc::json_connec
   return fc::variant(result);
 }
 
-fc::variant CommonApiRpcServer::store_file_piece_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-  if (parameters.size() <= 0)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 1 (requester)");
-  std::string requester = parameters[0].as<std::string>();
-  if (parameters.size() <= 1)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 2 (file_id)");
-  std::string file_id = parameters[1].as<std::string>();
-  if (parameters.size() <= 2)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 3 (file_piece_id)");
-  std::string file_piece_id = parameters[2].as<std::string>();
-  if (parameters.size() <= 3)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 4 (node_id)");
-  std::string node_id = parameters[3].as<std::string>();
-  if (parameters.size() <= 4)
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 5 (exec_limit)");
-  double exec_limit = parameters[4].as<double>();
-
-  TiValue::wallet::WalletTransactionEntry result = get_client()->store_file_piece(requester, file_id, file_piece_id, node_id, exec_limit);
-  return fc::variant(result);
-}
-
-fc::variant CommonApiRpcServer::store_file_piece_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-  if (!parameters.contains("requester"))
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'requester'");
-  std::string requester = parameters["requester"].as<std::string>();
-  if (!parameters.contains("file_id"))
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'file_id'");
-  std::string file_id = parameters["file_id"].as<std::string>();
-  if (!parameters.contains("file_piece_id"))
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'file_piece_id'");
-  std::string file_piece_id = parameters["file_piece_id"].as<std::string>();
-  if (!parameters.contains("node_id"))
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'node_id'");
-  std::string node_id = parameters["node_id"].as<std::string>();
-  if (!parameters.contains("exec_limit"))
-    FC_THROW_EXCEPTION(fc::invalid_arg_exception, "missing required parameter 'exec_limit'");
-  double exec_limit = parameters["exec_limit"].as<double>();
-
-  TiValue::wallet::WalletTransactionEntry result = get_client()->store_file_piece(requester, file_id, file_piece_id, node_id, exec_limit);
-  return fc::variant(result);
-}
-
 fc::variant CommonApiRpcServer::confirm_piece_saved_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters)
 {
   // check all of this method's prerequisites
@@ -7914,38 +7858,6 @@ fc::variant CommonApiRpcServer::blockchain_list_file_saved_named(fc::rpc::json_c
   return fc::variant(result);
 }
 
-fc::variant CommonApiRpcServer::wallet_list_store_request_for_my_file_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-  std::string file_id = (parameters.size() <= 0) ?
-    (fc::json::from_string("\"\"").as<std::string>()) :
-    parameters[0].as<std::string>();
-
-  std::vector<TiValue::blockchain::StoreRequestInfo> result = get_client()->wallet_list_store_request_for_my_file(file_id);
-  return fc::variant(result);
-}
-
-fc::variant CommonApiRpcServer::wallet_list_store_request_for_my_file_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-  std::string file_id = parameters.contains("file_id") ? 
-    (fc::json::from_string("\"\"").as<std::string>()) :
-    parameters["file_id"].as<std::string>();
-
-  std::vector<TiValue::blockchain::StoreRequestInfo> result = get_client()->wallet_list_store_request_for_my_file(file_id);
-  return fc::variant(result);
-}
-
 fc::variant CommonApiRpcServer::blockchain_check_signature_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters)
 {
   // check all of this method's prerequisites
@@ -8039,58 +7951,6 @@ fc::variant CommonApiRpcServer::blockchain_get_upload_requests_named(fc::rpc::js
 
 
   std::vector<TiValue::blockchain::UploadRequestEntry> result = get_client()->blockchain_get_upload_requests();
-  return fc::variant(result);
-}
-
-fc::variant CommonApiRpcServer::wallet_get_my_store_request_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-
-  std::vector<TiValue::blockchain::LocalStoreRequestInfo> result = get_client()->wallet_get_my_store_request();
-  return fc::variant(result);
-}
-
-fc::variant CommonApiRpcServer::wallet_get_my_store_request_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-
-  std::vector<TiValue::blockchain::LocalStoreRequestInfo> result = get_client()->wallet_get_my_store_request();
-  return fc::variant(result);
-}
-
-fc::variant CommonApiRpcServer::wallet_get_my_store_confirmed_positional(fc::rpc::json_connection* json_connection, const fc::variants& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-
-  vector<string> result = get_client()->wallet_get_my_store_confirmed();
-  return fc::variant(result);
-}
-
-fc::variant CommonApiRpcServer::wallet_get_my_store_confirmed_named(fc::rpc::json_connection* json_connection, const fc::variant_object& parameters)
-{
-  // check all of this method's prerequisites
-  verify_json_connection_is_authenticated(json_connection);
-  verify_wallet_is_open();
-  verify_wallet_is_unlocked();
-  // done checking prerequisites
-
-
-  vector<string> result = get_client()->wallet_get_my_store_confirmed();
   return fc::variant(result);
 }
 
@@ -10315,14 +10175,6 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
                                         this, capture_con, _1);
   json_connection->add_named_param_method("store_file_to_network", bound_named_method);
 
-  // register method store_file_piece
-  bound_positional_method = boost::bind(&CommonApiRpcServer::store_file_piece_positional, 
-                                        this, capture_con, _1);
-  json_connection->add_method("store_file_piece", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::store_file_piece_named, 
-                                        this, capture_con, _1);
-  json_connection->add_named_param_method("store_file_piece", bound_named_method);
-
   // register method confirm_piece_saved
   bound_positional_method = boost::bind(&CommonApiRpcServer::confirm_piece_saved_positional, 
                                         this, capture_con, _1);
@@ -10347,14 +10199,6 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
                                         this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_list_file_saved", bound_named_method);
 
-  // register method wallet_list_store_request_for_my_file
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_list_store_request_for_my_file_positional, 
-                                        this, capture_con, _1);
-  json_connection->add_method("wallet_list_store_request_for_my_file", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_list_store_request_for_my_file_named, 
-                                        this, capture_con, _1);
-  json_connection->add_named_param_method("wallet_list_store_request_for_my_file", bound_named_method);
-
   // register method blockchain_check_signature
   bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_check_signature_positional, 
                                         this, capture_con, _1);
@@ -10378,22 +10222,6 @@ void CommonApiRpcServer::register_CommonApi_methods(const fc::rpc::json_connecti
   bound_named_method = boost::bind(&CommonApiRpcServer::blockchain_get_upload_requests_named, 
                                         this, capture_con, _1);
   json_connection->add_named_param_method("blockchain_get_upload_requests", bound_named_method);
-
-  // register method wallet_get_my_store_request
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_positional, 
-                                        this, capture_con, _1);
-  json_connection->add_method("wallet_get_my_store_request", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_request_named, 
-                                        this, capture_con, _1);
-  json_connection->add_named_param_method("wallet_get_my_store_request", bound_named_method);
-
-  // register method wallet_get_my_store_confirmed
-  bound_positional_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_positional, 
-                                        this, capture_con, _1);
-  json_connection->add_method("wallet_get_my_store_confirmed", bound_positional_method);
-  bound_named_method = boost::bind(&CommonApiRpcServer::wallet_get_my_store_confirmed_named, 
-                                        this, capture_con, _1);
-  json_connection->add_named_param_method("wallet_get_my_store_confirmed", bound_named_method);
 
   // register method blockchain_get_file_save_node
   bound_positional_method = boost::bind(&CommonApiRpcServer::blockchain_get_file_save_node_positional, 
@@ -13813,24 +13641,6 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
   }
 
   {
-    // register method store_file_piece
-    TiValue::api::MethodData store_file_piece_method_metadata{"store_file_piece", nullptr,
-      /* description */ "get permission to save specific file piece",
-      /* returns */ "transaction_entry",
-      /* params: */ {
-        {"requester", "string", TiValue::api::required_positional, fc::ovariant()},
-        {"file_id", "string", TiValue::api::required_positional, fc::ovariant()},
-        {"file_piece_id", "string", TiValue::api::required_positional, fc::ovariant()},
-        {"node_id", "string", TiValue::api::required_positional, fc::ovariant()},
-        {"exec_limit", "real_amount", TiValue::api::required_positional, fc::ovariant()}
-      },
-      /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "get permission to save specific file piece\n\nParameters:\n  requester (string, required): requester name\n  file_id (string, required): id of file\n  file_piece_id (string, required): id of file piece\n  node_id (string, required): id of store node\n  exec_limit (real_amount, required): the limit of asset amount used to call FileUploadContract\n\nReturns:\n  transaction_entry\n",
-      /* aliases */ {}, false};
-    store_method_metadata(store_file_piece_method_metadata);
-  }
-
-  {
     // register method confirm_piece_saved
     TiValue::api::MethodData confirm_piece_saved_method_metadata{"confirm_piece_saved", nullptr,
       /* description */ "confirm_piece_saved",
@@ -13875,20 +13685,6 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
   }
 
   {
-    // register method wallet_list_store_request_for_my_file
-    TiValue::api::MethodData wallet_list_store_request_for_my_file_method_metadata{"wallet_list_store_request_for_my_file", nullptr,
-      /* description */ "get authorizing contract of specific file",
-      /* returns */ "StoreRequestInfoList",
-      /* params: */ {
-        {"file_id", "string", TiValue::api::optional_positional, fc::variant(fc::json::from_string("\"\""))}
-      },
-      /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "get authorizing contract of specific file\n\nParameters:\n  file_id (string, optional, defaults to \"\"): id of specific files\n\nReturns:\n  StoreRequestInfoList\n",
-      /* aliases */ {}, false};
-    store_method_metadata(wallet_list_store_request_for_my_file_method_metadata);
-  }
-
-  {
     // register method blockchain_check_signature
     TiValue::api::MethodData blockchain_check_signature_method_metadata{"blockchain_check_signature", nullptr,
       /* description */ "get authorizing contract of specific file",
@@ -13926,30 +13722,6 @@ void CommonApiRpcServer::register_CommonApi_method_metadata()
       /* detailed description */ "list  upload requests on blockchain\n\nParameters:\n  (none)\n\nReturns:\n  UploadRequestEntryList\n",
       /* aliases */ {}, false};
     store_method_metadata(blockchain_get_upload_requests_method_metadata);
-  }
-
-  {
-    // register method wallet_get_my_store_request
-    TiValue::api::MethodData wallet_get_my_store_request_method_metadata{"wallet_get_my_store_request", nullptr,
-      /* description */ "list  store requests related to local accounts",
-      /* returns */ "LocalStoreRequestList",
-      /* params: */ {},
-      /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "list  store requests related to local accounts\n\nParameters:\n  (none)\n\nReturns:\n  LocalStoreRequestList\n",
-      /* aliases */ {}, false};
-    store_method_metadata(wallet_get_my_store_request_method_metadata);
-  }
-
-  {
-    // register method wallet_get_my_store_confirmed
-    TiValue::api::MethodData wallet_get_my_store_confirmed_method_metadata{"wallet_get_my_store_confirmed", nullptr,
-      /* description */ "list pieces which uploader has confirmed that we saved",
-      /* returns */ "piece_id_list",
-      /* params: */ {},
-      /* prerequisites */ (TiValue::api::MethodPrerequisites) 4,
-      /* detailed description */ "list pieces which uploader has confirmed that we saved\n\nParameters:\n  (none)\n\nReturns:\n  piece_id_list\n",
-      /* aliases */ {}, false};
-    store_method_metadata(wallet_get_my_store_confirmed_method_metadata);
   }
 
   {
@@ -14469,26 +14241,18 @@ fc::variant CommonApiRpcServer::direct_invoke_positional_method(const std::strin
     return delete_event_handler_positional(nullptr, parameters);
   if (method_name == "store_file_to_network")
     return store_file_to_network_positional(nullptr, parameters);
-  if (method_name == "store_file_piece")
-    return store_file_piece_positional(nullptr, parameters);
   if (method_name == "confirm_piece_saved")
     return confirm_piece_saved_positional(nullptr, parameters);
   if (method_name == "wallet_set_node_id")
     return wallet_set_node_id_positional(nullptr, parameters);
   if (method_name == "blockchain_list_file_saved")
     return blockchain_list_file_saved_positional(nullptr, parameters);
-  if (method_name == "wallet_list_store_request_for_my_file")
-    return wallet_list_store_request_for_my_file_positional(nullptr, parameters);
   if (method_name == "blockchain_check_signature")
     return blockchain_check_signature_positional(nullptr, parameters);
   if (method_name == "wallet_get_my_upload_requests")
     return wallet_get_my_upload_requests_positional(nullptr, parameters);
   if (method_name == "blockchain_get_upload_requests")
     return blockchain_get_upload_requests_positional(nullptr, parameters);
-  if (method_name == "wallet_get_my_store_request")
-    return wallet_get_my_store_request_positional(nullptr, parameters);
-  if (method_name == "wallet_get_my_store_confirmed")
-    return wallet_get_my_store_confirmed_positional(nullptr, parameters);
   if (method_name == "blockchain_get_file_save_node")
     return blockchain_get_file_save_node_positional(nullptr, parameters);
   if (method_name == "declare_piece_saved")
