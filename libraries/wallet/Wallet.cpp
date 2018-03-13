@@ -174,7 +174,7 @@ namespace TiValue {
                         if (!owner.valid())
                             continue;
 
-                        //ÏÈ´¦Àí¿ÉÒÔÍËµÄwithdraw£¬ÔÙ´¦Àí²»¿ÉÒÔÍËµÄwithdraw
+                        //ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½withdrawï¿½ï¿½ï¿½Ù´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½withdraw
                         if (deal_for_refund)
                         {
                             if (amount_remaining.amount > balance.amount)
@@ -3068,7 +3068,7 @@ namespace TiValue {
             else
                 required_signatures.insert(owner_address);
 
-            ContractIdType contract_id = trx.register_contract(contract_code, owner_public_key, asset_limit,fee, balances);//²åÈëºÏÔ¼×¢²áop
+            ContractIdType contract_id = trx.register_contract(contract_code, owner_public_key, asset_limit,fee, balances);//ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼×¢ï¿½ï¿½op
             FC_ASSERT(register_fee.asset_id == 0, "register fee must be TV");
             FC_ASSERT(margin.asset_id == 0, "register fee must be TV");
             FC_ASSERT(fee.asset_id == 0, "register fee must be TV");
@@ -3171,7 +3171,7 @@ namespace TiValue {
       else
         required_signatures.insert(caller_address);
 
-        trx.call_contract(contract, method, arguments, caller_public_key, asset_limit, fee, balances);//²åÈëºÏÔ¼µ÷ÓÃop
+        trx.call_contract(contract, method, arguments, caller_public_key, asset_limit, fee, balances);//ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½op
         FC_ASSERT(fee.asset_id == 0, "register fee must be TV");
         trx.expiration = blockchain::now() + get_transaction_expiration();
         my->sign_transaction(trx, required_signatures);
@@ -3700,7 +3700,16 @@ namespace TiValue {
                 // 	  {
                 // 		  trx.AddtionImessage(memo_message);
                 // 	  }
-                const auto required_fees = get_transaction_fee(asset_to_transfer.asset_id);
+                Asset required_fees = get_transaction_fee(asset_to_transfer.asset_id);
+                ShareType amount_transfer_fees = static_cast<ShareType>(floor(dAmountToTransfer * precision * TIV_WALLET_DEFAULT_TRANSACTION_FEE_RATE + 0.5));
+				if (my->_blockchain->get_head_block_num() > TIV_V1_1_UPGRADE_BLOCK_NUM) {
+                    if (amount_transfer_fees < TIV_WALLET_LEAST_TRANSACTION_FEE) {
+						required_fees.amount = TIV_WALLET_LEAST_TRANSACTION_FEE;
+					}
+					else {
+						required_fees.amount = amount_transfer_fees;
+					}
+                }
                 const auto required_imessage_fee = get_transaction_imessage_fee(memo_message);
                 if (required_fees.asset_id == asset_to_transfer.asset_id)
                 {
@@ -5968,7 +5977,7 @@ namespace TiValue {
 			if (!account.is_my_account)
 				FC_CAPTURE_AND_THROW(not_my_account, (owner));
 
-			//ÎÄ¼þ´¦Àí
+			//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 			vector<PieceUploadInfo> infos;
 			FileIdType id;
 			id.uploader = account.owner_key;
@@ -5981,7 +5990,7 @@ namespace TiValue {
 			entry.num_of_copys = numofcopy;
 			entry.pieces = infos;
 
-			//µ÷ÓÃºÏÔ¼
+			//ï¿½ï¿½ï¿½Ãºï¿½Ô¼
 			ChainInterfacePtr chaindb_ptr = get_correct_state_ptr();
 			auto contract_upload = chaindb_ptr->get_contract_entry(TIV_FILE_UPLOAD_CONTRACT_NAME);
 			if (!contract_upload.valid())
