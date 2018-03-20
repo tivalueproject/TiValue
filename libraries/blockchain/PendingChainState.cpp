@@ -70,7 +70,7 @@ namespace TiValue {
 			      apply_entrys(prev_state, _upload_request_db, _upload_request_remove);
 			      apply_entrys(prev_state, _piece_saved_db, _piece_saved_remove);
 			      apply_entrys(prev_state, _file_saved_db, _file_saved_remove);
-            apply_entrys(prev_state, _savedecl_db, _savedecl_remove);
+            apply_entrys(prev_state, _save_decl_db, _save_decl_remove);
             /** do this last because it could have side effects on other entrys while
              * we manage the short index
              */
@@ -167,14 +167,15 @@ namespace TiValue {
             //contract related
             populate_undo_state(undo_state, prev_state, _contract_id_to_entry, _contract_id_remove);
             populate_undo_state(undo_state, prev_state, _contract_id_to_storage, _contract_id_remove);
-			      populate_undo_state(undo_state, prev_state, _request_id_to_result_id, _req_to_res_to_remove);
-			      populate_undo_state(undo_state, prev_state, _result_id_to_request_id, _res_to_req_to_remove);
-			      populate_undo_state(undo_state, prev_state, _trx_to_contract_id,_trx_to_contract_id_remove);
-			      populate_undo_state(undo_state, prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
-			      //filestore related
-			      populate_undo_state(undo_state, prev_state, _upload_request_db, _upload_request_remove);
-			      populate_undo_state(undo_state, prev_state, _piece_saved_db, _piece_saved_remove);
-			      populate_undo_state(undo_state, prev_state, _file_saved_db, _file_saved_remove);
+			populate_undo_state(undo_state, prev_state, _request_id_to_result_id, _req_to_res_to_remove);
+			populate_undo_state(undo_state, prev_state, _result_id_to_request_id, _res_to_req_to_remove);
+			populate_undo_state(undo_state, prev_state, _trx_to_contract_id,_trx_to_contract_id_remove);
+			populate_undo_state(undo_state, prev_state, _contract_to_trx_id, _contract_to_trx_id_remove);
+			//filestore related
+			populate_undo_state(undo_state, prev_state, _upload_request_db, _upload_request_remove);
+			populate_undo_state(undo_state, prev_state, _piece_saved_db, _piece_saved_remove);
+			populate_undo_state(undo_state, prev_state, _file_saved_db, _file_saved_remove);
+			populate_undo_state(undo_state, prev_state, _save_decl_db, _save_decl_remove);
         }
 
         /** load the state from a variant */
@@ -621,8 +622,8 @@ namespace TiValue {
 		void PendingChainState::savedecl_insert_into_id_map(const FilePieceIdType & file_id, const PieceSavedDeclEntry & entry)
 		{
       //_savedecl_db.erase(file_id);
-			_savedecl_db[file_id] = entry;
-			_savedecl_remove.erase(file_id);
+			_save_decl_db[file_id] = entry;
+			_save_decl_remove.erase(file_id);
 		}
 
 		oUploadRequestEntry PendingChainState::uploadrequest_lookup_by_id(const FileIdType & file_id) const
@@ -663,10 +664,10 @@ namespace TiValue {
 		}
 		oPieceSavedDeclEntry PendingChainState::savedecl_lookup_by_id(const FilePieceIdType & file_id) const
 		{
-			auto it = _savedecl_db.find(file_id);
-			if (it != _savedecl_db.end())
+			auto it = _save_decl_db.find(file_id);
+			if (it != _save_decl_db.end())
 				return it->second;
-			if (_savedecl_remove.count(file_id) > 0)
+			if (_save_decl_remove.count(file_id) > 0)
 				return oPieceSavedDeclEntry();
 			const ChainInterfacePtr prev_state = _prev_state.lock();
 			if (!prev_state)
@@ -690,8 +691,8 @@ namespace TiValue {
 		}
 		void PendingChainState::savedecl_remove_by_id(const FilePieceIdType & file_id)
 		{
-			_savedecl_db.erase(file_id);
-			_savedecl_remove.insert(file_id);
+			_save_decl_db.erase(file_id);
+			_save_decl_remove.insert(file_id);
 		}
         void PendingChainState::contractstorage_erase_from_id_map(const ContractIdType& id)
         {

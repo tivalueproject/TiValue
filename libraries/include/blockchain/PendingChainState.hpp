@@ -197,8 +197,8 @@ namespace TiValue {
 			      unordered_set<FilePieceIdType>							          _piece_saved_remove;
 			      unordered_map<FileIdType, FileSavedEntry>				      _file_saved_db;
 			      unordered_set<FileIdType>								              _file_saved_remove;
-			      unordered_map<FilePieceIdType, PieceSavedDeclEntry>		_savedecl_db;
-			      unordered_set<FilePieceIdType>                        _savedecl_remove;
+			      unordered_map<FilePieceIdType, PieceSavedDeclEntry>		_save_decl_db;
+			      unordered_set<FilePieceIdType>                        _save_decl_remove;
             vector<EventOperation>                                event_vector;
 			      vector<TiValue::blockchain::SandboxAccountInfo>       _vec_wallet_accounts;
 
@@ -689,8 +689,8 @@ FC_REFLECT(TiValue::blockchain::PendingChainState,
 	(_piece_saved_remove)
 	(_file_saved_db)
 	(_file_saved_remove)
-	(_savedecl_db)
-	(_savedecl_remove)
+	(_save_decl_db)
+	(_save_decl_remove)
     )
 
 	FC_REFLECT(TiValue::blockchain::SandboxAccountInfo, (id)(name)(delegate_info)(owner_address)(registration_date)(last_update)(owner_key))
