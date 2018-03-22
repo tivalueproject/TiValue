@@ -175,6 +175,7 @@ namespace TiValue {
 			      populate_undo_state(undo_state, prev_state, _upload_request_db, _upload_request_remove);
 			      populate_undo_state(undo_state, prev_state, _piece_saved_db, _piece_saved_remove);
 			      populate_undo_state(undo_state, prev_state, _file_saved_db, _file_saved_remove);
+                  populate_undo_state(undo_state, prev_state, _savedecl_db, _savedecl_remove);
         }
 
         /** load the state from a variant */
