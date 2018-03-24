@@ -3746,9 +3746,18 @@ namespace TiValue {
 
 		oUploadRequestEntry TiValue::blockchain::ChainDatabase::uploadrequest_lookup_by_id(const FileIdType & file_id)const
 		{
-			auto it = my->_upload_request_db.unordered_find(file_id);
-			if (it != my->_upload_request_db.unordered_end())
-				return it->second;
+			//auto it = my->_upload_request_db.unordered_find(file_id);
+			//if (it != my->_upload_request_db.unordered_end())
+			//	return it->second;
+
+      auto itr = my->_upload_request_db.unordered_begin();
+      for (; itr != my->_upload_request_db.unordered_end(); itr++)
+      {
+        if (itr->first.file_id == file_id.file_id && itr->first.uploader == file_id.uploader)
+        {
+          return itr->second;
+        }
+      }
 			return oUploadRequestEntry();
 		}
 
