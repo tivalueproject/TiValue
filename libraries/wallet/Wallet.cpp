@@ -3710,7 +3710,6 @@ namespace TiValue {
 						required_fees.amount = amount_transfer_fees;
 					}
 				}
-				const auto required_fees = get_transaction_fee(asset_to_transfer.asset_id);
                 const auto required_imessage_fee = get_transaction_imessage_fee(memo_message);
                 if (required_fees.asset_id == asset_to_transfer.asset_id)
                 {
