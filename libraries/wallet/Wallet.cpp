@@ -3700,7 +3700,17 @@ namespace TiValue {
                 // 	  {
                 // 		  trx.AddtionImessage(memo_message);
                 // 	  }
-                const auto required_fees = get_transaction_fee(asset_to_transfer.asset_id);
+				Asset required_fees = get_transaction_fee(asset_to_transfer.asset_id);
+				ShareType amount_transfer_fees = static_cast<ShareType>(floor(dAmountToTransfer * precision * TIV_WALLET_DEFAULT_TRANSACTION_FEE_RATE + 0.5));
+				if (my->_blockchain->get_head_block_num() > TIV_V1_1_UPGRADE_BLOCK_NUM) {
+					if (amount_transfer_fees < TIV_WALLET_LEAST_TRANSACTION_FEE) {
+						required_fees.amount = TIV_WALLET_LEAST_TRANSACTION_FEE;
+					}
+					else {
+						required_fees.amount = amount_transfer_fees;
+					}
+				}
+				const auto required_fees = get_transaction_fee(asset_to_transfer.asset_id);
                 const auto required_imessage_fee = get_transaction_imessage_fee(memo_message);
                 if (required_fees.asset_id == asset_to_transfer.asset_id)
                 {
