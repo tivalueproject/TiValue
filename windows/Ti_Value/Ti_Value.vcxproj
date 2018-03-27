@@ -105,6 +105,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_MBCS;_DEBUG;WIN32;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;BOOST_ALL_NO_LIB;_SECURE_SCL=0;TIV_GLOBAL_API_LOG=1;TIV_TEST_NETWORK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>leveldb.lib;fc_debug.lib;easylzma_static_debug.lib;udt_debug.lib;libboost_thread-vc120-mt-gd-1_55.lib;libboost_date_time-vc120-mt-gd-1_55.lib;libboost_system-vc120-mt-gd-1_55.lib;libboost_filesystem-vc120-mt-gd-1_55.lib;libboost_program_options-vc120-mt-gd-1_55.lib;libboost_signals-vc120-mt-gd-1_55.lib;libboost_serialization-vc120-mt-gd-1_55.lib;libboost_chrono-vc120-mt-gd-1_55.lib;libboost_unit_test_framework-vc120-mt-gd-1_55.lib;libboost_context-vc120-mt-gd-1_55.lib;libboost_locale-vc120-mt-gd-1_55.lib;libboost_iostreams-vc120-mt-gd-1_55.lib;libboost_coroutine-vc120-mt-gd-1_55.lib;ssleay32MDd.lib;libeay32MDd.lib;WS2_32.lib;Userenv.lib;Rpcrt4.lib;crypt32.lib;shlwapi.lib;miniupnpc.lib;WS2_32.Lib;IPHlpApi.Lib;secp256k1_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
