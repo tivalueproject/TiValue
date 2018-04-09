@@ -1296,11 +1296,11 @@ namespace TiValue {
                         register_methods(json_con);
                         auto receipt = _open_json_connections.insert(json_con);
 
-                        json_con->exec().on_complete([this, receipt, sock,json_con](fc::exception_ptr e){
+                        json_con->exec().on_complete([this, receipt, sock](fc::exception_ptr e){
                             ilog("json_con exited");
                             sock->close();
-							_open_json_connections.erase(json_con);
-							//_open_json_connections.erase(receipt.first);
+							//_open_json_connections.erase(json_con);
+							_open_json_connections.erase(receipt.first);
                             if (e)
                                 elog("Connection exited with error: ${error}", ("error", e->what()));
                         });
