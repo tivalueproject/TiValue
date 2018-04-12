@@ -19,7 +19,11 @@
 
 #### Build
 
-[Build instructions](https://github.com/tivalueproject/TiValue/wiki/Build-TiValue-on-Linux) and additional documentation are available in the [Wiki](https://github.com/tivalueteam/TiValue/wiki).
+[Ubuntu build instructions](https://github.com/tivalueproject/TiValue/wiki/Build-TiValue-on-Ubuntu)
+
+[Windows build instructions](https://github.com/tivalueproject/TiValue/wiki/Build-TiValue-on-Windows)
+
+Additional documentation are available in the [Wiki](https://github.com/tivalueproject/TiValue/wiki)
 
 ### Support
 ---------------
